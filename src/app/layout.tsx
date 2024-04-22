@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Space_Grotesk } from "next/font/google";
 import { Layout } from "@/components/Layout";
+// import Image from 'next/image';
 
 import "./globals.css";
 
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${notoSans.variable} ${spaceGrotesk.variable} font-sans`}>
-      <body className="h-full m-0">
+      <body className="relative h-full m-0 bg-[#080908]">
         <Layout>
           {children}
         </Layout>

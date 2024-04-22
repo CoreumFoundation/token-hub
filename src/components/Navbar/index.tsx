@@ -28,7 +28,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="flex items-center justify-between w-full p-6">
+    <div className="flex items-center justify-between w-full p-6 z-10">
       <Image
         className="w-[7.5rem]"
         src="/images/logo.svg"

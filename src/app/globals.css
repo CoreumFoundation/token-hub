@@ -8,28 +8,22 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #080908;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.bg-footer {
+  background-image: url('/images/footer-bg.svg');
+  background-repeat: no-repeat;
+  background-clip: border-box;
+  background-size: cover;
 }
 
 .bg-green-gradient {
@@ -56,4 +50,24 @@ body {
 
 .bg-main-gradient {
   background: rgba(16, 18, 22, 0.65);
+}
+
+.bg-main-image {
+  background-image: url('/images/bg-image-top.png');
+  background-repeat: no-repeat;
+  background-clip: border-box;
+  background-size: contain;
+  background-position: top;
+}
+
+.bg-landing {
+  /* background: #080908; */
+}
+
+.bg-main-image-second {
+  background-image: url('/images/bg-main-bottom.svg');
+  background-repeat: no-repeat;
+  background-clip: border-box;
+  background-size: contain;
+  background-position: bottom;
 }

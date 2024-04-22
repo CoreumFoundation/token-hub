@@ -46,11 +46,11 @@ const navigation = {
 
 export const Footer = () => {
   return (
-    <footer className="bg-footer w-full" aria-labelledby="footer-heading">
+    <footer className="bg-footer w-full z-10 py-3 px-6 md:pb-16 md:px-28" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="flex md:grid md:grid-cols-3 w-full justify-between gap-10 flex-col py-3 px-6 md:py-16 md:px-28">
+      <div className="flex md:grid md:grid-cols-3 w-full justify-between gap-10 flex-col pt-16 border-t border-[#101216]">
         <div className="md:col-span-2 flex flex-col justify-between">
           <div className="flex flex-col gap-6">
             <Image

@@ -35,4 +35,5 @@ export enum GeneralIconType {
   Coreum = 'coreum',
   Network = 'network',
   CheckMark = 'check_mark',
+  Info = 'info',
 }

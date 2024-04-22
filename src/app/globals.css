@@ -40,9 +40,20 @@ body {
   background: rgba(37, 214, 149, 0.10);
 }
 
+.text-green-gradient {
+  background: linear-gradient(180deg, #25D695 0%, #046C44 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .text-grey-gradient {
   background: linear-gradient(180deg, #FFF 0%, #5E6773 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.bg-main-gradient {
+  background: rgba(16, 18, 22, 0.65);
 }

@@ -9,7 +9,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: #eee;
   background: #080908;
 }
 
@@ -58,16 +58,4 @@ body {
   background-clip: border-box;
   background-size: contain;
   background-position: top;
-}
-
-.bg-landing {
-  /* background: #080908; */
-}
-
-.bg-main-image-second {
-  background-image: url('/images/bg-main-bottom.svg');
-  background-repeat: no-repeat;
-  background-clip: border-box;
-  background-size: contain;
-  background-position: bottom;
 }

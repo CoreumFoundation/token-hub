@@ -31,3 +31,18 @@ body {
     text-wrap: balance;
   }
 }
+
+.bg-green-gradient {
+  background: linear-gradient(225deg, #25D695 0%, #179B69 100%);
+}
+
+.bg-green-opacity-10 {
+  background: rgba(37, 214, 149, 0.10);
+}
+
+.text-grey-gradient {
+  background: linear-gradient(180deg, #FFF 0%, #5E6773 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

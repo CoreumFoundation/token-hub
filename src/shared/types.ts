@@ -37,6 +37,8 @@ export enum GeneralIconType {
   CheckMark = 'check_mark',
   Info = 'info',
   Error = 'error',
+  Close = 'close',
+  Percentage = 'percentage',
 };
 
 export enum TabItemType {

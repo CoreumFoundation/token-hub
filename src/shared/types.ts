@@ -48,3 +48,8 @@ export interface DropdownItem {
   label: string;
   icon?: React.ReactNode;
 }
+
+export interface TabSwitchItem {
+  id: string;
+  label: string;
+}

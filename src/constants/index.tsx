@@ -1,6 +1,6 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, TabItem } from "@/shared/types";
+import { FooterIconType, GeneralIconType, TabItem, TabSwitchItem } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -69,4 +69,15 @@ export const TABS_ITEMS: TabItem[] = [
     id: 'manage',
     label: 'Manage',
   }
+];
+
+export const TABS_SWITCH_ITEMS: TabSwitchItem[] = [
+  {
+    id: 'ft-tokens',
+    label: 'Fungible Tokens',
+  },
+  {
+    id: 'nft-tokens',
+    label: 'Non-Fungible Tokens',
+  },
 ];

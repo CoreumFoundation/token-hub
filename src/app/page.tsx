@@ -7,8 +7,8 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center w-full z-10">
       <div className="flex flex-col items-center w-[800px] gap-10 mt-6">
         <div className="flex items-center gap-2 font-space-grotesk w-full">
-          <div className="text-3xl">
-            <span className="text-grey-gradient ">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
+          <div className="text-3xl font-bold">
+            <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
           </div>
           <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
         </div>

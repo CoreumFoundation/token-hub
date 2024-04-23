@@ -7,12 +7,12 @@ import "./globals.css";
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
-  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
   variable: '--font-noto-sans',
 });
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
 });
 

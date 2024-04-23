@@ -1,4 +1,5 @@
 import { GeneralIcon } from "@/assets/GeneralIcon";
+import { SmartTokens } from "@/containers/SmartTokens";
 import { GeneralIconType } from "@/shared/types";
 import Image from 'next/image';
 
@@ -12,9 +13,7 @@ export default function Home() {
           </div>
           <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
         </div>
-        <div className="flex w-full bg-main-gradient py-6 px-10 rounded-3xl">
-          Content
-        </div>
+        <SmartTokens />
       </div>
       <div className="absolute bottom-0 z-0">
         <Image src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />

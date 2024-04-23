@@ -36,6 +36,7 @@ export enum GeneralIconType {
   Network = 'network',
   CheckMark = 'check_mark',
   Info = 'info',
+  Error = 'error',
 };
 
 export enum TabItemType {

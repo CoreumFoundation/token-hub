@@ -1,6 +1,6 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, TabItem, TabSwitchItem } from "@/shared/types";
+import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -58,26 +58,26 @@ export const NETWORK_SELECTOR_ITEMS = [
 
 export const TABS_ITEMS: TabItem[] = [
   {
-    id: 'create',
+    id: TabItemType.Create,
     label: 'Create',
   },
   {
-    id: 'send',
+    id: TabItemType.Send,
     label: 'Send',
   },
   {
-    id: 'manage',
+    id: TabItemType.Manage,
     label: 'Manage',
   }
 ];
 
 export const TABS_SWITCH_ITEMS: TabSwitchItem[] = [
   {
-    id: 'ft-tokens',
+    id: TabSwitchItemType.FungibleToken,
     label: 'Fungible Tokens',
   },
   {
-    id: 'nft-tokens',
+    id: TabSwitchItemType.NonFungibleToken,
     label: 'Non-Fungible Tokens',
   },
 ];

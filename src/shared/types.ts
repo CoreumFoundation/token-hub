@@ -38,10 +38,16 @@ export enum GeneralIconType {
   Info = 'info',
 };
 
-export interface TabItem {
-  id: string;
-  label: string;
-}
+export enum TabItemType {
+  Create = 'create',
+  Send = 'send',
+  Manage = 'manage',
+};
+
+export enum TabSwitchItemType {
+  FungibleToken = 'fungible-token',
+  NonFungibleToken = 'non-fungible-token',
+};
 
 export interface DropdownItem {
   id: string;
@@ -49,7 +55,12 @@ export interface DropdownItem {
   icon?: React.ReactNode;
 }
 
+export interface TabItem {
+  id: TabItemType;
+  label: string;
+}
+
 export interface TabSwitchItem {
-  id: string;
+  id: TabSwitchItemType;
   label: string;
 }

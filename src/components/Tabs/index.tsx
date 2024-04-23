@@ -1,10 +1,6 @@
+import { TabItem } from "@/shared/types";
 import classNames from "classnames";
 import { FC } from "react";
-
-export interface TabItem {
-  id: string;
-  label: string;
-}
 
 interface TabsProps {
   selectedTab: TabItem;

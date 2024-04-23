@@ -1,27 +1,15 @@
 'use client';
 
-import { ButtonIconType, ButtonType, DropdownType, GeneralIconType } from "@/shared/types";
+import { ButtonIconType, ButtonType, DropdownItem, DropdownType, GeneralIconType } from "@/shared/types";
 import Image from "next/image";
 import { Button } from "../Button";
-import { Dropdown, DropdownItem } from "../Dropdown";
+import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { useState } from "react";
-
-const NetworkSelectorItems = [
-  {
-    id: 'testnet',
-    label: 'Testnet'.toUpperCase(),
-    icon: <GeneralIcon type={GeneralIconType.Coreum} />
-  },
-  {
-    id: 'devnet',
-    label: 'Devnet'.toUpperCase(),
-    icon: <GeneralIcon type={GeneralIconType.Coreum} />
-  },
-];
+import { NETWORK_SELECTOR_ITEMS } from "@/constants";
 
 export const Navbar = () => {
-  const [selected, setSelected] = useState<DropdownItem>(NetworkSelectorItems[0]);
+  const [selected, setSelected] = useState<DropdownItem>(NETWORK_SELECTOR_ITEMS[0]);
 
   const handleConnectButtonClick = () => {
     console.log('handle connect');
@@ -40,7 +28,7 @@ export const Navbar = () => {
         <Dropdown
           selected={selected}
           onSelect={setSelected}
-          items={NetworkSelectorItems}
+          items={NETWORK_SELECTOR_ITEMS}
           type={DropdownType.Primary}
           icon={<GeneralIcon type={GeneralIconType.Network} />}
           selectedClassName="text-xs !w-[140px]"

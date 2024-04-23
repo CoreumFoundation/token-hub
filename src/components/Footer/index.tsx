@@ -1,48 +1,6 @@
-import { FooterIcon } from '@/assets/FooterIcon';
-import { FooterIconType } from '@/shared/types';
+import { FOOTER_NAVIGATION } from '@/constants';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const navigation = {
-  products: [
-    { name: 'Explorer', href: 'https://explorer.coreum.com/coreum' },
-    { name: 'ISO Simulator', href: 'https://www.coreum.com/iso20022' },
-    { name: 'Developer Playground', href: 'https://playground.coreum.dev/' },
-    { name: 'Whitepaper', href: 'https://www.coreum.com/assets/coreum_technical_paper.pdf' },
-  ],
-  social: [
-    {
-      name: 'Twitter',
-      href: 'https://x.com/CoreumOfficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.X} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-    {
-      name: 'Instagram',
-      href: 'https://www.instagram.com/coreum.official/',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Instagram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-    {
-      name: 'Telegram',
-      href: 'https://t.me/CoreumOfficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Telegram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-    {
-      name: 'Discord',
-      href: 'https://discord.com/invite/XdVAGKXEhg',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Discord} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-    {
-      name: 'YouTube',
-      href: 'https://www.youtube.com/@coreumofficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Youtube} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-    {
-      name: 'Medium',
-      href: 'https://coreum.medium.com/',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Medium} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
-    },
-  ],
-}
 
 export const Footer = () => {
   return (
@@ -61,7 +19,7 @@ export const Footer = () => {
               width={120}
             />
             <div className="flex items-center gap-x-6">
-              {navigation.social.map((item) => (
+              {FOOTER_NAVIGATION.social.map((item) => (
                 <Link key={item.name} href={item.href} target="_blank" className="text-gray-500 hover:text-gray-400">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -76,7 +34,7 @@ export const Footer = () => {
         <div className="flex flex-col gap-5 min-w-full md:min-w-[40%]">
           <h3 className="text-xs font-semibold leading-6 text-[#5E6773] uppercase">Products</h3>
           <ul role="list" className="space-y-3">
-            {navigation.products.map((item) => (
+            {FOOTER_NAVIGATION.products.map((item) => (
               <li key={item.name}>
                 <Link href={item.href} target="_blank" className="flex items-center text-base leading-6 text-[#9FA2AC] hover:text-white">
                   {item.name}

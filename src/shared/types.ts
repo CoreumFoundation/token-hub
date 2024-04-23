@@ -36,4 +36,15 @@ export enum GeneralIconType {
   Network = 'network',
   CheckMark = 'check_mark',
   Info = 'info',
+};
+
+export interface TabItem {
+  id: string;
+  label: string;
+}
+
+export interface DropdownItem {
+  id: string;
+  label: string;
+  icon?: React.ReactNode;
 }

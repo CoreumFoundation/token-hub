@@ -1,14 +1,8 @@
 import React, { FC, Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import classNames from 'classnames';
-import { DropdownType, GeneralIconType } from '@/shared/types';
+import { DropdownItem, DropdownType, GeneralIconType } from '@/shared/types';
 import { GeneralIcon } from '@/assets/GeneralIcon';
-
-export interface DropdownItem {
-  id: string;
-  label: string;
-  icon?: React.ReactNode;
-}
 
 interface DropdownProps {
   selected: DropdownItem;

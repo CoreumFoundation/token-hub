@@ -16,7 +16,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="flex items-center justify-between w-full p-6 z-10">
+    <div className="flex items-baseline sm:items-center justify-between w-full p-6 z-10">
       <Image
         className="w-[7.5rem]"
         src="/images/logo.svg"
@@ -24,7 +24,7 @@ export const Navbar = () => {
         width={120}
         height={24}
       />
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col-reverse sm:flex-row items-end gap-2">
         <Dropdown
           selected={selected}
           onSelect={setSelected}

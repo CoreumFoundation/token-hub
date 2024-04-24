@@ -1,6 +1,7 @@
 import { TokenCapabilitiesIcon } from "@/assets/TokenCapabilitiesIcon";
 import { TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { FC } from "react";
+import { Switch } from "../Switch";
 
 interface TokenCapabilityProps extends TokenCapabilityItem {
   enabled: boolean;
@@ -28,7 +29,10 @@ export const TokenCapability: FC<TokenCapabilityProps> = ({
         </div>
       </div>
       <div className="flex-none">
-        Switch
+        <Switch
+          enabled={enabled}
+          setEnabled={setEnabled}
+        />
       </div>
     </div>
   );

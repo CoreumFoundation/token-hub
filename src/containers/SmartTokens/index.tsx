@@ -9,9 +9,9 @@ import { TabsSwitch } from "@/components/TabsSwitch";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { TABS_ITEMS, TABS_SWITCH_ITEMS, TOKEN_CAPABILITIES } from "@/constants";
-import { ButtonIconType, ButtonType, ExpandedListElem, TabItem, TabSwitchItem, TokenCapabilityItem } from "@/shared/types";
+import { ButtonIconType, ButtonType, ExpandedListElem, TabItem, TabSwitchItem, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
 
 export const SmartTokens = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(TABS_ITEMS[0]);
@@ -28,18 +28,52 @@ export const SmartTokens = () => {
   const [burnRate, setBurnRate] = useState<string>('0');
   const [sendCommissionRate, setSendCommissionRate] = useState<string>('0');
 
+  const [mintingEnabled, setMintingEnabled] = useState<boolean>(false);
+  const [burningEnabled, setBurningEnabled] = useState<boolean>(false);
+  const [freezingEnabled, setFreezingEnabled] = useState<boolean>(false);
+  const [whitelistingEnabled, setWhitelistingEnabled] = useState<boolean>(false);
+  const [ibcEnabled, setIBCEnabled] = useState<boolean>(false);
+  const [blockEnabled, setBlockEnabled] = useState<boolean>(false);
+
   const handleConnectWalletClick = useCallback(() => {
     console.log('connect wallet');
   }, []);
 
+  const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
+    switch (type) {
+      case TokenCapabilityType.Mint:
+        return [mintingEnabled, setMintingEnabled];
+      case TokenCapabilityType.Burn:
+        return [burningEnabled, setBurningEnabled];
+      case TokenCapabilityType.Freeze:
+        return [freezingEnabled, setFreezingEnabled];
+      case TokenCapabilityType.Whitelist:
+        return [whitelistingEnabled, setWhitelistingEnabled];
+      case TokenCapabilityType.IBC:
+        return [ibcEnabled, setIBCEnabled];
+      case TokenCapabilityType.Block:
+        return [blockEnabled, setBlockEnabled];
+      default:
+        return [];
+    }
+  }, [blockEnabled, burningEnabled, freezingEnabled, ibcEnabled, mintingEnabled, whitelistingEnabled]);
+
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
+      const [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
+
       return {
         id: tokenCapability.type,
-        content: <TokenCapability {...tokenCapability} enabled={false} setEnabled={() => {}} />
+        content: (
+          <TokenCapability
+            {...tokenCapability}
+            enabled={enabled || false}
+            setEnabled={setEnabled ? setEnabled : () => {}}
+          />
+        ),
       };
     });
-  }, []);
+  }, [getTokenStateItem]);
 
   return (
     <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">

@@ -1,6 +1,6 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType } from "@/shared/types";
+import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -79,5 +79,38 @@ export const TABS_SWITCH_ITEMS: TabSwitchItem[] = [
   {
     id: TabSwitchItemType.NonFungibleToken,
     label: 'Non-Fungible Tokens',
+  },
+];
+
+export const TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
+  {
+    type: TokenCapabilityType.Mint,
+    label: 'Minting',
+    content: 'If the minting feature is enabled, the issuer can mint more tokens and increase the total supply of the token.',
+  },
+  {
+    type: TokenCapabilityType.Burn,
+    label: 'Burning',
+    content: 'The issuer of the token can burn the tokens that they hold. If the burning feature is enabled, then every holder of the token can burn the tokens they hold.',
+  },
+  {
+    type: TokenCapabilityType.Freeze,
+    label: 'Freezing',
+    content: 'If the freezing feature is enabled on a token, then the issuer of the token can freeze an account up to an amount. The frozen amount can be more than what the user currently holds, an works even if the user holds zero. The user can only send the tokens that they hold in excess of the frozen amount.',
+  },
+  {
+    type: TokenCapabilityType.Whitelist,
+    label: 'Whitelisting',
+    content: 'If the whitelisting feature is enabled, then every account that wishes to receive this token, must first be whitelisted by the issuer, otherwise they will not be able to receive that token. This feature allows the issuer to set whitelisted limit on any account, and then that account will be able to receive tokens only up to the whitelisted limit.',
+  },
+  {
+    type: TokenCapabilityType.IBC,
+    label: 'IBC',
+    content: 'If the IBC feature is enabled, issuer decides if users may send and receive it over IBC transfer protocol. If IBC feature is disabled, token can never leave the Coreum chain to other Cosmos SDK chain.',
+  },
+  {
+    type: TokenCapabilityType.Block,
+    label: 'Block Smart Contract',
+    content: 'If the block smart contract feature is enabled, then the token can only be sent to regular user addresses and not smart contract. It\'s important to point out that this doesn\'t mean that the token cannot be issued from a smart contract.',
   },
 ];

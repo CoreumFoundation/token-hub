@@ -1,14 +1,17 @@
 'use client';
 
+import { Button } from "@/components/Button";
+import { ExpandedList } from "@/components/ExpandedList";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { Tabs } from "@/components/Tabs";
 import { TabsSwitch } from "@/components/TabsSwitch";
 import { TextArea } from "@/components/TextArea";
-import { TABS_ITEMS, TABS_SWITCH_ITEMS } from "@/constants";
-import { TabItem, TabSwitchItem } from "@/shared/types";
+import { TokenCapability } from "@/components/TokenCapability";
+import { TABS_ITEMS, TABS_SWITCH_ITEMS, TOKEN_CAPABILITIES } from "@/constants";
+import { ButtonIconType, ButtonType, ExpandedListElem, TabItem, TabSwitchItem, TokenCapabilityItem } from "@/shared/types";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export const SmartTokens = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(TABS_ITEMS[0]);
@@ -25,8 +28,21 @@ export const SmartTokens = () => {
   const [burnRate, setBurnRate] = useState<string>('0');
   const [sendCommissionRate, setSendCommissionRate] = useState<string>('0');
 
+  const handleConnectWalletClick = useCallback(() => {
+    console.log('connect wallet');
+  }, []);
+
+  const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
+    return TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
+      return {
+        id: tokenCapability.type,
+        content: <TokenCapability {...tokenCapability} enabled={false} setEnabled={() => {}} />
+      };
+    });
+  }, []);
+
   return (
-    <div className="flex flex-col w-full bg-main-gradient py-6 px-10 gap-5 rounded-3xl font-noto-sans">
+    <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
       <div className="flex justify-between gap-4 w-full">
         <Tabs
           selectedTab={selectedTab}
@@ -104,6 +120,22 @@ export const SmartTokens = () => {
             onChange={setSendCommissionRate}
             placeholder="0"
           />
+        </div>
+        <div className="flex w-full">
+          <ExpandedList
+            label="Token Capabilities"
+            listItems={tokenCapabilities}
+          />
+        </div>
+        <div className="flex w-full justify-end">
+          <div className="flex items-center">
+            <Button
+              label="Connect Wallet"
+              onClick={handleConnectWalletClick}
+              type={ButtonType.Primary}
+              iconType={ButtonIconType.Wallet}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -39,6 +39,7 @@ export enum GeneralIconType {
   Error = 'error',
   Close = 'close',
   Percentage = 'percentage',
+  ArrowRight = 'arrow_right',
 };
 
 export enum TabItemType {
@@ -48,8 +49,8 @@ export enum TabItemType {
 };
 
 export enum TabSwitchItemType {
-  FungibleToken = 'fungible-token',
-  NonFungibleToken = 'non-fungible-token',
+  FungibleToken = 'fungible_token',
+  NonFungibleToken = 'non_fungible_token',
 };
 
 export interface DropdownItem {
@@ -66,4 +67,24 @@ export interface TabItem {
 export interface TabSwitchItem {
   id: TabSwitchItemType;
   label: string;
+}
+
+export enum TokenCapabilityType {
+  Mint = 'mint',
+  Burn = 'burn',
+  Freeze = 'freeze',
+  Whitelist = 'whitelist',
+  IBC = 'ibc',
+  Block = 'block_smart_contract',
+}
+
+export interface ExpandedListElem {
+  id: string;
+  content: React.ReactNode | string;
+}
+
+export interface TokenCapabilityItem {
+  type: TokenCapabilityType;
+  label: string;
+  content: string;
 }

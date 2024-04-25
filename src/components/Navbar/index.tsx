@@ -31,7 +31,7 @@ export const Navbar = () => {
           items={NETWORK_SELECTOR_ITEMS}
           type={DropdownType.Primary}
           icon={<GeneralIcon type={GeneralIconType.Network} />}
-          selectedClassName="text-xs !w-[140px]"
+          selectedClassName="text-xs sm:!w-[140px]"
           selectedLabelClassName="text-grey-gradient"
         />
         <Button

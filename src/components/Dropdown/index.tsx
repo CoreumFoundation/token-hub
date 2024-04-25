@@ -40,7 +40,7 @@ export const Dropdown: FC<DropdownProps> = ({
   return (
     <Listbox value={selected} onChange={onSelect}>
       {({ open }) => (
-        <div className={classNames('flex justify-end relative w-full', className)}>
+        <div className={classNames('block relative w-full', className)}>
           <Listbox.Button className={classNames(selectedDropdownItemCx, { '!border-[#25D695]': open })}>
             <span className={classNames('flex items-center gap-2', selectedLabelClassName)}>
               {icon}
@@ -62,7 +62,6 @@ export const Dropdown: FC<DropdownProps> = ({
               </svg>
             </span>
           </Listbox.Button>
-
           <Transition
             show={open}
             as={Fragment}

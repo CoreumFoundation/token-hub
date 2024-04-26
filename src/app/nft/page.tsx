@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function Home() {
+export default function NFT() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/ft/create');
+    router.push('/nft/create');
   }, []);
 
   return null;

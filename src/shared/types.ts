@@ -49,8 +49,8 @@ export enum TabItemType {
 };
 
 export enum TabSwitchItemType {
-  FungibleToken = 'fungible_token',
-  NonFungibleToken = 'non_fungible_token',
+  FungibleToken = 'ft',
+  NonFungibleToken = 'nft',
 };
 
 export interface DropdownItem {

@@ -14,6 +14,7 @@ interface InputProps {
   error?: string;
   buttonLabel?: string;
   handleOnButtonClick?: () => void;
+  icon?: React.ReactNode;
 }
 
 export const Input: FC<InputProps> = ({
@@ -27,6 +28,7 @@ export const Input: FC<InputProps> = ({
   error,
   buttonLabel,
   handleOnButtonClick,
+  icon,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -65,6 +67,11 @@ export const Input: FC<InputProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
+        {icon && (
+          <div className="flex items-center">
+            {icon}
+          </div>
+        )}
         {buttonLabel && (
           <div className="flex items-center pr-3">
             <div

@@ -1,5 +1,6 @@
 'use client';
 
+import { GeneralIcon } from "@/assets/GeneralIcon";
 import { Button } from "@/components/Button";
 import { ExpandedList } from "@/components/ExpandedList";
 import { Input } from "@/components/Input";
@@ -7,7 +8,7 @@ import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { TOKEN_CAPABILITIES } from "@/constants";
-import { ButtonIconType, ButtonType, ExpandedListElem, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
 
@@ -129,12 +130,14 @@ export const FungibleTokenCreate = () => {
           value={burnRate}
           onChange={setBurnRate}
           placeholder="0"
+          icon={<GeneralIcon type={GeneralIconType.Percentage} />}
         />
         <Input
           label="Send Commission Rate"
           value={sendCommissionRate}
           onChange={setSendCommissionRate}
           placeholder="0"
+          icon={<GeneralIcon type={GeneralIconType.Percentage} />}
         />
       </div>
       <div className="flex w-full">

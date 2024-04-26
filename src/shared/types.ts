@@ -76,6 +76,8 @@ export enum TokenCapabilityType {
   Whitelist = 'whitelist',
   IBC = 'ibc',
   Block = 'block_smart_contract',
+  DisableSend = 'disable_send',
+  Soulbound = 'soulbound',
 }
 
 export interface ExpandedListElem {

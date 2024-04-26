@@ -7,7 +7,7 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { TOKEN_CAPABILITIES } from "@/constants";
+import { FT_TOKEN_CAPABILITIES } from "@/constants";
 import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
@@ -55,7 +55,7 @@ export const FungibleTokenCreate = () => {
   }, [blockEnabled, burningEnabled, freezingEnabled, ibcEnabled, mintingEnabled, whitelistingEnabled]);
 
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
-    return TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
+    return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
       const [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
 
       return {

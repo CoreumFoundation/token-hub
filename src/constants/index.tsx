@@ -82,7 +82,7 @@ export const TABS_SWITCH_ITEMS: TabSwitchItem[] = [
   },
 ];
 
-export const TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
+export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.Mint,
     label: 'Minting',
@@ -112,5 +112,33 @@ export const TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     type: TokenCapabilityType.Block,
     label: 'Block Smart Contract',
     content: 'If the block smart contract feature is enabled, then the token can only be sent to regular user addresses and not smart contract. It\'s important to point out that this doesn\'t mean that the token cannot be issued from a smart contract.',
+  },
+];
+
+export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
+  {
+    type: TokenCapabilityType.Burn,
+    label: 'Burning',
+    content: 'If the burning feature is enabled, it allows the holders of the token to burn the tokens they hold. It should be noted here that the issuer can burn their token regardless of this feature.',
+  },
+  {
+    type: TokenCapabilityType.Freeze,
+    label: 'Freezing',
+    content: 'If the freezing feature is enabled, it allows the issuer of the class to freeze any NFT token in that class. A frozen token cannot be transferred until it is unfrozen by the issuer.',
+  },
+  {
+    type: TokenCapabilityType.Whitelist,
+    label: 'Whitelisting',
+    content: 'If the whitelisting feature is enabled, then for any user to receive any NFT of that class, they must be whitelisted to receive that specific NFT. It follows that this feature allows the issuer of the class to whitelist an account to hold a specific NFT of that class, or remove an account from whitelisted accounts for that NFT.',
+  },
+  {
+    type: TokenCapabilityType.DisableSend,
+    label: 'Disable Sending',
+    content: 'If this feature is enabled, it will prevent transferring NFTs directly between users. This feature opens up the door for different use cases in the future, one of which is that it might be used to force transfer of ownership to go via DEX, so that the royalty fee is applied and the creator of the NFT always gets a royalty fee.',
+  },
+  {
+    type: TokenCapabilityType.Soulbound,
+    label: 'Soulbound',
+    content: 'If the soulbound feature is enabled, the NFT can not be sent by anyone, except the issuer. This feature is useful for NFTs that are created for a specific user, and the issuer wants to make sure that the NFT is not transferred to anyone else.',
   },
 ];

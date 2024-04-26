@@ -59,7 +59,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Navbar />
       <div className="flex flex-1 flex-col h-full w-full relative items-center overflow-auto">
         <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">
-          <div className="flex flex-col items-center w-[800px] max-w-full gap-10 mt-6">
+          <div className="flex flex-col items-center w-[800px] max-w-full gap-10 my-6">
             <div className="flex items-center gap-2 font-space-grotesk w-full">
               <div className="text-3xl font-bold">
                 <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>

@@ -142,6 +142,7 @@ export const TokenCapabilitiesIcon: FC<TokenCapabilitiesIconProps> = ({
         </svg>
       );
     case TokenCapabilityType.IBC:
+    case TokenCapabilityType.DisableSend:
       return (
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_di_11980_84262)">
@@ -172,6 +173,7 @@ export const TokenCapabilitiesIcon: FC<TokenCapabilitiesIconProps> = ({
         </svg>
       );
     case TokenCapabilityType.Block:
+    case TokenCapabilityType.Soulbound:
       return (
         <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_di_11980_84270)">

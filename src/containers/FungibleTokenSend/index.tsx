@@ -13,6 +13,7 @@ import { useCallback, useState } from "react";
 export const FungibleTokenSend = () => {
   const [destinationChain, setDestinationChain] = useState<string>('');
   const [destinationAddress, setDestinationAddress] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
 
   const handleConnectWalletClick = useCallback(() => {
     console.log('connect wallet');
@@ -35,13 +36,13 @@ export const FungibleTokenSend = () => {
       </MessageBox>
       <SectionWithLabel label="Amount">
         <Amount
-          value={""}
-          onChangeValue={(value: string) => {}}
+          value={amount}
+          onChangeValue={setAmount}
           selectedCurrency={selectedCurrency}
           currencies={[]}
           onSelectCurrency={(item: DropdownItem) => {}}
           onMaxButtonClick={() => {}}
-          balance={""}
+          balance={"0.00"}
         />
       </SectionWithLabel>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

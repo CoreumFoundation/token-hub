@@ -5,6 +5,7 @@ import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { GeneralIcon } from "@/assets/GeneralIcon";
+import { getNumberRegex } from "@/helpers/getNumberRegex";
 
 interface AmountProps {
   value: string;
@@ -26,8 +27,15 @@ export const Amount: FC<AmountProps> = ({
   balance,
 }) => {
   const handleChangeAmount = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    onChangeValue(e.target.value);
-  }, []);
+    if (!e.target.value.length) {
+      onChangeValue('');
+      return;
+    }
+
+    if (getNumberRegex().test(e.target.value)) {
+      onChangeValue(e.target.value);
+    }
+  }, [onChangeValue]);
 
   return (
     <div className="flex flex-col w-full items-center gap-2">

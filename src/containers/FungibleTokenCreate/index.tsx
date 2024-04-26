@@ -99,12 +99,14 @@ export const FungibleTokenCreate = () => {
           value={precision}
           onChange={setPrecision}
           placeholder="0"
+          type="number"
         />
         <Input
           label="Initial Amount"
           value={initialAmount}
           onChange={setInitialAmount}
           placeholder="0"
+          type="number"
         />
       </div>
       <div className="grid grid-cols-1">
@@ -131,6 +133,7 @@ export const FungibleTokenCreate = () => {
           onChange={setBurnRate}
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
+          type="number"
         />
         <Input
           label="Send Commission Rate"
@@ -138,6 +141,7 @@ export const FungibleTokenCreate = () => {
           onChange={setSendCommissionRate}
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
+          type="number"
         />
       </div>
       <div className="flex w-full">

@@ -1,4 +1,5 @@
 import { GeneralIcon } from "@/assets/GeneralIcon";
+import { getNumberRegex } from "@/helpers/getNumberRegex";
 import { GeneralIconType } from "@/shared/types";
 import classNames from "classnames";
 import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
@@ -43,8 +44,19 @@ export const Input: FC<InputProps> = ({
   }, [disabled, error?.length, isFocused, value.length]);
 
   const handleChangeInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  }, []);
+    if (!e.target.value.length) {
+      onChange('');
+      return;
+    }
+
+    if (type === 'number') {
+      if (getNumberRegex().test(e.target.value)) {
+        onChange(e.target.value);
+      }
+    } else {
+      onChange(e.target.value);
+    }
+  }, [onChange, type]);
 
   return (
     <div className="flex flex-col w-full gap-2 relative">
@@ -56,7 +68,7 @@ export const Input: FC<InputProps> = ({
       </label>
       <div className={inputCx}>
         <input
-          type={type}
+          type="text"
           name={id || label.toLowerCase()}
           id={id}
           className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"

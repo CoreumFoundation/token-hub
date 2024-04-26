@@ -112,6 +112,7 @@ export const NonFungibleTokenCreate = () => {
           onChange={setRoyalties}
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
+          type="number"
         />
       </div>
       <div className="flex w-full">

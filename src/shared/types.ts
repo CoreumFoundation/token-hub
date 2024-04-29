@@ -119,3 +119,18 @@ export interface ChainInfo extends Chain {
   channel_id: string;
   port_id: string;
 }
+
+export enum ChainType {
+  Axelar = 'axelar',
+  Band = 'bandchain',
+  Cosmos = 'cosmoshub',
+  Dora = 'doravota',
+  DYDX = 'dydx',
+  Evmos = 'evmos',
+  Gravity = 'gravitybridge',
+  Kava = 'kava',
+  Kujira = 'kujira',
+  Noble = 'noble',
+  Osmosis = 'osmosis',
+  Secret = 'secretnetwork',
+}

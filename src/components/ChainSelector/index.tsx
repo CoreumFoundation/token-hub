@@ -1,7 +1,8 @@
-import { ChainInfo, DropdownItem } from "@/shared/types";
+import { ChainInfo, ChainType, DropdownItem } from "@/shared/types";
 import { useAppSelector } from "@/store/hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dropdown } from "../Dropdown";
+import { ChainIcon } from "@/assets/ChainIcon";
 
 
 export const ChainSelector = () => {
@@ -23,6 +24,7 @@ export const ChainSelector = () => {
     return {
       id: destinationChain.chain_id,
       label: destinationChain.pretty_name,
+      icon: <ChainIcon type={destinationChain.chain_name as ChainType} className="!w-7 !h-7" />,
     }
   }, [destinationChain]);
 
@@ -31,6 +33,7 @@ export const ChainSelector = () => {
       return {
         id: chainInfoItem.chain_id,
         label: chainInfoItem.pretty_name,
+        icon: <ChainIcon type={chainInfoItem.chain_name as ChainType} className="!w-7 !h-7" />
       };
     });
   }, [chains]);
@@ -54,6 +57,7 @@ export const ChainSelector = () => {
         items={dropdownChains}
         selectedClassName="py-3 !px-4"
         selectedLabelClassName="text-base"
+        icon={selectedChain?.icon}
       />
     </div>
   );

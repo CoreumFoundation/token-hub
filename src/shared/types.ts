@@ -104,3 +104,8 @@ export interface WalletOption {
   type: WalletType,
   label: string;
 }
+
+export enum Network {
+  Mainnet = 'mainnet',
+  Testnet = 'testnet',
+}

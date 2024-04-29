@@ -24,7 +24,7 @@ export const ConnectWalletModal = () => {
   return (
     <Modal
       isOpen={isConnectWalletModalOpen}
-      title="Connect Coreum Wallet"
+      title="Connect Wallet"
       onClose={handleCloseConnectWalletModal}
       wrapperClassName="w-[480px]"
     >

@@ -61,7 +61,6 @@ export const Input: FC<InputProps> = ({
   return (
     <div className="flex flex-col w-full gap-2 relative">
       <label
-        htmlFor={id || label.toLowerCase()}
         className="block text-sm text-[#868991] font-noto-sans"
       >
         {label}

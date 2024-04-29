@@ -42,6 +42,7 @@ export enum GeneralIconType {
   Close = 'close',
   Percentage = 'percentage',
   ArrowRight = 'arrow_right',
+  Loading = 'loading,'
 };
 
 export enum TabItemType {

@@ -5,7 +5,7 @@ import { DropdownItem, DropdownType, GeneralIconType } from '@/shared/types';
 import { GeneralIcon } from '@/assets/GeneralIcon';
 
 interface DropdownProps {
-  selected: DropdownItem;
+  selected: DropdownItem | null;
   onSelect: (item: DropdownItem) => void;
   items: DropdownItem[];
   icon?: React.ReactNode;
@@ -32,7 +32,7 @@ export const Dropdown: FC<DropdownProps> = ({
     'bg-transparent border border-[#1B1D23] hover:border-[#2B3138] text-base py-3 px-4 backdrop-blur-sm': type === DropdownType.Secondary,
   }, selectedClassName);
 
-  const dropdownListCx = classNames('absolute z-10 mt-2 bg-[#1B1D23] text-[#9FA2AC] overflow-auto w-full shadow-lg', {
+  const dropdownListCx = classNames('absolute z-10 mt-2 bg-[#1B1D23] text-[#9FA2AC] overflow-auto w-full shadow-lg max-h-[240px]', {
     'text-sm rounded-lg': type === DropdownType.Primary,
     'text-base rounded-[10px]': type === DropdownType.Secondary,
   }, listClassName);
@@ -42,10 +42,14 @@ export const Dropdown: FC<DropdownProps> = ({
       {({ open }) => (
         <div className={classNames('block relative w-full', className)}>
           <Listbox.Button className={classNames(selectedDropdownItemCx, { '!border-[#25D695]': open })}>
-            <span className={classNames('flex items-center gap-2', selectedLabelClassName)}>
-              {icon}
-              {selected.label}
-            </span>
+            {selected ? (
+              <span className={classNames('flex items-center gap-2 text-base', selectedLabelClassName)}>
+                {icon}
+                {selected.label}
+              </span>
+            ) : (
+              <GeneralIcon type={GeneralIconType.Loading} />
+            )}
             <span className="pointer-events-none inset-y-0 right-0 flex items-center">
               <svg
                 className={classNames('transition transform', { 'rotate-180': open })}
@@ -75,8 +79,8 @@ export const Dropdown: FC<DropdownProps> = ({
                   key={dropdownItem.id}
                   className={({ active }) =>
                     classNames(
-                      selected.id === dropdownItem.id ? 'bg-[#2B3138] text-[#EEE]' : '',
-                      active && !(selected.id === dropdownItem.id) ? 'bg-[#21262E]' : '',
+                      selected?.id === dropdownItem.id ? 'bg-[#2B3138] text-[#EEE]' : 'text-[#868991]',
+                      active && !(selected?.id === dropdownItem.id) ? 'bg-[#21262E]' : '',
                       type === DropdownType.Primary ? 'p-4' : 'py-3 px-4',
                       'flex items-center justify-between gap-2 relative cursor-pointer select-none'
                     )

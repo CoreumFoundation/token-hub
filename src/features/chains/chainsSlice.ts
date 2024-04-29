@@ -2,11 +2,11 @@ import { ChainInfo } from '@/shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ChainsState {
-  chains: ChainInfo[];
+  list: ChainInfo[];
 }
 
 export const initialChainsState: ChainsState = {
-  chains: [],
+  list: [],
 };
 
 const chainsSlice = createSlice({
@@ -14,7 +14,7 @@ const chainsSlice = createSlice({
   initialState: initialChainsState,
   reducers: {
     setIBCChains(state, action: PayloadAction<ChainInfo[]>) {
-      state.chains = action.payload;
+      state.list = action.payload;
     },
   },
 });

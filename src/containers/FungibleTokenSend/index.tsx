@@ -3,15 +3,16 @@
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { Amount } from "@/components/Amount";
 import { Button } from "@/components/Button";
+import { ChainSelector } from "@/components/ChainSelector";
 import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
-import { ButtonIconType, ButtonType, DropdownItem, GeneralIconType } from "@/shared/types";
-import { useCallback, useState } from "react";
+import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType } from "@/shared/types";
+import { useAppSelector } from "@/store/hooks";
+import { useCallback, useEffect, useState } from "react";
 
 export const FungibleTokenSend = () => {
-  const [destinationChain, setDestinationChain] = useState<string>('');
   const [destinationAddress, setDestinationAddress] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
 
@@ -45,12 +46,7 @@ export const FungibleTokenSend = () => {
         />
       </SectionWithLabel>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Input
-          label="Destination Chain"
-          value={destinationChain}
-          onChange={setDestinationChain}
-          placeholder="Destination Chain"
-        />
+        <ChainSelector />
         <div className="col-span-2">
           <Input
             label="Destination Address"

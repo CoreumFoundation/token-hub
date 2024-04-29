@@ -19,7 +19,6 @@ export const FungibleTokenSend = () => {
     console.log('connect wallet');
   }, []);
 
-
   const selectedCurrency: DropdownItem = {
     id: 'coreum',
     label: 'COREUM',
@@ -31,7 +30,7 @@ export const FungibleTokenSend = () => {
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>Depending of the nature of your Smart Token you can send it to another user.</li>
-          <li>Please note, you will not be able to re-claim the assets unless the receiver sends it back to you..</li>
+          <li>Please note, you will not be able to re-claim the assets unless the receiver sends it back to you.</li>
         </ul>
       </MessageBox>
       <SectionWithLabel label="Amount">

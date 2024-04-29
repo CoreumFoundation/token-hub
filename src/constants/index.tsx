@@ -96,7 +96,7 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.Freeze,
     label: 'Freezing',
-    content: 'If the freezing feature is enabled on a token, then the issuer of the token can freeze an account up to an amount. The frozen amount can be more than what the user currently holds, an works even if the user holds zero. The user can only send the tokens that they hold in excess of the frozen amount.',
+    content: 'If the freezing feature is enabled on a token, then the issuer of the token can freeze an account up to an amount. The frozen amount can be more than what the user currently holds, and works even if the user holds zero. The user can only send the tokens that they hold in excess of the frozen amount.',
   },
   {
     type: TokenCapabilityType.Whitelist,

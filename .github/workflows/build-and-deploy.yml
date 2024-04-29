@@ -1,0 +1,101 @@
+name: Build and Push to GCR
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GKE_ZONE: us-central1-c
+  IMAGE: tokenhub
+
+jobs:
+  bump_version:
+    name: Automated Version Bump
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag_name.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name:  'Automated Version Bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target-branch: 'main'
+          commit-message: 'CI: bumps version to {{version}} [skip ci]'
+
+      - name: Export new TAG
+        id: tag_name
+        run: |
+          echo "tag=`cat package.json | jq -r .version`" >> $GITHUB_OUTPUT
+        shell: bash
+
+  setup-build-publish-webhook:
+    name: Setup, Build, Publish, Webhook
+    needs: bump_version
+    strategy:
+      fail-fast: true
+      matrix:
+        env: [ "devnet", "testnet", "mainnet"]
+        include:
+          - env: "devnet"
+            WEBHOOK_ENDPOINT: https://keel.devnet-1.coreum.dev/v1/webhooks/native
+            KEEL_USERNAME: KEEL_DEVNET_USERNAME
+            KEEL_PASSWORD: KEEL_DEVNET_PASSWORD
+            PROJECT_ID: GKE_PROJECT
+            GKE_SA_KEY: GKE_SA_KEY
+            TAG: ${{ needs.bump_version.outputs.tag }}
+          - env: "testnet"
+            WEBHOOK_ENDPOINT: https://keel.testnet-1.coreum.dev/v1/webhooks/native
+            KEEL_USERNAME: KEEL_TESTNET_USERNAME
+            KEEL_PASSWORD: KEEL_TESTNET_PASSWORD
+            PROJECT_ID: GKE_TESTNET_PROJECT
+            GKE_SA_KEY: GKE_TESTNET_SA_KEY
+            TAG: ${{ needs.bump_version.outputs.tag }}
+          - env: "mainnet"
+            WEBHOOK_ENDPOINT: https://keel.mainnet-1.coreum.dev/v1/webhooks/native
+            KEEL_USERNAME: KEEL_MAINNET_USERNAME
+            KEEL_PASSWORD: KEEL_MAINNET_PASSWORD
+            PROJECT_ID: GKE_MAINNET_PROJECT
+            GKE_SA_KEY: GKE_MAINNET_SA_KEY
+            TAG: ${{ needs.bump_version.outputs.tag }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          service_account_key: ${{ secrets[matrix.GKE_SA_KEY] }}
+          project_id: ${{ secrets[matrix.PROJECT_ID] }}
+
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |-
+          gcloud --quiet auth configure-docker
+      # Build the Docker image
+      # 1. Extract semver version from package.json.
+      # 2. Build image with tag extracted from package.json.
+      - name: Build
+        run: |-
+          docker build \
+            --tag "gcr.io/${{ secrets[matrix.PROJECT_ID] }}/$IMAGE:${{ matrix.TAG }}" \
+            --tag "gcr.io/${{ secrets[matrix.PROJECT_ID] }}/$IMAGE:latest" \
+            .
+      # Push the Docker image to Google Container Registry
+      # 1. Extract semver version from package.json.
+      # 2. Push image with tag extracted from package.json.
+      - name: Publish
+        run: |-
+          docker push "gcr.io/${{ secrets[matrix.PROJECT_ID] }}/$IMAGE:${{ matrix.TAG }}" && \
+          docker push "gcr.io/${{ secrets[matrix.PROJECT_ID] }}/$IMAGE:latest"
+      # Send webhook to keel so it triggers image update.
+
+      - name: Update Deployment
+        run: |-
+          curl -v -u "${{ secrets[matrix.KEEL_USERNAME] }}:${{ secrets[matrix.KEEL_PASSWORD] }}" -X POST ${{ matrix.WEBHOOK_ENDPOINT }}  -H "Content-Type: application/json" -d "{\"name\": \"gcr.io/${{ secrets[matrix.PROJECT_ID] }}/$IMAGE\", \"tag\": \"${{ matrix.TAG }}\"}"

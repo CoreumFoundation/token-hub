@@ -1,9 +1,11 @@
 import { alertsReducer } from '@/features/alerts/alertsSlice';
+import { generalReducer } from '@/features/general/generalSlice';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 export const store = configureStore({
     reducer: {
         alerts: alertsReducer,
+        general: generalReducer,
     },
 });
 

@@ -7,12 +7,16 @@ import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { useState } from "react";
 import { NETWORK_SELECTOR_ITEMS } from "@/constants";
+import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 export const Navbar = () => {
   const [selected, setSelected] = useState<DropdownItem>(NETWORK_SELECTOR_ITEMS[0]);
 
+  const dispatch = useAppDispatch();
+
   const handleConnectButtonClick = () => {
-    console.log('handle connect');
+    dispatch(setIsConnectModalOpen(true));
   };
 
   return (
@@ -39,7 +43,7 @@ export const Navbar = () => {
           onClick={handleConnectButtonClick}
           type={ButtonType.Primary}
           iconType={ButtonIconType.Wallet}
-          className="text-sm !py-2 px-6 rounded-[10px]"
+          className="text-sm !py-2 px-6 rounded-[10px] "
           iconClassName="w-4"
         />
       </div>

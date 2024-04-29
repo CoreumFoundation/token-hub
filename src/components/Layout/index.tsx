@@ -12,6 +12,7 @@ import { Tabs } from "../Tabs";
 import { usePathname, useRouter } from "next/navigation";
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import { ConnectWalletModal } from "../ConnectWalletModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -67,7 +68,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="text-3xl font-bold">
                   <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
                 </div>
-                <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" onClick={() => setIsModalOpen(true)} />
+                <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
               </div>
               <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
                 <div className="flex justify-between gap-4 w-full">
@@ -91,6 +92,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </main>
         </div>
         <Footer />
+        <ConnectWalletModal />
       </div>
     </Provider>
   );

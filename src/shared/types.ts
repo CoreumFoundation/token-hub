@@ -90,3 +90,17 @@ export interface TokenCapabilityItem {
   label: string;
   content: string;
 }
+
+export enum WalletType {
+  Cosmostation = 'cosmostation',
+  Keplr = 'keplr',
+  Leap = 'leap',
+  CosmostationMobile = 'cosmostation_mobile',
+  KeplrMobile = 'keplr_mobile',
+  LeapMobile = 'leap_mobile',
+}
+
+export interface WalletOption {
+  type: WalletType,
+  label: string;
+}

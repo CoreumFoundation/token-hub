@@ -1,6 +1,6 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -140,5 +140,32 @@ export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     type: TokenCapabilityType.Soulbound,
     label: 'Soulbound',
     content: 'If the soulbound feature is enabled, the NFT can not be sent by anyone, except the issuer. This feature is useful for NFTs that are created for a specific user, and the issuer wants to make sure that the NFT is not transferred to anyone else.',
+  },
+];
+
+export const CONNECT_WALLET_OPTIONS: WalletOption[] = [
+  {
+    type: WalletType.Cosmostation,
+    label: 'Cosmostation',
+  },
+  {
+    type: WalletType.CosmostationMobile,
+    label: 'Cosmostation Mobile',
+  },
+  {
+    type: WalletType.Keplr,
+    label: 'Keplr',
+  },
+  {
+    type: WalletType.KeplrMobile,
+    label: 'Keplr Mobile',
+  },
+  {
+    type: WalletType.Leap,
+    label: 'Leap',
+  },
+  {
+    type: WalletType.LeapMobile,
+    label: 'Leap Mobile',
   },
 ];

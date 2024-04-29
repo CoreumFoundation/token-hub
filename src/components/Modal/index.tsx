@@ -25,12 +25,14 @@ export const Modal: FC<ModalProps> = ({
   bodyClassName,
 }) => {
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
 
     return () => {
       document.body.style.overflow = 'scroll';
     };
-  }, []);
+  }, [isOpen]);
 
   if (!isOpen) {
     return null;

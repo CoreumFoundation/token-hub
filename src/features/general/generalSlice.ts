@@ -24,6 +24,6 @@ const generalSlice = createSlice({
   },
 });
 
-export const { setIsConnectModalOpen } = generalSlice.actions;
+export const { setIsConnectModalOpen, setNetwork } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

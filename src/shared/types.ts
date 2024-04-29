@@ -1,3 +1,5 @@
+import { Chain } from '@chain-registry/types';
+
 export enum FooterIconType {
   X = 'twitter',
   Instagram = 'instagram',
@@ -108,4 +110,11 @@ export interface WalletOption {
 export enum Network {
   Mainnet = 'mainnet',
   Testnet = 'testnet',
+}
+
+export interface ChainInfo extends Chain {
+  connection_id: string;
+  client_id: string;
+  channel_id: string;
+  port_id: string;
 }

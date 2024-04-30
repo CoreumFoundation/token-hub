@@ -8,7 +8,9 @@ import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { NFT_TOKEN_CAPABILITIES } from "@/constants";
+import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { useAppDispatch } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
 
@@ -25,8 +27,10 @@ export const NonFungibleTokenCreate = () => {
   const [disableSendingEnabled, setDisableSendingEnabled] = useState<boolean>(false);
   const [soulboundEnabled, setSoulboundEnabled] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+
   const handleConnectWalletClick = useCallback(() => {
-    console.log('connect wallet');
+    dispatch(setIsConnectModalOpen(true));
   }, []);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {

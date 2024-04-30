@@ -1,6 +1,6 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
+import { FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -45,13 +45,13 @@ export const FOOTER_NAVIGATION = {
 
 export const NETWORK_SELECTOR_ITEMS = [
   {
-    id: 'testnet',
-    label: 'Testnet'.toUpperCase(),
+    id: Network.Mainnet,
+    label: Network.Mainnet.toUpperCase(),
     icon: <GeneralIcon type={GeneralIconType.Coreum} />
   },
   {
-    id: 'devnet',
-    label: 'Devnet'.toUpperCase(),
+    id: Network.Testnet,
+    label: Network.Testnet.toUpperCase(),
     icon: <GeneralIcon type={GeneralIconType.Coreum} />
   },
 ];

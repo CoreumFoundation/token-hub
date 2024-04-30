@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ConnectWalletModal } from "../ConnectWalletModal";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 import { AppProvider } from "@/providers/AppProvider";
+import { WalletProvider } from "@/providers/WalletProvider";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -59,44 +60,46 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [router, selectedTab.id]);
 
   return (
-    <ReduxProvider>
-      <AppProvider>
-        <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
-          <Navbar />
-          <div className="flex flex-1 flex-col h-full w-full relative items-center overflow-auto">
-            <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">
-              <div className="flex flex-col items-center w-[800px] max-w-full gap-10 my-6">
-                <div className="flex items-center gap-2 font-space-grotesk w-full">
-                  <div className="text-3xl font-bold">
-                    <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
+    <WalletProvider>
+      <ReduxProvider>
+        <AppProvider>
+          <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
+            <Navbar />
+            <div className="flex flex-1 flex-col h-full w-full relative items-center overflow-auto">
+              <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">
+                <div className="flex flex-col items-center w-[800px] max-w-full gap-10 my-6">
+                  <div className="flex items-center gap-2 font-space-grotesk w-full">
+                    <div className="text-3xl font-bold">
+                      <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
+                    </div>
+                    <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
                   </div>
-                  <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
-                </div>
-                <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
-                  <div className="flex justify-between gap-4 w-full">
-                    <Tabs
-                      selectedTab={selectedTab}
-                      items={TABS_ITEMS}
-                      handleSelectTab={handleSetTab}
-                    />
-                    <TabsSwitch
-                      selectedTabSwitch={selectedTabSwitch}
-                      items={TABS_SWITCH_ITEMS}
-                      handleSelectTab={handleSetSwitchTab}
-                    />
+                  <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
+                    <div className="flex justify-between gap-4 w-full">
+                      <Tabs
+                        selectedTab={selectedTab}
+                        items={TABS_ITEMS}
+                        handleSelectTab={handleSetTab}
+                      />
+                      <TabsSwitch
+                        selectedTabSwitch={selectedTabSwitch}
+                        items={TABS_SWITCH_ITEMS}
+                        handleSelectTab={handleSetSwitchTab}
+                      />
+                    </div>
+                    {children}
                   </div>
-                  {children}
                 </div>
-              </div>
-              <div className="absolute bottom-0 z-0">
-                <Image src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
-              </div>
-            </main>
+                <div className="absolute bottom-0 z-0">
+                  <Image src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
+                </div>
+              </main>
+            </div>
+            <Footer />
+            <ConnectWalletModal />
           </div>
-          <Footer />
-          <ConnectWalletModal />
-        </div>
-      </AppProvider>
-    </ReduxProvider>
+        </AppProvider>
+      </ReduxProvider>
+    </WalletProvider>
   );
 };

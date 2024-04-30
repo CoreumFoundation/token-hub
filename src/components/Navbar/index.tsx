@@ -1,13 +1,13 @@
 'use client';
 
-import { ButtonIconType, ButtonType, DropdownItem, DropdownType, GeneralIconType } from "@/shared/types";
+import { ButtonIconType, ButtonType, DropdownItem, DropdownType, GeneralIconType, Network } from "@/shared/types";
 import Image from "next/image";
 import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { NETWORK_SELECTOR_ITEMS } from "@/constants";
-import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { setIsConnectModalOpen, setNetwork } from "@/features/general/generalSlice";
 import { useAppDispatch } from "@/store/hooks";
 
 export const Navbar = () => {
@@ -15,12 +15,21 @@ export const Navbar = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleConnectButtonClick = () => {
+  const handleSelectCurrentNetwork = useCallback((value: DropdownItem) => {
+    if (value.id === selected.id) {
+      return;
+    }
+
+    dispatch(setNetwork(value.id as Network));
+    setSelected(value);
+  }, [selected]);
+
+  const handleConnectButtonClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
-  };
+  }, []);
 
   return (
-    <div className="flex items-baseline sm:items-center justify-between w-full p-6 z-10">
+    <div className="flex items-baseline sm:items-center justify-between w-full p-6 z-20">
       <Image
         className="w-[7.5rem]"
         src="/images/logo.svg"
@@ -31,7 +40,7 @@ export const Navbar = () => {
       <div className="flex flex-col-reverse sm:flex-row items-end gap-2">
         <Dropdown
           selected={selected}
-          onSelect={setSelected}
+          onSelect={handleSelectCurrentNetwork}
           items={NETWORK_SELECTOR_ITEMS}
           type={DropdownType.Primary}
           icon={<GeneralIcon type={GeneralIconType.Network} />}

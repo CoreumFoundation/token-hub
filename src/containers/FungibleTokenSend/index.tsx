@@ -8,16 +8,19 @@ import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
+import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType } from "@/shared/types";
-import { useAppSelector } from "@/store/hooks";
-import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+import { useCallback, useState } from "react";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
 
+  const dispatch = useAppDispatch();
+
   const handleConnectWalletClick = useCallback(() => {
-    console.log('connect wallet');
+    dispatch(setIsConnectModalOpen(true));
   }, []);
 
   const selectedCurrency: DropdownItem = {

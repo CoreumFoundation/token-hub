@@ -1,14 +1,17 @@
 'use client';
 
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { Modal } from "../Modal";
 import { WalletOption, WalletType } from "@/shared/types";
 import { WalletItem } from "../WalletItem";
 import { CONNECT_WALLET_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { useConnect, WalletType as GrazWalletType } from "graz";
 
 export const ConnectWalletModal = () => {
+  const { connectAsync } = useConnect();
+  const currentNetworkInfo = useAppSelector(state => state.general.currentNetworkInfo);
   const isConnectWalletModalOpen = useAppSelector(state => state.general.isConnectModalOpen);
 
   const dispatch = useAppDispatch();
@@ -17,9 +20,17 @@ export const ConnectWalletModal = () => {
     dispatch(setIsConnectModalOpen(false));
   }, []);
 
-  const handleWalletClick = useCallback((type: WalletType) => {
-    console.log({ type });
-  }, []);
+  const handleWalletClick = useCallback(async (type: WalletType) => {
+    try {
+      await connectAsync({
+        chainId: currentNetworkInfo.chainId,
+        walletType: type as unknown as GrazWalletType,
+      });
+      dispatch(setIsConnectModalOpen(false));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [connectAsync, currentNetworkInfo.chainId]);
 
   return (
     <Modal

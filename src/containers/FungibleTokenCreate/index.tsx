@@ -10,9 +10,11 @@ import { TokenCapability } from "@/components/TokenCapability";
 import { FT_TOKEN_CAPABILITIES } from "@/constants";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
+import { FT, Feature } from 'coreum-js';
+import { useEstimateTxGasFee } from "@/helpers/getTxFee";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -33,11 +35,64 @@ export const FungibleTokenCreate = () => {
   const [ibcEnabled, setIBCEnabled] = useState<boolean>(false);
   const [blockEnabled, setBlockEnabled] = useState<boolean>(false);
 
+  const isConnected = useAppSelector(state => state.general.isConnected);
+  const account = useAppSelector(state => state.general.account);
+
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
+
+  const featuresToApply = useMemo(() => {
+    let featuresArray: number[] = [];
+
+    if (mintingEnabled) {
+      featuresArray.push(Feature.minting);
+    }
+
+    if (burningEnabled) {
+      featuresArray.push(Feature.burning);
+    }
+
+    if (freezingEnabled) {
+      featuresArray.push(Feature.freezing);
+    }
+
+    if (whitelistingEnabled) {
+      featuresArray.push(Feature.whitelisting);
+    }
+
+    if (ibcEnabled) {
+      featuresArray.push(Feature.ibc);
+    }
+
+    if (blockEnabled) {
+      featuresArray.push(Feature.block_smart_contracts);
+    }
+
+    return featuresArray;
+  }, [blockEnabled, burningEnabled, freezingEnabled, ibcEnabled, mintingEnabled, whitelistingEnabled]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
+
+  const handleIssueFTToken = useCallback(async () => {
+    try {
+      const issueFTMsg = FT.Issue({
+        issuer: account,
+        symbol,
+        subunit,
+        precision: Number(precision),
+        initialAmount: initialAmount.length ? initialAmount : '0',
+        description,
+        features: featuresToApply,
+      });
+
+      const txFee = await getTxFee([issueFTMsg]);
+      await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
+    } catch (error) {
+      console.log(error);
+    }
+  }, [account, description, featuresToApply, getTxFee, initialAmount, precision, signingClient, subunit, symbol]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
     switch (type) {
@@ -75,6 +130,37 @@ export const FungibleTokenCreate = () => {
     });
   }, [getTokenStateItem]);
 
+  const isFormValid = useMemo(() => {
+    if (symbol.length && subunit.length && url.length && description.length && +precision > 0) {
+      return true;
+    }
+
+    return false;
+  }, [description.length, subunit.length, symbol.length, url.length, precision]);
+
+  const renderButton = useMemo(() => {
+    if (isConnected) {
+      return (
+        <Button
+          label="Create Token"
+          onClick={handleIssueFTToken}
+          type={ButtonType.Primary}
+          iconType={ButtonIconType.Token}
+          disabled={!isFormValid}
+        />
+      );
+    }
+
+    return (
+      <Button
+        label="Connect Wallet"
+        onClick={handleConnectWalletClick}
+        type={ButtonType.Primary}
+        iconType={ButtonIconType.Wallet}
+      />
+    );
+  }, [isConnected, isFormValid, handleIssueFTToken]);
+
   return (
     <div className="flex flex-col gap-10">
       <MessageBox>
@@ -88,13 +174,13 @@ export const FungibleTokenCreate = () => {
           label="Symbol"
           value={symbol}
           onChange={setSymbol}
-          placeholder="e. g. TOKEN"
+          placeholder="Example: TOKEN"
         />
         <Input
           label="Subunit"
           value={subunit}
           onChange={setSubunit}
-          placeholder="e. g. utoken"
+          placeholder="Example: utoken"
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -126,7 +212,7 @@ export const FungibleTokenCreate = () => {
           label="Description"
           value={description}
           onChange={setDescription}
-          placeholder="Enter token description"
+          placeholder="Enter Token Description"
           rows={4}
         />
       </div>
@@ -156,12 +242,7 @@ export const FungibleTokenCreate = () => {
       </div>
       <div className="flex w-full justify-end">
         <div className="flex items-center">
-          <Button
-            label="Connect Wallet"
-            onClick={handleConnectWalletClick}
-            type={ButtonType.Primary}
-            iconType={ButtonIconType.Wallet}
-          />
+          {renderButton}
         </div>
       </div>
     </div>

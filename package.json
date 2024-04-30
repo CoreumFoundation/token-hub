@@ -10,10 +10,16 @@
     "install": "graz -g"
   },
   "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.32.3",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@cosmjs/stargate": "^0.32.3",
     "@headlessui/react": "^1.7.19",
     "@reduxjs/toolkit": "^2.2.3",
+    "@types/big.js": "^6.2.2",
+    "big.js": "^6.2.1",
     "chain-registry": "1.33.6",
     "classnames": "^2.5.1",
+    "coreum-js": "^2.9.0",
     "graz": "^0.1.11",
     "next": "14.2.2",
     "pino-pretty": "^11.0.0",

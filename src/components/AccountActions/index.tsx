@@ -39,10 +39,6 @@ export const AccountActions = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
-  const handleOpenExplorer = useCallback(() => {
-    console.log('open explorer')
-  }, []);
-
   const handleDisconnect = useCallback(async () => {
     try {
       await disconnectAsync();
@@ -59,15 +55,12 @@ export const AccountActions = () => {
       case AccountActionType.Switch:
         handleSwitchWallet();
         break;
-      case AccountActionType.Explorer:
-        handleOpenExplorer();
-        break;
       case AccountActionType.Disconnect:
         handleDisconnect();
         break;
       default:
     }
-  }, []);
+  }, [handleCopyAccountAddress]);
 
   return (
     <Dropdown

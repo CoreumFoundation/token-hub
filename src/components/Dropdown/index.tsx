@@ -43,10 +43,10 @@ export const Dropdown: FC<DropdownProps> = ({
         <div className={classNames('block relative w-full', className)}>
           <Listbox.Button className={classNames(selectedDropdownItemCx, { '!border-[#25D695]': open })}>
             {selected ? (
-              <span className={classNames('flex items-center gap-2 text-base', selectedLabelClassName)}>
+              <div className={classNames('flex items-center gap-2 text-base', selectedLabelClassName)}>
                 {icon}
                 {selected.label}
-              </span>
+              </div>
             ) : (
               <GeneralIcon type={GeneralIconType.Loading} />
             )}

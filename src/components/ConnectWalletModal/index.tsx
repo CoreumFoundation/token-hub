@@ -7,10 +7,11 @@ import { WalletItem } from "../WalletItem";
 import { CONNECT_WALLET_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
-import { WalletType as GrazWalletType, useSuggestChainAndConnect } from "graz";
+import { WalletType as GrazWalletType, useDisconnect, useSuggestChainAndConnect } from "graz";
 
 export const ConnectWalletModal = () => {
   const { suggestAndConnectAsync } = useSuggestChainAndConnect();
+  const { disconnectAsync } = useDisconnect();
   const currentNetworkInfo = useAppSelector(state => state.general.currentNetworkInfo);
   const isConnectWalletModalOpen = useAppSelector(state => state.general.isConnectModalOpen);
 
@@ -22,6 +23,7 @@ export const ConnectWalletModal = () => {
 
   const handleWalletClick = useCallback(async (type: WalletType) => {
     try {
+      await disconnectAsync();
       await suggestAndConnectAsync({
         chainInfo: currentNetworkInfo,
         walletType: type as unknown as GrazWalletType,
@@ -30,7 +32,7 @@ export const ConnectWalletModal = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [currentNetworkInfo, dispatch, suggestAndConnectAsync]);
+  }, [currentNetworkInfo, disconnectAsync, dispatch, suggestAndConnectAsync]);
 
   return (
     <Modal

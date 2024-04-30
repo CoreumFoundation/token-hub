@@ -1,3 +1,4 @@
+import { Switch } from './../components/Switch/index';
 import { Chain } from '@chain-registry/types';
 
 export enum FooterIconType {
@@ -42,7 +43,11 @@ export enum GeneralIconType {
   Close = 'close',
   Percentage = 'percentage',
   ArrowRight = 'arrow_right',
-  Loading = 'loading,'
+  Loading = 'loading',
+  Copy = 'copy',
+  Switch = 'switch',
+  Explorer = 'explorer',
+  Disconnect = 'disconnect',
 };
 
 export enum TabItemType {
@@ -58,7 +63,7 @@ export enum TabSwitchItemType {
 
 export interface DropdownItem {
   id: string;
-  label: string;
+  label: string | React.ReactNode;
   icon?: React.ReactNode;
 }
 
@@ -133,4 +138,11 @@ export enum ChainType {
   Noble = 'noble',
   Osmosis = 'osmosis',
   Secret = 'secretnetwork',
+}
+
+export enum AccountActionType {
+  Copy = 'copy',
+  Switch = 'switch',
+  Explorer = 'explorer',
+  Disconnect = 'disconnect',
 }

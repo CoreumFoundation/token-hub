@@ -1,6 +1,7 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
+import { ExplorerLink } from "@/components/ExplorerLink";
+import { AccountActionType, DropdownItem, FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -13,45 +14,45 @@ export const FOOTER_NAVIGATION = {
     {
       name: 'Twitter',
       href: 'https://x.com/CoreumOfficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.X} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.X} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Instagram',
       href: 'https://www.instagram.com/coreum.official/',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Instagram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.Instagram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Telegram',
       href: 'https://t.me/CoreumOfficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Telegram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.Telegram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Discord',
       href: 'https://discord.com/invite/XdVAGKXEhg',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Discord} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.Discord} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'YouTube',
       href: 'https://www.youtube.com/@coreumofficial',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Youtube} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.Youtube} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Medium',
       href: 'https://coreum.medium.com/',
-      icon: (props: any) => <FooterIcon type={FooterIconType.Medium} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: () => <FooterIcon type={FooterIconType.Medium} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
   ],
 };
 
 export const NETWORK_SELECTOR_ITEMS = [
   {
-    id: Network.Mainnet,
-    label: Network.Mainnet.toUpperCase(),
+    id: Network.Testnet,
+    label: Network.Testnet.toUpperCase(),
     icon: <GeneralIcon type={GeneralIconType.Coreum} />
   },
   {
-    id: Network.Testnet,
-    label: Network.Testnet.toUpperCase(),
+    id: Network.Mainnet,
+    label: Network.Mainnet.toUpperCase(),
     icon: <GeneralIcon type={GeneralIconType.Coreum} />
   },
 ];
@@ -167,5 +168,27 @@ export const CONNECT_WALLET_OPTIONS: WalletOption[] = [
   {
     type: WalletType.LeapMobile,
     label: 'Leap Mobile',
+  },
+];
+
+export const ACTION_ITEMS_OPTIONS: DropdownItem[] = [
+  {
+    id: AccountActionType.Copy,
+    label: 'Copy Address',
+    icon: <GeneralIcon type={GeneralIconType.Copy} />,
+  },
+  {
+    id: AccountActionType.Switch,
+    label: 'Switch Wallet',
+    icon: <GeneralIcon type={GeneralIconType.Switch} />,
+  },
+  {
+    id: AccountActionType.Explorer,
+    label: <ExplorerLink />,
+  },
+  {
+    id: AccountActionType.Disconnect,
+    label: 'Disconnect',
+    icon: <GeneralIcon type={GeneralIconType.Disconnect} />,
   },
 ];

@@ -8,10 +8,14 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { useCallback, useState } from "react";
 import { NETWORK_SELECTOR_ITEMS } from "@/constants";
 import { setIsConnectModalOpen, setNetwork } from "@/features/general/generalSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { AccountActions } from "../AccountActions";
+import { useDisconnect } from "graz";
 
 export const Navbar = () => {
   const [selected, setSelected] = useState<DropdownItem>(NETWORK_SELECTOR_ITEMS[0]);
+  const isConnected = useAppSelector(state => state.general.isConnected);
+  const { disconnect } = useDisconnect();
 
   const dispatch = useAppDispatch();
 
@@ -20,6 +24,7 @@ export const Navbar = () => {
       return;
     }
 
+    disconnect();
     dispatch(setNetwork(value.id as Network));
     setSelected(value);
   }, [selected]);
@@ -47,14 +52,18 @@ export const Navbar = () => {
           selectedClassName="text-xs sm:!w-[140px]"
           selectedLabelClassName="text-grey-gradient"
         />
-        <Button
-          label={"Connect Wallet"}
-          onClick={handleConnectButtonClick}
-          type={ButtonType.Primary}
-          iconType={ButtonIconType.Wallet}
-          className="text-sm !py-2 px-6 rounded-[10px] "
-          iconClassName="w-4"
-        />
+        {isConnected ? (
+          <AccountActions />
+        ) : (
+          <Button
+            label="Connect Wallet"
+            onClick={handleConnectButtonClick}
+            type={ButtonType.Primary}
+            iconType={ButtonIconType.Wallet}
+            className="text-sm !py-2 px-6 rounded-[10px] "
+            iconClassName="w-4"
+          />
+        )}
       </div>
     </div>
   );

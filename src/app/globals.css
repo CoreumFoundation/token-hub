@@ -63,3 +63,7 @@ body {
   background-size: contain;
   background-position: top;
 }
+
+.bg-green-secondary-opacity-10 {
+  background: rgba(37, 214, 149, 0.10);
+}

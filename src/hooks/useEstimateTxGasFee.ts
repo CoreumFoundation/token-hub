@@ -1,12 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import { EncodeObject, Registry } from "@cosmjs/proto-signing";
-import { useAccount, useCosmWasmSigningClient, useStargateSigningClient, useTendermintClient } from "graz";
-import { useCallback, useMemo } from "react";
-import {
-  CosmWasmClient,
-  SigningCosmWasmClient,
-  ExecuteResult,
-} from "@cosmjs/cosmwasm-stargate";
+import { useCosmWasmSigningClient, useTendermintClient } from "graz";
+import { useMemo } from "react";
 import {
   GasPrice,
   QueryClient,
@@ -19,19 +14,12 @@ import { QueryClientImpl as FeeModelClient } from "@/lib/query";
 import Big from "big.js";
 import { coreumRegistry, cosmwasmRegistry } from 'coreum-js';
 
-interface GetTxFeeArgs {
-  signingClient: SigningCosmWasmClient;
-  account: string;
-}
-
-
 const registryTypes = [
   ...defaultRegistryTypes,
   ...coreumRegistry,
   ...cosmwasmRegistry,
 ];
 const registry = new Registry(registryTypes);
-
 
 export const useEstimateTxGasFee = () => {
   const networkInfo = useAppSelector(state => state.general.currentNetworkInfo);
@@ -58,10 +46,6 @@ export const useEstimateTxGasFee = () => {
 
     return new FeeModelClient(rpcClient);
   }, [tendermintClient]);
-
-  const senderClient = useCallback(() => {
-
-  }, []);
 
   const getGasPrice = async () => {
     if (!feeModel) {

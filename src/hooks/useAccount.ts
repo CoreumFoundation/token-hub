@@ -4,7 +4,10 @@ import { useAccount } from "graz";
 import { useEffect } from "react";
 
 export const useConnectedAccount = () => {
-  const { data, isConnected } = useAccount();
+  const networkInfo = useAppSelector(state => state.general.currentNetworkInfo);
+  const { data, isConnected } = useAccount({
+    chainId: networkInfo.chainId,
+  });
   const dispatch = useAppDispatch();
   const account = useAppSelector(state => state.general.account);
   const isAccountConnected = useAppSelector(state => state.general.isConnected);

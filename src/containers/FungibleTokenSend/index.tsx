@@ -8,7 +8,6 @@ import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
-import { COREUM_TOKEN } from "@/constants";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -25,7 +24,7 @@ export const FungibleTokenSend = () => {
   const dispatch = useAppDispatch();
 
   const currenciesToDropdownItem: DropdownItem[] = useMemo(() => {
-    return [COREUM_TOKEN].concat(currencies).map((item: Token) => {
+    return currencies.map((item: Token) => {
       return {
         id: item.denom,
         label: item.symbol,

@@ -171,18 +171,3 @@ export interface Token {
   uri?: string;
   uri_hash?: string;
 }
-
-export interface CurrencyMetadata {
-  base: string;
-  denom_units: DenomUnit[];
-  description: string;
-  display: string;
-  name: string;
-  symbol: string;
-  uri: string;
-  uri_hash: string;
-}
-
-export interface Currency {
-  denom: string;
-}

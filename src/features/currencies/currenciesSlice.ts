@@ -1,5 +1,5 @@
-import { metadata } from './../../app/layout';
-import { CurrencyMetadata, Network, Token } from '@/shared/types';
+import { COREUM_TOKEN } from '@/constants';
+import { Network, Token } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 
@@ -41,7 +41,7 @@ export interface CurrenciesState {
 
 export const initialCurrenciesState: CurrenciesState = {
   isLoading: false,
-  list: [],
+  list: [COREUM_TOKEN],
   isFetched: false,
 };
 
@@ -63,7 +63,7 @@ const currenciesSlice = createSlice({
       state.isLoading = false;
     })
     builder.addCase(fetchCurrenciesByAccount.fulfilled, (state, action) => {
-      state.list = action.payload;
+      state.list = [COREUM_TOKEN].concat(action.payload);
       state.isLoading = false;
     })
   },

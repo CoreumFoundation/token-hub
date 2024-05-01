@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
 import { FT, Feature } from 'coreum-js';
-import { useEstimateTxGasFee } from "@/helpers/getTxFee";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');

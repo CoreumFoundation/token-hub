@@ -64,6 +64,7 @@ const currenciesSlice = createSlice({
     })
     builder.addCase(fetchCurrenciesByAccount.fulfilled, (state, action) => {
       state.list = action.payload;
+      state.isLoading = false;
     })
   },
 });

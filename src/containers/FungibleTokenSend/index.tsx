@@ -12,33 +12,40 @@ import { COREUM_TOKEN } from "@/constants";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
-
+  const [selectedCurrency, setSelectedCurrency] = useState<DropdownItem | null>(null);
 
   const currencies = useAppSelector(state => state.currencies.list);
   const currenciesLoading = useAppSelector(state => state.currencies.isLoading);
 
   const dispatch = useAppDispatch();
 
-  const handleConnectWalletClick = useCallback(() => {
-    dispatch(setIsConnectModalOpen(true));
-  }, []);
-
   const currenciesToDropdownItem: DropdownItem[] = useMemo(() => {
     return [COREUM_TOKEN].concat(currencies).map((item: Token) => {
       return {
         id: item.denom,
         label: item.symbol,
-        icon: item.denom === 'utestcore' ? <GeneralIcon type={GeneralIconType.Coreum} /> : <GeneralIcon type={GeneralIconType.DefaultToken} />
+        icon: item.denom === 'utestcore'
+          ? <GeneralIcon type={GeneralIconType.Coreum} />
+          : <GeneralIcon type={GeneralIconType.DefaultToken} />
       };
     });
   }, [currencies]);
 
-  const [selectedCurrency, setSelectedCurrency] = useState<DropdownItem>(currenciesToDropdownItem[0]);
+  useEffect(() => {
+    if (!selectedCurrency && currenciesToDropdownItem.length) {
+      setSelectedCurrency(currenciesToDropdownItem[0]);
+    }
+  }, [currenciesToDropdownItem, selectedCurrency]);
+
+
+  const handleConnectWalletClick = useCallback(() => {
+    dispatch(setIsConnectModalOpen(true));
+  }, []);
 
   return (
     <div className="flex flex-col gap-10">

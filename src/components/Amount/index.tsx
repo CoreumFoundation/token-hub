@@ -10,7 +10,7 @@ import { getNumberRegex } from "@/helpers/getNumberRegex";
 interface AmountProps {
   value: string;
   onChangeValue: (value: string) => void;
-  selectedCurrency: DropdownItem;
+  selectedCurrency: DropdownItem | null;
   currencies: DropdownItem[];
   onSelectCurrency: (item: DropdownItem) => void;
   onMaxButtonClick: () => void;

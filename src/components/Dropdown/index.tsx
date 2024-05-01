@@ -3,6 +3,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import classNames from 'classnames';
 import { DropdownItem, DropdownType, GeneralIconType } from '@/shared/types';
 import { GeneralIcon } from '@/assets/GeneralIcon';
+import { Spinner } from '../Spinner';
 
 interface DropdownProps {
   selected: DropdownItem | null;
@@ -48,7 +49,7 @@ export const Dropdown: FC<DropdownProps> = ({
                 {selected.label}
               </div>
             ) : (
-              <GeneralIcon type={GeneralIconType.Loading} />
+              <Spinner />
             )}
             <span className="pointer-events-none inset-y-0 right-0 flex items-center">
               <svg

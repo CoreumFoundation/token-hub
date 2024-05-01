@@ -14,32 +14,32 @@ export const FOOTER_NAVIGATION = {
     {
       name: 'Twitter',
       href: 'https://x.com/CoreumOfficial',
-      icon: () => <FooterIcon type={FooterIconType.X} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.X} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Instagram',
       href: 'https://www.instagram.com/coreum.official/',
-      icon: () => <FooterIcon type={FooterIconType.Instagram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.Instagram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Telegram',
       href: 'https://t.me/CoreumOfficial',
-      icon: () => <FooterIcon type={FooterIconType.Telegram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.Telegram} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Discord',
       href: 'https://discord.com/invite/XdVAGKXEhg',
-      icon: () => <FooterIcon type={FooterIconType.Discord} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.Discord} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'YouTube',
       href: 'https://www.youtube.com/@coreumofficial',
-      icon: () => <FooterIcon type={FooterIconType.Youtube} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.Youtube} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
     {
       name: 'Medium',
       href: 'https://coreum.medium.com/',
-      icon: () => <FooterIcon type={FooterIconType.Medium} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
+      icon: (props: any) => <FooterIcon type={FooterIconType.Medium} className="group w-6 " pathClassName="group-hover:fill-[#eee]" />,
     },
   ],
 };

@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-empty */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { DecCoin } from "./coin";

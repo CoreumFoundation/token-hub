@@ -9,8 +9,10 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Coin } from "@cosmjs/amino";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const FungibleTokenSend = () => {
@@ -19,7 +21,7 @@ export const FungibleTokenSend = () => {
   const [selectedCurrency, setSelectedCurrency] = useState<DropdownItem | null>(null);
 
   const currencies = useAppSelector(state => state.currencies.list);
-  const currenciesLoading = useAppSelector(state => state.currencies.isLoading);
+  const balances = useAppSelector(state => state.balances.list);
 
   const dispatch = useAppDispatch();
 
@@ -41,6 +43,20 @@ export const FungibleTokenSend = () => {
     }
   }, [currenciesToDropdownItem, selectedCurrency]);
 
+  const currentCurrency = useMemo(() => {
+    return currencies.find((currencyItem: Token) => currencyItem.denom === selectedCurrency?.id);
+  }, [currencies, selectedCurrency]);
+
+  const currentCurrencyBalance = useMemo(() => {
+    return balances.find((balanceItem: Coin) => balanceItem.denom === selectedCurrency?.id);
+  }, [balances, selectedCurrency]);
+
+  const availableBalance = useMemo(() => {
+    return convertSubunitToUnit({
+      amount: currentCurrencyBalance?.amount || '0',
+      precision: currentCurrency?.precision || 0,
+    });
+  }, [currentCurrency?.precision, currentCurrencyBalance?.amount]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -62,7 +78,7 @@ export const FungibleTokenSend = () => {
           currencies={currenciesToDropdownItem}
           onSelectCurrency={setSelectedCurrency}
           onMaxButtonClick={() => {}}
-          balance={"0.00"}
+          balance={availableBalance}
         />
       </SectionWithLabel>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

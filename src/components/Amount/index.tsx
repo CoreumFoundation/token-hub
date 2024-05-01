@@ -76,7 +76,7 @@ export const Amount: FC<AmountProps> = ({
               Available:
             </div>
             <div className="text-[#eee] text-base">
-              {balance} COREUM
+              {balance} {(selectedCurrency?.label as string).toUpperCase()}
             </div>
           </div>
         </div>

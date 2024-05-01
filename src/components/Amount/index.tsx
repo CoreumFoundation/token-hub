@@ -3,7 +3,7 @@
 import { ButtonType, DropdownItem, DropdownType, GeneralIconType } from "@/shared/types";
 import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
-import { ChangeEvent, FC, useCallback, useState } from "react";
+import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { getNumberRegex } from "@/helpers/getNumberRegex";
 
@@ -53,8 +53,9 @@ export const Amount: FC<AmountProps> = ({
             items={currencies}
             type={DropdownType.Primary}
             icon={<GeneralIcon type={GeneralIconType.Coreum} />}
-            selectedClassName="text-xs !w-[140px]"
+            selectedClassName="text-xs !w-[200px]"
             selectedLabelClassName="text-grey-gradient"
+            listClassName="!w-[240px] right-0"
           />
         </div>
       </div>

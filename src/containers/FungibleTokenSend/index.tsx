@@ -8,14 +8,19 @@ import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
+import { COREUM_TOKEN } from "@/constants";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
-import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType } from "@/shared/types";
-import { useAppDispatch } from "@/store/hooks";
-import { useCallback, useState } from "react";
+import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useCallback, useMemo, useState } from "react";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
+
+
+  const currencies = useAppSelector(state => state.currencies.list);
+  const currenciesLoading = useAppSelector(state => state.currencies.isLoading);
 
   const dispatch = useAppDispatch();
 
@@ -23,11 +28,17 @@ export const FungibleTokenSend = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
-  const selectedCurrency: DropdownItem = {
-    id: 'coreum',
-    label: 'COREUM',
-    icon: <GeneralIcon type={GeneralIconType.Coreum} />
-  };
+  const currenciesToDropdownItem: DropdownItem[] = useMemo(() => {
+    return [COREUM_TOKEN].concat(currencies).map((item: Token) => {
+      return {
+        id: item.denom,
+        label: item.symbol,
+        icon: item.denom === 'utestcore' ? <GeneralIcon type={GeneralIconType.Coreum} /> : <GeneralIcon type={GeneralIconType.DefaultToken} />
+      };
+    });
+  }, [currencies]);
+
+  const [selectedCurrency, setSelectedCurrency] = useState<DropdownItem>(currenciesToDropdownItem[0]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -42,8 +53,8 @@ export const FungibleTokenSend = () => {
           value={amount}
           onChangeValue={setAmount}
           selectedCurrency={selectedCurrency}
-          currencies={[]}
-          onSelectCurrency={(item: DropdownItem) => {}}
+          currencies={currenciesToDropdownItem}
+          onSelectCurrency={setSelectedCurrency}
           onMaxButtonClick={() => {}}
           balance={"0.00"}
         />

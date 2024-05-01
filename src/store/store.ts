@@ -1,5 +1,6 @@
 import { alertsReducer } from '@/features/alerts/alertsSlice';
 import { chainsReducer } from '@/features/chains/chainsSlice';
+import { currenciesReducer } from '@/features/currencies/currenciesSlice';
 import { generalReducer } from '@/features/general/generalSlice';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
@@ -7,6 +8,7 @@ export const store = configureStore({
   reducer: {
     alerts: alertsReducer,
     chains: chainsReducer,
+    currencies: currenciesReducer,
     general: generalReducer,
   },
 });

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { chains, ibc } from 'chain-registry';
 import { Chain, IBCInfo } from '@chain-registry/types';
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIBCChains } from "@/features/chains/chainsSlice";
-import { ChainInfo } from "@/shared/types";
+import { ChainInfo, Network } from "@/shared/types";
+import { coreum, coreumtestnet } from "graz/chains";
 
 export const useChains = () => {
   const dispatch = useAppDispatch();
+  const network = useAppSelector(state => state.general.network);
+  const compareNetworkChainName = network === Network.Mainnet ? coreum.chainName.toLowerCase() : coreumtestnet.chainName.toLowerCase();
 
   useEffect(() => {
     const filteredIBCInfos = ibc
-      .filter((ibcItem: IBCInfo) => ibcItem.chain_1.chain_name === 'coreum' || ibcItem.chain_2.chain_name === 'coreum');
+      .filter((ibcItem: IBCInfo) => ibcItem.chain_1.chain_name === compareNetworkChainName || ibcItem.chain_2.chain_name === compareNetworkChainName);
 
     const supportedIBCChains: ChainInfo[] = filteredIBCInfos.map((ibcItem: IBCInfo) => {
       const targetChain = ibcItem.chain_1.chain_name === 'coreum' ? {
@@ -31,6 +34,17 @@ export const useChains = () => {
       };
     });
 
+    const coreumChainData: Chain | undefined = chains.find((chain: Chain) => chain.chain_name === compareNetworkChainName);
+    const coreumChainInfoData: ChainInfo = {
+      ...coreumChainData!,
+      connection_id: '',
+      client_id: '',
+      channel_id: '',
+      port_id: '',
+    }
+
+    supportedIBCChains.unshift(coreumChainInfoData);
+
     dispatch(setIBCChains(supportedIBCChains));
-  }, []);
+  }, [network]);
 };

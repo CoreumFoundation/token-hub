@@ -1,3 +1,4 @@
+import { Feature } from 'coreum-js';
 import { Switch } from './../components/Switch/index';
 import { Chain } from '@chain-registry/types';
 
@@ -48,6 +49,7 @@ export enum GeneralIconType {
   Switch = 'switch',
   Explorer = 'explorer',
   Disconnect = 'disconnect',
+  DefaultToken = 'default_token',
 };
 
 export enum TabItemType {
@@ -138,6 +140,8 @@ export enum ChainType {
   Noble = 'noble',
   Osmosis = 'osmosis',
   Secret = 'secretnetwork',
+  Coreum = 'coreum',
+  CoreumTestnet = 'coreumtestnet',
 }
 
 export enum AccountActionType {
@@ -145,4 +149,40 @@ export enum AccountActionType {
   Switch = 'switch',
   Explorer = 'explorer',
   Disconnect = 'disconnect',
+}
+
+export interface DenomUnit {
+  denom: string;
+  exponent: number;
+}
+
+export interface Token {
+  denom: string;
+  issuer?: string;
+  symbol: string;
+  subunit: string;
+  precision: number;
+  description?: string;
+  globally_frozen?: boolean;
+  // TODO: update type to have strict usage of FEATURES from FT
+  features?: string[];
+  burn_rate?: string;
+  send_commission_rate?: string;
+  uri?: string;
+  uri_hash?: string;
+}
+
+export interface CurrencyMetadata {
+  base: string;
+  denom_units: DenomUnit[];
+  description: string;
+  display: string;
+  name: string;
+  symbol: string;
+  uri: string;
+  uri_hash: string;
+}
+
+export interface Currency {
+  denom: string;
 }

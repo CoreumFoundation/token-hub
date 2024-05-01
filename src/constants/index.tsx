@@ -1,7 +1,7 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { ExplorerLink } from "@/components/ExplorerLink";
-import { AccountActionType, DropdownItem, FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
+import { AccountActionType, DropdownItem, FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, Token, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -192,3 +192,10 @@ export const ACTION_ITEMS_OPTIONS: DropdownItem[] = [
     icon: <GeneralIcon type={GeneralIconType.Disconnect} />,
   },
 ];
+
+export const COREUM_TOKEN: Token = {
+  denom: 'utestcore',
+  symbol: 'Coreum',
+  subunit: 'utestcore',
+  precision: 6,
+};

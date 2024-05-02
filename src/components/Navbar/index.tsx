@@ -60,7 +60,7 @@ export const Navbar = () => {
             onClick={handleConnectButtonClick}
             type={ButtonType.Primary}
             iconType={ButtonIconType.Wallet}
-            className="text-sm !py-2 px-6 rounded-[10px] "
+            className="text-sm !py-2 px-6 rounded-[10px]"
             iconClassName="w-4"
           />
         )}

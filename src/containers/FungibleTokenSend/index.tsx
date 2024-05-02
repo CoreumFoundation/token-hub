@@ -9,12 +9,14 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
-import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
+import { convertSubunitToUnit, convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { validateAddress } from "@/helpers/validateAddress";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";
 import Big from "big.js";
+import { Bank, FT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const FungibleTokenSend = () => {
@@ -26,8 +28,10 @@ export const FungibleTokenSend = () => {
   const balances = useAppSelector(state => state.balances.list);
   const isConnected = useAppSelector(state => state.general.isConnected);
   const destinationChain = useAppSelector(state => state.general.destinationChain);
+  const account = useAppSelector(state => state.general.account);
 
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const currenciesToDropdownItem: DropdownItem[] = useMemo(() => {
     return currencies.map((item: Token) => {
@@ -77,8 +81,12 @@ export const FungibleTokenSend = () => {
       return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}. Please double check entered value!`;
     }
 
+    if (destinationAddress.toLowerCase() === account.toLowerCase()) {
+      return 'Destination address cannot be the same as sender account';
+    }
+
     return '';
-  }, [destinationAddress, destinationChain]);
+  }, [account, destinationAddress, destinationChain?.bech32_prefix]);
 
   const isFormValid = useMemo(() => {
     if (amount.length && Big(amount).lte(Big(availableBalance)) && destinationAddress.length && !isDestinationAddressInvalid.length) {
@@ -92,9 +100,28 @@ export const FungibleTokenSend = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
-  const handleSendTokens = useCallback(() => {
-    console.log('send tokens');
-  }, []);
+  const handleSendTokens = useCallback(async () => {
+    try {
+      const sendFTMsg = Bank.Send({
+        fromAddress: account,
+        toAddress: destinationAddress,
+        amount: [
+          {
+            denom: currentCurrency?.denom || '',
+            amount: convertUnitToSubunit({
+              amount,
+              precision: currentCurrency?.precision || 0,
+            }),
+          }
+        ],
+      });
+
+      const txFee = await getTxFee([sendFTMsg]);
+      await signingClient?.signAndBroadcast(account, [sendFTMsg], txFee ? txFee.fee : 'auto');
+    } catch (error) {
+      console.log(error);
+    }
+  }, [account, amount, currentCurrency, destinationAddress, getTxFee, signingClient]);
 
   const handleMaxButtonClick = useCallback(() => {
     setAmount(availableBalance);

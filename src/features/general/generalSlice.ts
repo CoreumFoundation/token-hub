@@ -1,14 +1,16 @@
 import { Network } from '@/shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { coreum, coreumtestnet } from 'graz/chains';
-import { ChainInfo } from '@keplr-wallet/types';
+import { ChainInfo as KeplrChainInfo } from '@keplr-wallet/types';
+import { ChainInfo } from '@/shared/types';
 
 export interface GeneralState {
   isConnectModalOpen: boolean;
   network: Network;
-  currentNetworkInfo: ChainInfo;
+  currentNetworkInfo: KeplrChainInfo;
   account: string;
   isConnected: boolean;
+  destinationChain: ChainInfo | null;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -17,6 +19,7 @@ export const initialGeneralState: GeneralState = {
   currentNetworkInfo: coreumtestnet,
   account: '',
   isConnected: false,
+  destinationChain: null,
 };
 
 const generalSlice = createSlice({
@@ -41,9 +44,12 @@ const generalSlice = createSlice({
     setIsConnected(state, action: PayloadAction<boolean>) {
       state.isConnected = action.payload;
     },
+    setDestinationChain(state, action: PayloadAction<ChainInfo>) {
+      state.destinationChain = action.payload;
+    }
   },
 });
 
-export const { setIsConnectModalOpen, setNetwork, setAccount, setIsConnected } = generalSlice.actions;
+export const { setIsConnectModalOpen, setNetwork, setAccount, setIsConnected, setDestinationChain } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

@@ -1,18 +1,19 @@
 import { ChainInfo, ChainType, DropdownItem } from "@/shared/types";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dropdown } from "../Dropdown";
 import { ChainIcon } from "@/assets/ChainIcon";
-
+import { setDestinationChain } from "@/features/general/generalSlice";
 
 export const ChainSelector = () => {
-  const [destinationChain, setDestinationChain] = useState<ChainInfo | null>(null);
+  const destinationChain = useAppSelector(state => state.general.destinationChain);
+  const dispatch = useAppDispatch();
 
   const chains = useAppSelector(state => state.chains.list);
 
   useEffect(() => {
     if (destinationChain === null && chains.length) {
-      setDestinationChain(chains[0]);
+      dispatch(setDestinationChain(chains[0]));
     }
   }, [chains, destinationChain]);
 
@@ -42,7 +43,7 @@ export const ChainSelector = () => {
     const chain = chains.find((chainInfoItem: ChainInfo) => chainInfoItem.chain_id === value.id);
 
     if (chain) {
-      setDestinationChain(chain);
+      dispatch(setDestinationChain(chain));
     }
   }, [chains]);
 

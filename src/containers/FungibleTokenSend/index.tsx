@@ -10,9 +10,11 @@ import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
+import { validateAddress } from "@/helpers/validateAddress";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";
+import Big from "big.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const FungibleTokenSend = () => {
@@ -22,6 +24,8 @@ export const FungibleTokenSend = () => {
 
   const currencies = useAppSelector(state => state.currencies.list);
   const balances = useAppSelector(state => state.balances.list);
+  const isConnected = useAppSelector(state => state.general.isConnected);
+  const destinationChain = useAppSelector(state => state.general.destinationChain);
 
   const dispatch = useAppDispatch();
 
@@ -58,9 +62,66 @@ export const FungibleTokenSend = () => {
     });
   }, [currentCurrency?.precision, currentCurrencyBalance?.amount]);
 
+  const isDestinationAddressValid = useMemo(() => {
+    return true;
+  }, []);
+
+  const isFormValid = useMemo(() => {
+    if (amount.length && Big(amount).lte(Big(availableBalance)) && isDestinationAddressValid) {
+      return true;
+    }
+
+    return false;
+  }, [amount, availableBalance, isDestinationAddressValid]);
+
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
+
+  const handleSendTokens = useCallback(() => {
+    console.log('send tokens');
+  }, []);
+
+  const renderButton = useMemo(() => {
+    if (isConnected) {
+      return (
+        <Button
+          label="Send"
+          onClick={handleSendTokens}
+          type={ButtonType.Primary}
+          iconType={ButtonIconType.Send}
+          disabled={!isFormValid}
+        />
+      );
+    }
+
+    return (
+      <Button
+        label="Connect Wallet"
+        onClick={handleConnectWalletClick}
+        type={ButtonType.Primary}
+        iconType={ButtonIconType.Wallet}
+      />
+    );
+  }, [isConnected, isFormValid, handleSendTokens]);
+
+  const isDestinationAddressInvalid = useMemo(() => {
+    if (!destinationAddress.length) {
+      return '';
+    }
+
+    const validatedDestinationAddress = validateAddress(destinationAddress);
+
+    if (!validatedDestinationAddress.result) {
+      return 'Destionation address is invalid. Please double check entered value!';
+    }
+
+    if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {
+      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}. Please double check entered value!`;
+    }
+
+    return '';
+  }, [destinationAddress, destinationChain]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -79,6 +140,7 @@ export const FungibleTokenSend = () => {
           onSelectCurrency={setSelectedCurrency}
           onMaxButtonClick={() => {}}
           balance={availableBalance}
+          precision={currentCurrency?.precision || 0}
         />
       </SectionWithLabel>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -89,6 +151,7 @@ export const FungibleTokenSend = () => {
             value={destinationAddress}
             onChange={setDestinationAddress}
             placeholder="Enter Destination Address"
+            error={isDestinationAddressInvalid.length ? isDestinationAddressInvalid : undefined}
           />
         </div>
       </div>
@@ -104,12 +167,7 @@ export const FungibleTokenSend = () => {
       </div>
       <div className="flex w-full justify-end">
         <div className="flex items-center">
-          <Button
-            label="Connect Wallet"
-            onClick={handleConnectWalletClick}
-            type={ButtonType.Primary}
-            iconType={ButtonIconType.Wallet}
-          />
+          {renderButton}
         </div>
       </div>
     </div>

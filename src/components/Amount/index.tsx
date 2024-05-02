@@ -15,6 +15,7 @@ interface AmountProps {
   onSelectCurrency: (item: DropdownItem) => void;
   onMaxButtonClick: () => void;
   balance: string;
+  precision: number;
 }
 
 export const Amount: FC<AmountProps> = ({
@@ -25,6 +26,7 @@ export const Amount: FC<AmountProps> = ({
   onSelectCurrency,
   onMaxButtonClick,
   balance,
+  precision,
 }) => {
   const handleChangeAmount = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.length) {
@@ -32,10 +34,10 @@ export const Amount: FC<AmountProps> = ({
       return;
     }
 
-    if (getNumberRegex().test(e.target.value)) {
+    if (getNumberRegex(precision).test(e.target.value)) {
       onChangeValue(e.target.value);
     }
-  }, [onChangeValue]);
+  }, [onChangeValue, precision]);
 
   return (
     <div className="flex flex-col w-full items-center gap-2">
@@ -76,7 +78,7 @@ export const Amount: FC<AmountProps> = ({
               Available:
             </div>
             <div className="text-[#eee] text-base">
-              {balance} {(selectedCurrency?.label as string).toUpperCase()}
+              {balance} {(selectedCurrency?.label as string)?.toUpperCase()}
             </div>
           </div>
         </div>

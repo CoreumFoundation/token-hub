@@ -35,8 +35,8 @@ export const FungibleTokenSend = () => {
         id: item.denom,
         label: item.symbol,
         icon: item.denom === 'utestcore'
-          ? <GeneralIcon type={GeneralIconType.Coreum} />
-          : <GeneralIcon type={GeneralIconType.DefaultToken} />
+          ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
+          : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
       };
     });
   }, [currencies]);
@@ -62,17 +62,31 @@ export const FungibleTokenSend = () => {
     });
   }, [currentCurrency?.precision, currentCurrencyBalance?.amount]);
 
-  const isDestinationAddressValid = useMemo(() => {
-    return true;
-  }, []);
+  const isDestinationAddressInvalid = useMemo(() => {
+    if (!destinationAddress.length) {
+      return '';
+    }
+
+    const validatedDestinationAddress = validateAddress(destinationAddress);
+
+    if (!validatedDestinationAddress.result) {
+      return 'Destionation address is invalid. Please double check entered value!';
+    }
+
+    if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {
+      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}. Please double check entered value!`;
+    }
+
+    return '';
+  }, [destinationAddress, destinationChain]);
 
   const isFormValid = useMemo(() => {
-    if (amount.length && Big(amount).lte(Big(availableBalance)) && isDestinationAddressValid) {
+    if (amount.length && Big(amount).lte(Big(availableBalance)) && destinationAddress.length && !isDestinationAddressInvalid.length) {
       return true;
     }
 
     return false;
-  }, [amount, availableBalance, isDestinationAddressValid]);
+  }, [amount, availableBalance, destinationAddress.length, isDestinationAddressInvalid.length]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -81,6 +95,10 @@ export const FungibleTokenSend = () => {
   const handleSendTokens = useCallback(() => {
     console.log('send tokens');
   }, []);
+
+  const handleMaxButtonClick = useCallback(() => {
+    setAmount(availableBalance);
+  }, [availableBalance]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {
@@ -105,24 +123,6 @@ export const FungibleTokenSend = () => {
     );
   }, [isConnected, isFormValid, handleSendTokens]);
 
-  const isDestinationAddressInvalid = useMemo(() => {
-    if (!destinationAddress.length) {
-      return '';
-    }
-
-    const validatedDestinationAddress = validateAddress(destinationAddress);
-
-    if (!validatedDestinationAddress.result) {
-      return 'Destionation address is invalid. Please double check entered value!';
-    }
-
-    if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {
-      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}. Please double check entered value!`;
-    }
-
-    return '';
-  }, [destinationAddress, destinationChain]);
-
   return (
     <div className="flex flex-col gap-10">
       <MessageBox>
@@ -138,7 +138,7 @@ export const FungibleTokenSend = () => {
           selectedCurrency={selectedCurrency}
           currencies={currenciesToDropdownItem}
           onSelectCurrency={setSelectedCurrency}
-          onMaxButtonClick={() => {}}
+          onMaxButtonClick={handleMaxButtonClick}
           balance={availableBalance}
           precision={currentCurrency?.precision || 0}
         />

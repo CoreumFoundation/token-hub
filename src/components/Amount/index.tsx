@@ -54,7 +54,7 @@ export const Amount: FC<AmountProps> = ({
             onSelect={onSelectCurrency}
             items={currencies}
             type={DropdownType.Primary}
-            icon={<GeneralIcon type={GeneralIconType.Coreum} />}
+            icon={selectedCurrency?.icon}
             selectedClassName="text-xs !w-[200px]"
             selectedLabelClassName="text-grey-gradient"
             listClassName="!w-[240px] right-0"

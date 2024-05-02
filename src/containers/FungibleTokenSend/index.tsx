@@ -30,6 +30,7 @@ export const FungibleTokenSend = () => {
   const destinationChain = useAppSelector(state => state.general.destinationChain);
   const account = useAppSelector(state => state.general.account);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+  const network = useAppSelector(state => state.general.network);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -79,7 +80,7 @@ export const FungibleTokenSend = () => {
     }
 
     if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {
-      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}. Please double check entered value!`;
+      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}!`;
     }
 
     if (destinationAddress.toLowerCase() === account.toLowerCase()) {
@@ -87,7 +88,7 @@ export const FungibleTokenSend = () => {
     }
 
     return '';
-  }, [account, destinationAddress, destinationChain?.bech32_prefix]);
+  }, [account, destinationAddress, destinationChain, network]);
 
   const isFormValid = useMemo(() => {
     if (amount.length && Big(amount).lte(Big(availableBalance)) && destinationAddress.length && !isDestinationAddressInvalid.length) {

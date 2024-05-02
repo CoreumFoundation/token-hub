@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIBCChains } from "@/features/chains/chainsSlice";
 import { ChainInfo, Network } from "@/shared/types";
 import { coreum, coreumtestnet } from "graz/chains";
+import { setDestinationChain } from "@/features/general/generalSlice";
 
 export const useChains = () => {
   const dispatch = useAppDispatch();
@@ -46,5 +47,6 @@ export const useChains = () => {
     supportedIBCChains.unshift(coreumChainInfoData);
 
     dispatch(setIBCChains(supportedIBCChains));
+    dispatch(setDestinationChain(supportedIBCChains[0]));
   }, [network]);
 };

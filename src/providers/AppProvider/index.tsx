@@ -2,6 +2,7 @@ import { useConnectedAccount } from '@/hooks/useAccount';
 import { useAccountBalances } from '@/hooks/useBalances';
 import { useChains } from '@/hooks/useChains';
 import { useCurrencies } from '@/hooks/useCurrencies';
+import { useCurrentNetwork } from '@/hooks/useCurrentNetwork';
 import { FC } from 'react';
 
 interface AppProviderProps {
@@ -13,6 +14,7 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
   useConnectedAccount();
   useCurrencies();
   useAccountBalances();
+  useCurrentNetwork();
 
   return children;
 };

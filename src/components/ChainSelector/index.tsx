@@ -1,6 +1,6 @@
 import { ChainInfo, ChainType, DropdownItem } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Dropdown } from "../Dropdown";
 import { ChainIcon } from "@/assets/ChainIcon";
 import { setDestinationChain } from "@/features/general/generalSlice";

@@ -1,4 +1,4 @@
-import { setBalances } from "@/features/balances/chainsSlice";
+import { setBalances } from "@/features/balances/balancesSlice";
 import { Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";

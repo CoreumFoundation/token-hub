@@ -46,7 +46,7 @@ const generalSlice = createSlice({
     setIsConnected(state, action: PayloadAction<boolean>) {
       state.isConnected = action.payload;
     },
-    setDestinationChain(state, action: PayloadAction<ChainInfo>) {
+    setDestinationChain(state, action: PayloadAction<ChainInfo | null>) {
       state.destinationChain = action.payload;
     },
     setIsTxExecuting(state, action: PayloadAction<boolean>) {

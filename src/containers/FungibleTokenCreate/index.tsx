@@ -8,7 +8,7 @@ import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { FT_TOKEN_CAPABILITIES } from "@/constants";
-import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
@@ -37,6 +37,7 @@ export const FungibleTokenCreate = () => {
 
   const isConnected = useAppSelector(state => state.general.isConnected);
   const account = useAppSelector(state => state.general.account);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -76,6 +77,7 @@ export const FungibleTokenCreate = () => {
   }, []);
 
   const handleIssueFTToken = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
     try {
       const issueFTMsg = FT.Issue({
         issuer: account,
@@ -92,6 +94,7 @@ export const FungibleTokenCreate = () => {
     } catch (error) {
       console.log(error);
     }
+    dispatch(setIsTxExecuting(false));
   }, [account, description, featuresToApply, getTxFee, initialAmount, precision, signingClient, subunit, symbol]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
@@ -146,7 +149,9 @@ export const FungibleTokenCreate = () => {
           onClick={handleIssueFTToken}
           type={ButtonType.Primary}
           iconType={ButtonIconType.Token}
-          disabled={!isFormValid}
+          disabled={!isFormValid || isTxExecuting}
+          loading={isTxExecuting}
+          className="min-w-[200px]"
         />
       );
     }
@@ -159,7 +164,7 @@ export const FungibleTokenCreate = () => {
         iconType={ButtonIconType.Wallet}
       />
     );
-  }, [isConnected, isFormValid, handleIssueFTToken]);
+  }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
 
   return (
     <div className="flex flex-col gap-10">

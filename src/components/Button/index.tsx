@@ -2,6 +2,7 @@ import { ButtonIcon } from "@/assets/ButtonIcon";
 import { ButtonIconColorScheme, ButtonIconType, ButtonType } from "@/shared/types";
 import classNames from "classnames";
 import { FC, useMemo } from "react";
+import { Spinner } from "../Spinner";
 
 interface ButtonProps {
   label: string;
@@ -12,6 +13,7 @@ interface ButtonProps {
   icon?: React.ReactNode;
   className?: string;
   iconClassName?: string;
+  loading?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -23,6 +25,7 @@ export const Button: FC<ButtonProps> = ({
   icon,
   className,
   iconClassName,
+  loading,
 }) => {
   const buttonCx = classNames('flex items-center justify-center gap-1 rounded-xl text-base py-3 px-12 w-full text-nowrap font-noto-sans enabled:hover:opacity-50', {
     'bg-green-gradient text-[#21262E]': type === 'primary' && !disabled,
@@ -51,6 +54,17 @@ export const Button: FC<ButtonProps> = ({
 
     return null;
   }, [disabled, icon, iconClassName, iconType, type]);
+
+  if (loading) {
+    return (
+      <button
+        type="button"
+        className={buttonCx}
+      >
+        <Spinner />
+      </button>
+    );
+  }
 
   return (
     <button

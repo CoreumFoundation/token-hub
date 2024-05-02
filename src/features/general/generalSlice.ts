@@ -11,6 +11,7 @@ export interface GeneralState {
   account: string;
   isConnected: boolean;
   destinationChain: ChainInfo | null;
+  isTxExecuting: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -20,6 +21,7 @@ export const initialGeneralState: GeneralState = {
   account: '',
   isConnected: false,
   destinationChain: null,
+  isTxExecuting: false,
 };
 
 const generalSlice = createSlice({
@@ -46,10 +48,20 @@ const generalSlice = createSlice({
     },
     setDestinationChain(state, action: PayloadAction<ChainInfo>) {
       state.destinationChain = action.payload;
-    }
+    },
+    setIsTxExecuting(state, action: PayloadAction<boolean>) {
+      state.isTxExecuting = action.payload;
+    },
   },
 });
 
-export const { setIsConnectModalOpen, setNetwork, setAccount, setIsConnected, setDestinationChain } = generalSlice.actions;
+export const {
+  setIsConnectModalOpen,
+  setNetwork,
+  setAccount,
+  setIsConnected,
+  setDestinationChain,
+  setIsTxExecuting,
+} = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

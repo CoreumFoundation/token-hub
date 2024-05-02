@@ -8,7 +8,7 @@ import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
-import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { convertSubunitToUnit, convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
@@ -29,6 +29,7 @@ export const FungibleTokenSend = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const destinationChain = useAppSelector(state => state.general.destinationChain);
   const account = useAppSelector(state => state.general.account);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -101,6 +102,7 @@ export const FungibleTokenSend = () => {
   }, []);
 
   const handleSendTokens = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
     try {
       const sendFTMsg = Bank.Send({
         fromAddress: account,
@@ -121,6 +123,7 @@ export const FungibleTokenSend = () => {
     } catch (error) {
       console.log(error);
     }
+    dispatch(setIsTxExecuting(false));
   }, [account, amount, currentCurrency, destinationAddress, getTxFee, signingClient]);
 
   const handleMaxButtonClick = useCallback(() => {
@@ -135,7 +138,9 @@ export const FungibleTokenSend = () => {
           onClick={handleSendTokens}
           type={ButtonType.Primary}
           iconType={ButtonIconType.Send}
-          disabled={!isFormValid}
+          disabled={!isFormValid || isTxExecuting}
+          loading={isTxExecuting}
+          className="min-w-[200px]"
         />
       );
     }
@@ -148,7 +153,7 @@ export const FungibleTokenSend = () => {
         iconType={ButtonIconType.Wallet}
       />
     );
-  }, [isConnected, isFormValid, handleSendTokens]);
+  }, [isConnected, isFormValid, handleSendTokens, isTxExecuting]);
 
   return (
     <div className="flex flex-col gap-10">

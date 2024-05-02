@@ -44,12 +44,15 @@ export enum GeneralIconType {
   Close = 'close',
   Percentage = 'percentage',
   ArrowRight = 'arrow_right',
-  Loading = 'loading',
   Copy = 'copy',
   Switch = 'switch',
   Explorer = 'explorer',
   Disconnect = 'disconnect',
   DefaultToken = 'default_token',
+  Dots = 'dots',
+  Send = 'send',
+  Burn = 'burn',
+  Manage = 'manage',
 };
 
 export enum TabItemType {
@@ -170,4 +173,11 @@ export interface Token {
   send_commission_rate?: string;
   uri?: string;
   uri_hash?: string;
+}
+
+export interface ActionItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
 }

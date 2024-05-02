@@ -36,12 +36,14 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
 export interface CurrenciesState {
   isLoading: boolean;
   list: Token[];
+  issuedList: Token[];
   isFetched: boolean;
 }
 
 export const initialCurrenciesState: CurrenciesState = {
   isLoading: false,
   list: [COREUM_TOKEN],
+  issuedList: [],
   isFetched: false,
 };
 
@@ -51,6 +53,7 @@ const currenciesSlice = createSlice({
   reducers: {
     setCurrencies(state, action: PayloadAction<any[]>) {
       state.list = action.payload;
+      state.issuedList = action.payload;
       state.isLoading = false;
     },
   },
@@ -65,6 +68,7 @@ const currenciesSlice = createSlice({
     builder.addCase(fetchCurrenciesByAccount.fulfilled, (state, action) => {
       state.list = [COREUM_TOKEN].concat(action.payload);
       state.isLoading = false;
+      state.issuedList = action.payload;
     })
   },
 });

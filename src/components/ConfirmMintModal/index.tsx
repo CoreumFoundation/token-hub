@@ -5,19 +5,24 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
 import { setIsConfirmMintModalOpen } from "@/features/general/generalSlice";
+import { setMintAmount } from "@/features/mint/mintSlice";
 
 export const ConfirmMintModal = () => {
   const isConfirmMintModalOpen = useAppSelector(state => state.general.isConfirmMintModalOpen);
+  const mintAmount = useAppSelector(state => state.mint.amount);
 
   const dispatch = useAppDispatch();
 
   const handleCancel = useCallback(() => {
+    dispatch(setMintAmount('0'));
     dispatch(setIsConfirmMintModalOpen(false));
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log({ mintAmount });
+    dispatch(setMintAmount('0'));
     dispatch(setIsConfirmMintModalOpen(false));
-  }, []);
+  }, [mintAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmMintModalOpen}>

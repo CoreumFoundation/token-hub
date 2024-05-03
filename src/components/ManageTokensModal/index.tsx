@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
-import { setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { TabItem, TabItemType } from "@/shared/types";
 import { MANAGE_FT_TOKENS_TABS } from "@/constants";
 import { Tabs } from "../Tabs";
@@ -12,16 +12,17 @@ import { MintTokens } from "../MintTokens";
 import { FreezeTokens } from "../FreezeTokens";
 import { UnfreezeTokens } from "../UnfreezeTokens";
 import { WhitelistTokens } from "../WhitelistTokens";
+import { setMintAmount } from "@/features/mint/mintSlice";
+import { setFreezeAmount, setFreezeWalletAddress } from "@/features/freeze/freezeSlice";
+import { setUnfreezeAmount, setUnfreezeWalletAddress } from "@/features/unfreeze/unfreezeSlice";
+import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitelist/whitelistSlice";
 
 export const ManageTokensModal = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(MANAGE_FT_TOKENS_TABS[0]);
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const isManageCurrencyModalOpen = useAppSelector(state => state.general.isManageCurrencyModalOpen);
 
-  const [mintAmount, setMintAmount] = useState<string>('0');
-  const [freezeAmount, setFreezeAmount] = useState<string>('0');
-  const [unfreezeAmount, setUnfreezeAmount] = useState<string>('0');
-  const [whitelistAmount, setWhitelistAmount] = useState<string>('0');
+  const [amount, setAmount] = useState<string>('0');
   const [walletAddress, setWalletAddress] = useState<string>('');
 
   const dispatch = useAppDispatch();
@@ -33,31 +34,46 @@ export const ManageTokensModal = () => {
 
   const handleSetTab = useCallback((value: TabItem) => {
     setSelectedTab(value);
+    setAmount('0');
+    setWalletAddress('');
   }, []);
 
   const handleMintTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setMintAmount(amount));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmMintModalOpen(true));
+  }, [amount]);
 
   const handleFreezeTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setFreezeAmount(amount));
+    dispatch(setFreezeWalletAddress(walletAddress));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmFreezeModalOpen(true));
+  }, [amount, walletAddress]);
 
   const handleGloballyFreezeTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmGlobalFreezeModalOpen(true));
+  }, [amount]);
 
   const handleUnfreezeTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setUnfreezeAmount(amount));
+    dispatch(setUnfreezeWalletAddress(walletAddress));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmUnfreezeModalOpen(true));
+  }, [amount, walletAddress]);
 
   const handleGloballyUnfreezeTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmGlobalUnfreezeModalOpen(true));
+  }, [amount]);
 
   const handleWhitelistTokens = useCallback(() => {
-
-  }, []);
+    dispatch(setWhitelistAmount(amount));
+    dispatch(setWhitelistWalletAddress(walletAddress));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmWhitelistModalOpen(true));
+  }, [amount, walletAddress]);
 
   const renderTitle = useMemo(() => {
     return (
@@ -75,8 +91,8 @@ export const ManageTokensModal = () => {
         return (
           <MintTokens
             selectedCurrency={selectedCurrency}
-            mintAmount={mintAmount}
-            setMintAmount={setMintAmount}
+            mintAmount={amount}
+            setMintAmount={setAmount}
             handleMintTokens={handleMintTokens}
           />
         );
@@ -84,8 +100,8 @@ export const ManageTokensModal = () => {
         return (
           <FreezeTokens
             selectedCurrency={selectedCurrency}
-            freezeAmount={freezeAmount}
-            setFreezeAmount={setFreezeAmount}
+            freezeAmount={amount}
+            setFreezeAmount={setAmount}
             walletAddress={walletAddress}
             setWalletAddress={setWalletAddress}
             handleGloballyFreezeTokens={handleGloballyFreezeTokens}
@@ -96,8 +112,8 @@ export const ManageTokensModal = () => {
         return (
           <UnfreezeTokens
             selectedCurrency={selectedCurrency}
-            unfreezeAmount={unfreezeAmount}
-            setUnfreezeAmount={setUnfreezeAmount}
+            unfreezeAmount={amount}
+            setUnfreezeAmount={setAmount}
             walletAddress={walletAddress}
             setWalletAddress={setWalletAddress}
             handleGloballyUnfreezeTokens={handleGloballyUnfreezeTokens}
@@ -108,8 +124,8 @@ export const ManageTokensModal = () => {
         return (
           <WhitelistTokens
             selectedCurrency={selectedCurrency}
-            whitelistAmount={whitelistAmount}
-            setWhitelistAmount={setWhitelistAmount}
+            whitelistAmount={amount}
+            setWhitelistAmount={setAmount}
             walletAddress={walletAddress}
             setWalletAddress={setWalletAddress}
             handleWhitelistTokens={handleWhitelistTokens}
@@ -117,15 +133,7 @@ export const ManageTokensModal = () => {
         );
       default:
     }
-  }, [
-    freezeAmount,
-    mintAmount,
-    selectedCurrency,
-    selectedTab,
-    unfreezeAmount,
-    walletAddress,
-    whitelistAmount,
-  ]);
+  }, [amount, selectedCurrency, selectedTab.id, walletAddress]);
 
   return (
     <Modal

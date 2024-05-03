@@ -1,17 +1,27 @@
 import { alertsReducer } from '@/features/alerts/alertsSlice';
 import { balancesReducer } from '@/features/balances/balancesSlice';
+import { burnReducer } from '@/features/burn/burnSlice';
 import { chainsReducer } from '@/features/chains/chainsSlice';
 import { currenciesReducer } from '@/features/currencies/currenciesSlice';
+import { freezeReducer } from '@/features/freeze/freezeSlice';
 import { generalReducer } from '@/features/general/generalSlice';
+import { mintReducer } from '@/features/mint/mintSlice';
+import { unfreezeReducer } from '@/features/unfreeze/unfreezeSlice';
+import { whitelistReducer } from '@/features/whitelist/whitelistSlice';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 export const store = configureStore({
   reducer: {
     alerts: alertsReducer,
     balances: balancesReducer,
+    burn: burnReducer,
     chains: chainsReducer,
     currencies: currenciesReducer,
+    freeze: freezeReducer,
     general: generalReducer,
+    mint: mintReducer,
+    unfreeze: unfreezeReducer,
+    whitelist: whitelistReducer,
   },
 });
 

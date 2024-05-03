@@ -5,19 +5,24 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
 import { setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen } from "@/features/general/generalSlice";
+import { setWhitelistAmount } from "@/features/whitelist/whitelistSlice";
 
 export const ConfirmWhitelistModal = () => {
   const isConfirmWhitelistModalOpen = useAppSelector(state => state.general.isConfirmWhitelistModalOpen);
+  const whitelistAmount = useAppSelector(state => state.whitelist.amount);
 
   const dispatch = useAppDispatch();
 
   const handleCancel = useCallback(() => {
+    dispatch(setWhitelistAmount(whitelistAmount));
     dispatch(setIsConfirmWhitelistModalOpen(false));
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log({ whitelistAmount });
+    dispatch(setWhitelistAmount(whitelistAmount));
     dispatch(setIsConfirmWhitelistModalOpen(false));
-  }, []);
+  }, [whitelistAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmWhitelistModalOpen}>

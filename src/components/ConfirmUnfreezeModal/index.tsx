@@ -5,19 +5,24 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
 import { setIsConfirmUnfreezeModalOpen } from "@/features/general/generalSlice";
+import { setUnfreezeAmount } from "@/features/unfreeze/unfreezeSlice";
 
 export const ConfirmUnfreezeModal = () => {
   const isConfirmUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmUnfreezeModalOpen);
+  const unfreezeAmount = useAppSelector(state => state.unfreeze.amount);
 
   const dispatch = useAppDispatch();
 
   const handleCancel = useCallback(() => {
+    dispatch(setUnfreezeAmount('0'));
     dispatch(setIsConfirmUnfreezeModalOpen(false));
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log({ unfreezeAmount });
+    dispatch(setUnfreezeAmount('0'));
     dispatch(setIsConfirmUnfreezeModalOpen(false));
-  }, []);
+  }, [unfreezeAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmUnfreezeModalOpen}>

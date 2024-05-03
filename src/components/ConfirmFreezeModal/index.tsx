@@ -5,19 +5,25 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
 import { setIsConfirmFreezeModalOpen, setIsConfirmMintModalOpen } from "@/features/general/generalSlice";
+import { setBurnAmount } from "@/features/burn/burnSlice";
+import { setFreezeAmount } from "@/features/freeze/freezeSlice";
 
 export const ConfirmFreezeModal = () => {
   const isConfirmFreezeModalOpen = useAppSelector(state => state.general.isConfirmFreezeModalOpen);
+  const freezeAmount = useAppSelector(state => state.freeze.amount);
 
   const dispatch = useAppDispatch();
 
   const handleCancel = useCallback(() => {
+    dispatch(setFreezeAmount('0'));
     dispatch(setIsConfirmFreezeModalOpen(false));
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log({freezeAmount});
+    dispatch(setFreezeAmount('0'));
     dispatch(setIsConfirmFreezeModalOpen(false));
-  }, []);
+  }, [freezeAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmFreezeModalOpen}>

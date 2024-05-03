@@ -5,19 +5,24 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
 import { setIsConfirmBurnModalOpen } from "@/features/general/generalSlice";
+import { setBurnAmount } from "@/features/burn/burnSlice";
 
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
+  const burnAmount = useAppSelector(state => state.burn.amount);
 
   const dispatch = useAppDispatch();
 
   const handleCancel = useCallback(() => {
+    dispatch(setBurnAmount('0'));
     dispatch(setIsConfirmBurnModalOpen(false));
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log({burnAmount});
+    dispatch(setBurnAmount('0'));
     dispatch(setIsConfirmBurnModalOpen(false));
-  }, []);
+  }, [burnAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmBurnModalOpen}>

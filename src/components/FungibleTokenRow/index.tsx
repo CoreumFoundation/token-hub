@@ -52,7 +52,7 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
             type={GeneralIconType.DefaultToken}
             className="w-10 h-10"
           />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col items-start gap-1">
             <div className="text-base text-[#EEE] font-medium">
               {symbol}
             </div>
@@ -62,7 +62,7 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
           </div>
         </div>
         <div className="grid grid-cols-2 w-full items-center gap-6">
-          <div className="grid-cols-1 flex flex-col gap-1">
+          <div className="grid-cols-1 flex flex-col items-start gap-1">
             <div className="text-sm text-[#5E6773]">
               Precision
             </div>
@@ -70,12 +70,13 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
               {precision}
             </div>
           </div>
-          <div className="grid-cols-1 flex flex-col  gap-1">
+          <div className="grid-cols-1 flex flex-col items-start gap-1 max-w-full">
             <div className="text-sm text-[#5E6773]">
               Balance
             </div>
-            <div className="text-base text-[#EEE] break-words">
-              {balance} <span className="text-sm">{symbol.toUpperCase()}</span>
+            <div className="text-base text-[#EEE] items-end flex flex-wrap max-w-full gap-1">
+              <span className="text-left items-start break-words max-w-full">{balance}</span>
+              <span className="text-sm">{symbol.toUpperCase()}</span>
             </div>
           </div>
         </div>

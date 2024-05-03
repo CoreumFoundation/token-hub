@@ -17,6 +17,13 @@ import { AppProvider } from "@/providers/AppProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
 import { BurnTokensModal } from "../BurnTokensModal";
 import { ManageTokensModal } from "../ManageTokensModal";
+import { ConfirmMintModal } from "../ConfirmMintModal";
+import { ConfirmBurnModal } from "../ConfirmBurnModal";
+import { ConfirmFreezeModal } from "../ConfirmFreezeModal";
+import { ConfirmGlobalFreezeModal } from "../ConfirmGlobalFreezeModal";
+import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
+import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
+import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -101,6 +108,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ConnectWalletModal />
             <BurnTokensModal />
             <ManageTokensModal />
+            <ConfirmMintModal />
+            <ConfirmBurnModal />
+            <ConfirmFreezeModal />
+            <ConfirmGlobalFreezeModal />
+            <ConfirmUnfreezeModal />
+            <ConfirmGlobalUnfreezeModal />
+            <ConfirmWhitelistModal />
           </div>
         </AppProvider>
       </ReduxProvider>

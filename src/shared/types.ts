@@ -186,3 +186,12 @@ export interface ActionItem {
   icon: React.ReactNode;
   onClick: () => void;
 }
+
+export enum ConfirmationModalImageType {
+  Success = 'success',
+  Mint = 'mint',
+  Freeze = 'freeze',
+  Unfreeze = 'unfreeze',
+  Whitelist = 'whitelist',
+  Burn = 'burn',
+}

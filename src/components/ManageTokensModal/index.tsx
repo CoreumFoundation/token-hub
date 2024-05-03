@@ -59,7 +59,6 @@ export const ManageTokensModal = () => {
 
   }, []);
 
-
   const renderTitle = useMemo(() => {
     return (
       <Tabs

@@ -14,6 +14,13 @@ export interface GeneralState {
   isConnectModalOpen: boolean;
   isManageCurrencyModalOpen: boolean;
   isBurnCurrencyModalOpen: boolean;
+  isConfirmMintModalOpen: boolean;
+  isConfirmFreezeModalOpen: boolean;
+  isConfirmGlobalFreezeModalOpen: boolean;
+  isConfirmUnfreezeModalOpen: boolean;
+  isConfirmGlobalUnfreezeModalOpen: boolean;
+  isConfirmWhitelistModalOpen: boolean;
+  isConfirmBurnModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -26,6 +33,13 @@ export const initialGeneralState: GeneralState = {
   isConnectModalOpen: false,
   isManageCurrencyModalOpen: false,
   isBurnCurrencyModalOpen: false,
+  isConfirmMintModalOpen: false,
+  isConfirmFreezeModalOpen: false,
+  isConfirmGlobalFreezeModalOpen: false,
+  isConfirmUnfreezeModalOpen: false,
+  isConfirmGlobalUnfreezeModalOpen: false,
+  isConfirmWhitelistModalOpen: false,
+  isConfirmBurnModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -62,6 +76,27 @@ const generalSlice = createSlice({
     setIsBurnCurrencyModalOpen(state, action: PayloadAction<boolean>) {
       state.isBurnCurrencyModalOpen = action.payload;
     },
+    setIsConfirmMintModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmMintModalOpen = action.payload;
+    },
+    setIsConfirmFreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmFreezeModalOpen = action.payload;
+    },
+    setIsConfirmGlobalFreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmGlobalFreezeModalOpen = action.payload;
+    },
+    setIsConfirmUnfreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmUnfreezeModalOpen = action.payload;
+    },
+    setIsConfirmGlobalUnfreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmGlobalUnfreezeModalOpen = action.payload;
+    },
+    setIsConfirmWhitelistModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmWhitelistModalOpen = action.payload;
+    },
+    setIsConfirmBurnModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmBurnModalOpen = action.payload;
+    },
   },
 });
 
@@ -74,6 +109,13 @@ export const {
   setIsTxExecuting,
   setIsManageCurrencyModalOpen,
   setIsBurnCurrencyModalOpen,
+  setIsConfirmMintModalOpen,
+  setIsConfirmFreezeModalOpen,
+  setIsConfirmGlobalFreezeModalOpen,
+  setIsConfirmUnfreezeModalOpen,
+  setIsConfirmGlobalUnfreezeModalOpen,
+  setIsConfirmWhitelistModalOpen,
+  setIsConfirmBurnModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

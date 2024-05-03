@@ -4,13 +4,14 @@ import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
-import { setIsBurnCurrencyModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
-import { ButtonType, GeneralIconType, TabItem, TabItemType } from "@/shared/types";
+import { setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
+import { TabItem, TabItemType } from "@/shared/types";
 import { MANAGE_FT_TOKENS_TABS } from "@/constants";
 import { Tabs } from "../Tabs";
-import { Input } from "../Input";
-import { GeneralIcon } from "@/assets/GeneralIcon";
-import { Button } from "../Button";
+import { MintTokens } from "../MintTokens";
+import { FreezeTokens } from "../FreezeTokens";
+import { UnfreezeTokens } from "../UnfreezeTokens";
+import { WhitelistTokens } from "../WhitelistTokens";
 
 export const ManageTokensModal = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(MANAGE_FT_TOKENS_TABS[0]);
@@ -69,173 +70,63 @@ export const ManageTokensModal = () => {
     );
   }, [selectedTab]);
 
-  const renderMintBody = useMemo(() => {
-    return (
-      <div className="flex flex-col w-full gap-8">
-        <Input
-          label="Mint Amount"
-          value={mintAmount}
-          onChange={setMintAmount}
-          placeholder="0"
-          type="number"
-          buttonLabel={(
-            <div className="flex items-center gap-1.5 text-[#EEE]">
-              <GeneralIcon type={GeneralIconType.DefaultToken} />
-              {selectedCurrency?.symbol.toUpperCase()}
-            </div>
-          )}
-          warning="The minted tokens will be transferred to the issuer address"
-        />
-        <div className="flex w-full justify-end">
-          <div className="flex items-center">
-            <Button
-              label="Continue"
-              onClick={handleMintTokens}
-              type={ButtonType.Primary}
-              className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }, [mintAmount, selectedCurrency]);
-
-  const renderFreezeBody = useMemo(() => {
-    return (
-      <div className="flex flex-col w-full gap-8">
-        <Input
-          label="Account Address"
-          value={walletAddress}
-          onChange={setWalletAddress}
-          placeholder="Enter wallet address"
-          buttonLabel="Paste"
-        />
-        <Input
-          label="Freeze Amount"
-          value={freezeAmount}
-          onChange={setFreezeAmount}
-          placeholder="0"
-          type="number"
-          buttonLabel={(
-            <div className="flex items-center gap-1.5 text-[#EEE]">
-              <GeneralIcon type={GeneralIconType.DefaultToken} />
-              {selectedCurrency?.symbol.toUpperCase()}
-            </div>
-          )}
-          warning={`The target account will have this amount of ${selectedCurrency?.symbol.toUpperCase()} frozen and won't be able to transfer it.`}
-        />
-        <div className="flex w-full justify-between gap-4">
-          <Button
-            label="Globally Freeze"
-            onClick={handleGloballyFreezeTokens}
-            type={ButtonType.Secondary}
-            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-          />
-          <Button
-            label="Continue"
-            onClick={handleFreezeTokens}
-            type={ButtonType.Primary}
-            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-          />
-        </div>
-      </div>
-    );
-  }, [freezeAmount, selectedCurrency, walletAddress]);
-
-  const renderUnfreezeBody = useMemo(() => {
-    return (
-      <div className="flex flex-col w-full gap-8">
-        <Input
-          label="Account Address"
-          value={walletAddress}
-          onChange={setWalletAddress}
-          placeholder="Enter wallet address"
-          buttonLabel="Paste"
-        />
-        <Input
-          label="Unfreeze Amount"
-          value={unfreezeAmount}
-          onChange={setUnfreezeAmount}
-          placeholder="0"
-          type="number"
-          buttonLabel={(
-            <div className="flex items-center gap-1.5 text-[#EEE]">
-              <GeneralIcon type={GeneralIconType.DefaultToken} />
-              {selectedCurrency?.symbol.toUpperCase()}
-            </div>
-          )}
-          warning={`The target account will have this amount of ${selectedCurrency?.symbol.toUpperCase()} unfrozen and will be able to transfer it.`}
-        />
-        <div className="flex w-full justify-between gap-4">
-          <Button
-            label="Globally Unreeze"
-            onClick={handleGloballyUnfreezeTokens}
-            type={ButtonType.Secondary}
-            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-          />
-          <Button
-            label="Continue"
-            onClick={handleUnfreezeTokens}
-            type={ButtonType.Primary}
-            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-          />
-        </div>
-      </div>
-    );
-  }, [selectedCurrency, unfreezeAmount, walletAddress]);
-
-  const renderWhitelistBody = useMemo(() => {
-    return (
-      <div className="flex flex-col w-full gap-8">
-        <Input
-          label="Account Address"
-          value={walletAddress}
-          onChange={setWalletAddress}
-          placeholder="Enter wallet address"
-          buttonLabel="Paste"
-        />
-        <Input
-          label="Whitelist Amount"
-          value={whitelistAmount}
-          onChange={setWhitelistAmount}
-          placeholder="0"
-          type="number"
-          buttonLabel={(
-            <div className="flex items-center gap-1.5 text-[#EEE]">
-              <GeneralIcon type={GeneralIconType.DefaultToken} />
-              {selectedCurrency?.symbol.toUpperCase()}
-            </div>
-          )}
-          warning={`The target account will be able to hold up to this amount of ${selectedCurrency?.symbol.toUpperCase()}`}
-        />
-        <div className="flex w-full justify-end">
-          <div className="flex items-center">
-            <Button
-              label="Continue"
-              onClick={handleWhitelistTokens}
-              type={ButtonType.Primary}
-              className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }, [selectedCurrency, walletAddress, whitelistAmount]);
-
   const renderContent = useMemo(() => {
     switch (selectedTab.id) {
       case TabItemType.Mint:
-        return renderMintBody;
+        return (
+          <MintTokens
+            selectedCurrency={selectedCurrency}
+            mintAmount={mintAmount}
+            setMintAmount={setMintAmount}
+            handleMintTokens={handleMintTokens}
+          />
+        );
       case TabItemType.Freeze:
-        return renderFreezeBody;
+        return (
+          <FreezeTokens
+            selectedCurrency={selectedCurrency}
+            freezeAmount={freezeAmount}
+            setFreezeAmount={setFreezeAmount}
+            walletAddress={walletAddress}
+            setWalletAddress={setWalletAddress}
+            handleGloballyFreezeTokens={handleGloballyFreezeTokens}
+            handleFreezeTokens={handleFreezeTokens}
+          />
+        );
       case TabItemType.Unfreeze:
-        return renderUnfreezeBody;
+        return (
+          <UnfreezeTokens
+            selectedCurrency={selectedCurrency}
+            unfreezeAmount={unfreezeAmount}
+            setUnfreezeAmount={setUnfreezeAmount}
+            walletAddress={walletAddress}
+            setWalletAddress={setWalletAddress}
+            handleGloballyUnfreezeTokens={handleGloballyUnfreezeTokens}
+            handleUnfreezeTokens={handleUnfreezeTokens}
+          />
+        );
       case TabItemType.Whitelist:
-        return renderWhitelistBody;
+        return (
+          <WhitelistTokens
+            selectedCurrency={selectedCurrency}
+            whitelistAmount={whitelistAmount}
+            setWhitelistAmount={setWhitelistAmount}
+            walletAddress={walletAddress}
+            setWalletAddress={setWalletAddress}
+            handleWhitelistTokens={handleWhitelistTokens}
+          />
+        );
       default:
-
     }
-  }, [renderFreezeBody, renderMintBody, renderUnfreezeBody, renderWhitelistBody, selectedTab.id]);
+  }, [
+    freezeAmount,
+    mintAmount,
+    selectedCurrency,
+    selectedTab,
+    unfreezeAmount,
+    walletAddress,
+    whitelistAmount,
+  ]);
 
   return (
     <Modal

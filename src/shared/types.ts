@@ -53,12 +53,17 @@ export enum GeneralIconType {
   Send = 'send',
   Burn = 'burn',
   Manage = 'manage',
+  Warning = 'warning',
 };
 
 export enum TabItemType {
   Create = 'create',
   Send = 'send',
   Manage = 'manage',
+  Mint = 'mint',
+  Freeze = 'freeze',
+  Unfreeze = 'unfreeze',
+  Whitelist = 'whitelist',
 };
 
 export enum TabSwitchItemType {

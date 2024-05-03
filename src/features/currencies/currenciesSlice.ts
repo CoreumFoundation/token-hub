@@ -38,6 +38,7 @@ export interface CurrenciesState {
   list: Token[];
   issuedList: Token[];
   isFetched: boolean;
+  selectedCurrency: Token | null;
 }
 
 export const initialCurrenciesState: CurrenciesState = {
@@ -45,6 +46,7 @@ export const initialCurrenciesState: CurrenciesState = {
   list: [COREUM_TOKEN],
   issuedList: [],
   isFetched: false,
+  selectedCurrency: null,
 };
 
 const currenciesSlice = createSlice({
@@ -55,6 +57,9 @@ const currenciesSlice = createSlice({
       state.list = action.payload;
       state.issuedList = action.payload;
       state.isLoading = false;
+    },
+    setSelectedCurrency(state, action: PayloadAction<Token | null>) {
+      state.selectedCurrency = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -73,6 +78,6 @@ const currenciesSlice = createSlice({
   },
 });
 
-export const { setCurrencies } = currenciesSlice.actions;
+export const { setCurrencies, setSelectedCurrency } = currenciesSlice.actions;
 export const currenciesReducer = currenciesSlice.reducer;
 export default currenciesSlice.reducer;

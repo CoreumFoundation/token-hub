@@ -199,3 +199,22 @@ export const COREUM_TOKEN: Token = {
   subunit: 'utestcore',
   precision: 6,
 };
+
+export const MANAGE_FT_TOKENS_TABS: TabItem[] = [
+  {
+    id: TabItemType.Mint,
+    label: 'Mint',
+  },
+  {
+    id: TabItemType.Freeze,
+    label: 'Freeze',
+  },
+  {
+    id: TabItemType.Unfreeze,
+    label: 'Unfreeze',
+  },
+  {
+    id: TabItemType.Whitelist,
+    label: 'Whitelist',
+  }
+];

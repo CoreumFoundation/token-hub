@@ -170,6 +170,53 @@ export const GeneralIcon: FC<GeneralIconProps> = ({
           <path fillRule="evenodd" clipRule="evenodd" d="M2 5.941C2.00498 5.83929 2.03774 5.74086 2.09471 5.65645C2.15166 5.57191 2.23083 5.50453 2.32345 5.46193L10.2992 2.04202C10.43 1.98599 10.578 1.98599 10.7087 2.04202L18.6849 5.46208C18.7777 5.50308 18.8566 5.56994 18.9126 5.65471C18.9685 5.73949 18.9988 5.83885 19 5.94037L19 15.0602C18.9999 15.162 18.9698 15.2617 18.9135 15.3465C18.8572 15.4314 18.7771 15.4981 18.6834 15.5378L10.703 18.958C10.5728 19.014 10.4253 19.014 10.2952 18.958L2.31494 15.5378C2.22147 15.4978 2.14189 15.4312 2.08584 15.3463C2.02981 15.2614 2 15.162 2 15.0602V5.941ZM3.03967 14.7178L9.9805 17.6924V9.70242L3.03967 6.72761V14.7178ZM3.83948 5.93982L10.5002 8.79507L17.161 5.93982L10.5002 3.0851L3.83948 5.93982ZM11.0199 17.6924L17.9608 14.7178V6.72761L11.0199 9.70229V17.6924Z" fill="#5E6773"/>
         </svg>
       );
+    case GeneralIconType.Warning:
+      return (
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_12419_4700)">
+            <g filter="url(#filter0_f_12419_4700)">
+              <circle cx="9" cy="8.99994" r="9" fill="url(#paint0_linear_12419_4700)" fill-opacity="0.7"/>
+            </g>
+            <g filter="url(#filter1_b_12419_4700)">
+              <circle cx="9" cy="8.99994" r="9" fill="white" fill-opacity="0.3" style={{ mixBlendMode: "overlay" }} />
+              <circle cx="9" cy="8.99994" r="8.5" stroke="url(#paint1_linear_12419_4700)" style={{ mixBlendMode: "overlay" }} />
+            </g>
+            <circle cx="9" cy="8.99994" r="8.5" stroke="url(#paint2_linear_12419_4700)"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.53987 10.729H9.5005C9.57912 10.729 9.64398 10.6676 9.64847 10.5894L9.99827 5.29751C10.0143 5.01981 9.91806 4.75544 9.72709 4.55332C9.34457 4.14793 8.65193 4.14909 8.27071 4.55564C8.0796 4.75949 7.98419 5.02532 8.00214 5.30417L8.3919 10.5903C8.39697 10.6681 8.46168 10.729 8.53987 10.729ZM8.13086 12.619C8.13086 13.0979 8.52062 13.4877 8.9997 13.4877C9.47865 13.4877 9.8684 13.0979 9.8684 12.619C9.8684 12.1398 9.47865 11.75 8.9997 11.75C8.52062 11.75 8.13086 12.1398 8.13086 12.619Z" fill="white"/>
+          </g>
+          <defs>
+            <filter id="filter0_f_12419_4700" x="-10" y="-10.0001" width="38" height="38" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+              <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+              <feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_12419_4700"/>
+            </filter>
+            <filter id="filter1_b_12419_4700" x="-10" y="-10.0001" width="38" height="38" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+              <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+              <feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
+              <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_12419_4700"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_12419_4700" result="shape"/>
+            </filter>
+            <linearGradient id="paint0_linear_12419_4700" x1="11.475" y1="21.923" x2="11.7117" y2="6.49144e-05" gradientUnits="userSpaceOnUse">
+              <stop offset="0.481481" stopColor="#FFA02E" stopOpacity="0"/>
+              <stop offset="0.736111" stopColor="#E9850D"/>
+              <stop offset="0.949074" stopColor="#FFA02E"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_12419_4700" x1="9" y1="-6.10352e-05" x2="9" y2="17.9999" gradientUnits="userSpaceOnUse">
+              <stop stopColor="white"/>
+              <stop offset="0.284905" stopColor="white" stopOpacity="0"/>
+              <stop offset="0.828955" stopColor="white" stopOpacity="0"/>
+              <stop offset="1" stopColor="white"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear_12419_4700" x1="10.575" y1="20.7692" x2="10.3383" y2="1.15393" gradientUnits="userSpaceOnUse">
+              <stop offset="0.856716" stopColor="#FFA02E" stopOpacity="0"/>
+              <stop offset="1" stopColor="#FFA02E" stopOpacity="0.1"/>
+            </linearGradient>
+            <clipPath id="clip0_12419_4700">
+              <rect width="18" height="18" rx="9" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      );
     default:
       return null;
   }

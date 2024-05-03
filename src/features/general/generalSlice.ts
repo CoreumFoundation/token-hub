@@ -5,23 +5,27 @@ import { ChainInfo as KeplrChainInfo } from '@keplr-wallet/types';
 import { ChainInfo } from '@/shared/types';
 
 export interface GeneralState {
-  isConnectModalOpen: boolean;
   network: Network;
   currentNetworkInfo: KeplrChainInfo;
   account: string;
   isConnected: boolean;
   destinationChain: ChainInfo | null;
   isTxExecuting: boolean;
+  isConnectModalOpen: boolean;
+  isManageCurrencyModalOpen: boolean;
+  isBurnCurrencyModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
-  isConnectModalOpen: false,
   network: Network.Testnet,
   currentNetworkInfo: coreumtestnet,
   account: '',
   isConnected: false,
   destinationChain: null,
   isTxExecuting: false,
+  isConnectModalOpen: false,
+  isManageCurrencyModalOpen: false,
+  isBurnCurrencyModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -52,6 +56,12 @@ const generalSlice = createSlice({
     setIsTxExecuting(state, action: PayloadAction<boolean>) {
       state.isTxExecuting = action.payload;
     },
+    setIsManageCurrencyModalOpen(state, action: PayloadAction<boolean>) {
+      state.isManageCurrencyModalOpen = action.payload;
+    },
+    setIsBurnCurrencyModalOpen(state, action: PayloadAction<boolean>) {
+      state.isBurnCurrencyModalOpen = action.payload;
+    },
   },
 });
 
@@ -62,6 +72,8 @@ export const {
   setIsConnected,
   setDestinationChain,
   setIsTxExecuting,
+  setIsManageCurrencyModalOpen,
+  setIsBurnCurrencyModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

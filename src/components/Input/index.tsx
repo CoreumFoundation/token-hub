@@ -13,9 +13,10 @@ interface InputProps {
   disabled?: boolean;
   id?: string;
   error?: string;
-  buttonLabel?: string;
+  buttonLabel?: string | React.ReactNode;
   handleOnButtonClick?: () => void;
   icon?: React.ReactNode;
+  warning?: string;
 }
 
 export const Input: FC<InputProps> = ({
@@ -30,6 +31,7 @@ export const Input: FC<InputProps> = ({
   buttonLabel,
   handleOnButtonClick,
   icon,
+  warning,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -94,8 +96,13 @@ export const Input: FC<InputProps> = ({
           </div>
         )}
       </div>
+      {warning && (
+        <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
+          <GeneralIcon type={GeneralIconType.Warning} /> {warning}
+        </div>
+      )}
       {error && (
-        <div className="absolute bottom-0 flex items-center gap-2 -mb-7 text-xs text-[#DE0F3E]">
+        <div className="absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]">
           <GeneralIcon type={GeneralIconType.Error} /> {error}
         </div>
       )}

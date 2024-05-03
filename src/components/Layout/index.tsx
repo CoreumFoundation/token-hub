@@ -15,6 +15,8 @@ import { ConnectWalletModal } from "../ConnectWalletModal";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 import { AppProvider } from "@/providers/AppProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
+import { BurnTokensModal } from "../BurnTokensModal";
+import { ManageTokensModal } from "../ManageTokensModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -97,6 +99,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <Footer />
             <ConnectWalletModal />
+            <BurnTokensModal />
+            <ManageTokensModal />
           </div>
         </AppProvider>
       </ReduxProvider>

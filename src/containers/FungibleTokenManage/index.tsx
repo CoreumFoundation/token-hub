@@ -6,12 +6,14 @@ import Image from "next/image";
 import { Button } from "@/components/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo } from "react";
-import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { setIsBurnCurrencyModalOpen, setIsConnectModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { ButtonType, ButtonIconType, Token, GeneralIconType } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { FungibleTokenRow } from "@/components/FungibleTokenRow";
 import { Coin } from "@cosmjs/amino";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
+import { Spinner } from "@/components/Spinner";
+import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 
 export const FungibleTokenManage = () => {
   const currencies = useAppSelector(state => state.currencies.issuedList);
@@ -25,8 +27,30 @@ export const FungibleTokenManage = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
+  const handleCurrencySendClick = useCallback((currency: Token) => {
+    dispatch(setSelectedCurrency(currency));
+  }, []);
+
+  const handleCurrencyManageClick = useCallback((currency: Token) => {
+    dispatch(setSelectedCurrency(currency));
+    dispatch(setIsManageCurrencyModalOpen(true));
+  }, []);
+
+  const handleCurrencyBurnClick = useCallback((currency: Token) => {
+    dispatch(setSelectedCurrency(currency));
+    dispatch(setIsBurnCurrencyModalOpen(true));
+  }, []);
+
   const renderContent = useMemo(() => {
     if (isConnected) {
+      if (isFetching) {
+        return (
+          <div className="flex flex-col w-full">
+            <Spinner />
+          </div>
+        );
+      }
+
       if (currencies.length) {
         return (
           <div className="flex flex-col w-full gap-3">
@@ -43,6 +67,9 @@ export const FungibleTokenManage = () => {
                     amount: currentTokenBalance?.amount || '0',
                     precision: currency.precision,
                   })}
+                  onSendClick={() => handleCurrencySendClick(currency)}
+                  onManageClick={() => handleCurrencyManageClick(currency)}
+                  onBurnClick={() => handleCurrencyBurnClick(currency)}
                 />
               );
             })}

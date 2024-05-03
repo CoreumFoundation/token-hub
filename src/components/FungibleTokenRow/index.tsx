@@ -9,6 +9,9 @@ interface FungibleTokenRowProps {
   precision: number;
   balance: string;
   className?: string;
+  onSendClick: () => void;
+  onManageClick: () => void;
+  onBurnClick: () => void;
 }
 
 export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
@@ -16,25 +19,28 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
   subunit,
   precision,
   balance,
+  onSendClick,
+  onManageClick,
+  onBurnClick,
 }) => {
   const items: ActionItem[] = [
     {
       id: 'send',
       label: 'Send',
       icon: <GeneralIcon type={GeneralIconType.Send} />,
-      onClick: () => {},
+      onClick: onSendClick,
     },
     {
       id: 'burn',
       label: 'Burn',
       icon: <GeneralIcon type={GeneralIconType.Burn} />,
-      onClick: () => {},
+      onClick: onBurnClick,
     },
     {
       id: 'manage',
       label: 'Manage',
       icon: <GeneralIcon type={GeneralIconType.Manage} />,
-      onClick: () => {},
+      onClick: onManageClick,
     },
   ];
 

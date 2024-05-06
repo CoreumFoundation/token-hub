@@ -19,6 +19,7 @@ export const ConfirmWhitelistModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // TODO: add whitelist
     console.log({ whitelistAmount });
     dispatch(setWhitelistAmount(whitelistAmount));
     dispatch(setIsConfirmWhitelistModalOpen(false));

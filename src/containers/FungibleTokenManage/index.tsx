@@ -14,6 +14,7 @@ import { Coin } from "@cosmjs/amino";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { Spinner } from "@/components/Spinner";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { getFTCurrencyOptions } from "@/helpers/getManageFtTabs";
 
 export const FungibleTokenManage = () => {
   const currencies = useAppSelector(state => state.currencies.issuedList);
@@ -56,6 +57,7 @@ export const FungibleTokenManage = () => {
           <div className="flex flex-col w-full gap-3">
             {currencies.map((currency: Token) => {
               const currentTokenBalance = balances.find((item: Coin) => item.denom === currency.denom);
+              let [isBurnable, isManageable] = getFTCurrencyOptions(currency);
 
               return (
                 <FungibleTokenRow
@@ -70,6 +72,8 @@ export const FungibleTokenManage = () => {
                   onSendClick={() => handleCurrencySendClick(currency)}
                   onManageClick={() => handleCurrencyManageClick(currency)}
                   onBurnClick={() => handleCurrencyBurnClick(currency)}
+                  isBurnable={isBurnable}
+                  isManageable={isManageable}
                 />
               );
             })}

@@ -20,6 +20,7 @@ export const ConfirmFreezeModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // TODO: add freeze
     console.log({freezeAmount});
     dispatch(setFreezeAmount('0'));
     dispatch(setIsConfirmFreezeModalOpen(false));

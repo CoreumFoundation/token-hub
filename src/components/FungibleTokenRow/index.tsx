@@ -12,6 +12,8 @@ interface FungibleTokenRowProps {
   onSendClick: () => void;
   onManageClick: () => void;
   onBurnClick: () => void;
+  isBurnable: boolean;
+  isManageable: boolean;
 }
 
 export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
@@ -22,27 +24,35 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
   onSendClick,
   onManageClick,
   onBurnClick,
+  isBurnable,
+  isManageable,
 }) => {
-  const items: ActionItem[] = [
+  let items: ActionItem[] = [
     {
       id: 'send',
       label: 'Send',
       icon: <GeneralIcon type={GeneralIconType.Send} />,
       onClick: onSendClick,
-    },
-    {
+    }
+  ];
+
+  if (isBurnable) {
+    items.push({
       id: 'burn',
       label: 'Burn',
       icon: <GeneralIcon type={GeneralIconType.Burn} />,
       onClick: onBurnClick,
-    },
-    {
+    });
+  }
+
+  if (isManageable) {
+    items.push({
       id: 'manage',
       label: 'Manage',
       icon: <GeneralIcon type={GeneralIconType.Manage} />,
       onClick: onManageClick,
-    },
-  ];
+    })
+  };
 
   return (
     <ActionRow actionItems={items}>

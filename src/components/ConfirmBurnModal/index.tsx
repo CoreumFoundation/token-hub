@@ -19,6 +19,7 @@ export const ConfirmBurnModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // TODO: add burn
     console.log({burnAmount});
     dispatch(setBurnAmount('0'));
     dispatch(setIsConfirmBurnModalOpen(false));

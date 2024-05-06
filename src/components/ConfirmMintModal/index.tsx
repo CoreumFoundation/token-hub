@@ -19,6 +19,7 @@ export const ConfirmMintModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // TODO: add mint
     console.log({ mintAmount });
     dispatch(setMintAmount('0'));
     dispatch(setIsConfirmMintModalOpen(false));

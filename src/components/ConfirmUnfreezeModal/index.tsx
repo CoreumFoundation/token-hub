@@ -19,6 +19,7 @@ export const ConfirmUnfreezeModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // TODO: add unfreeze
     console.log({ unfreezeAmount });
     dispatch(setUnfreezeAmount('0'));
     dispatch(setIsConfirmUnfreezeModalOpen(false));

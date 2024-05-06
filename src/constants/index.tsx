@@ -200,21 +200,21 @@ export const COREUM_TOKEN: Token = {
   precision: 6,
 };
 
-export const MANAGE_FT_TOKENS_TABS: TabItem[] = [
-  {
+export const MANAGE_FT_TOKENS_TABS = {
+  'minting':  {
     id: TabItemType.Mint,
     label: 'Mint',
   },
-  {
+  'burning': {
     id: TabItemType.Freeze,
     label: 'Freeze',
   },
-  {
+  'freezing': {
     id: TabItemType.Unfreeze,
     label: 'Unfreeze',
   },
-  {
+  'whitelisting': {
     id: TabItemType.Whitelist,
     label: 'Whitelist',
   }
-];
+};

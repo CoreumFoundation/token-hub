@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
@@ -16,10 +16,20 @@ import { setMintAmount } from "@/features/mint/mintSlice";
 import { setFreezeAmount, setFreezeWalletAddress } from "@/features/freeze/freezeSlice";
 import { setUnfreezeAmount, setUnfreezeWalletAddress } from "@/features/unfreeze/unfreezeSlice";
 import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitelist/whitelistSlice";
+import { getManageFTTabs } from "@/helpers/getManageFtTabs";
 
 export const ManageTokensModal = () => {
-  const [selectedTab, setSelectedTab] = useState<TabItem>(MANAGE_FT_TOKENS_TABS[0]);
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
+  const manageFtTokensTabs = getManageFTTabs(selectedCurrency);
+
+  const [selectedTab, setSelectedTab] = useState<TabItem | null>(manageFtTokensTabs?.[0] || null);
+
+  useEffect(() => {
+    if (manageFtTokensTabs.length && !selectedTab) {
+      handleSetTab(manageFtTokensTabs[0]);
+    }
+  }, [manageFtTokensTabs, selectedTab]);
+
   const isManageCurrencyModalOpen = useAppSelector(state => state.general.isManageCurrencyModalOpen);
 
   const [amount, setAmount] = useState<string>('0');
@@ -30,6 +40,7 @@ export const ManageTokensModal = () => {
   const handleCloseConnectWalletModal = useCallback(() => {
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setSelectedCurrency(null));
+    setSelectedTab(null);
   }, []);
 
   const handleSetTab = useCallback((value: TabItem) => {
@@ -76,17 +87,21 @@ export const ManageTokensModal = () => {
   }, [amount, walletAddress]);
 
   const renderTitle = useMemo(() => {
+    if (!manageFtTokensTabs.length) {
+      return null;
+    }
+
     return (
       <Tabs
         selectedTab={selectedTab}
-        items={MANAGE_FT_TOKENS_TABS}
+        items={manageFtTokensTabs}
         handleSelectTab={handleSetTab}
       />
     );
-  }, [selectedTab]);
+  }, [selectedTab, manageFtTokensTabs]);
 
   const renderContent = useMemo(() => {
-    switch (selectedTab.id) {
+    switch (selectedTab?.id) {
       case TabItemType.Mint:
         return (
           <MintTokens
@@ -133,7 +148,13 @@ export const ManageTokensModal = () => {
         );
       default:
     }
-  }, [amount, selectedCurrency, selectedTab.id, walletAddress]);
+  }, [amount, selectedCurrency, selectedTab, walletAddress]);
+
+  console.log(selectedCurrency, manageFtTokensTabs);
+
+  if (!manageFtTokensTabs.length) {
+    return null;
+  }
 
   return (
     <Modal

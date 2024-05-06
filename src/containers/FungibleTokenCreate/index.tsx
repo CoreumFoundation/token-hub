@@ -13,7 +13,7 @@ import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCap
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
-import { FT, Feature } from 'coreum-js';
+import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 
 export const FungibleTokenCreate = () => {
@@ -87,8 +87,8 @@ export const FungibleTokenCreate = () => {
         initialAmount: initialAmount.length ? initialAmount : '0',
         description,
         features: featuresToApply,
-        burnRate,
-        sendCommissionRate,
+        burnRate: parseFloatToRoyaltyRate(burnRate),
+        sendCommissionRate: parseFloatToRoyaltyRate(sendCommissionRate),
       });
 
       const txFee = await getTxFee([issueFTMsg]);
@@ -107,6 +107,8 @@ export const FungibleTokenCreate = () => {
     signingClient,
     subunit,
     symbol,
+    burnRate,
+    sendCommissionRate,
   ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
@@ -146,12 +148,12 @@ export const FungibleTokenCreate = () => {
   }, [getTokenStateItem]);
 
   const isFormValid = useMemo(() => {
-    if (symbol.length && subunit.length && url.length && description.length && +precision > 0) {
+    if (symbol.length && subunit.length && url.length && description.length && +precision > 0 && +burnRate <= 100 && +sendCommissionRate <= 100) {
       return true;
     }
 
     return false;
-  }, [description.length, subunit.length, symbol.length, url.length, precision]);
+  }, [symbol.length, subunit.length, url.length, description.length, precision, burnRate, sendCommissionRate]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {
@@ -241,6 +243,7 @@ export const FungibleTokenCreate = () => {
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
           type="number"
+          decimals={2}
         />
         <Input
           label="Send Commission Rate"
@@ -249,6 +252,7 @@ export const FungibleTokenCreate = () => {
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
           type="number"
+          decimals={2}
         />
       </div>
       <div className="flex w-full">

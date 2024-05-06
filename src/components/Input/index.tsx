@@ -17,6 +17,7 @@ interface InputProps {
   handleOnButtonClick?: () => void;
   icon?: React.ReactNode;
   warning?: string;
+  decimals?: number;
 }
 
 export const Input: FC<InputProps> = ({
@@ -32,6 +33,7 @@ export const Input: FC<InputProps> = ({
   handleOnButtonClick,
   icon,
   warning,
+  decimals = 0,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -52,13 +54,13 @@ export const Input: FC<InputProps> = ({
     }
 
     if (type === 'number') {
-      if (getNumberRegex().test(e.target.value)) {
+      if (getNumberRegex(decimals).test(e.target.value)) {
         onChange(e.target.value);
       }
     } else {
       onChange(e.target.value);
     }
-  }, [onChange, type]);
+  }, [onChange, type, decimals]);
 
   return (
     <div className="flex flex-col w-full gap-2 relative">

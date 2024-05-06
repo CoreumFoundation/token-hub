@@ -74,7 +74,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <AppProvider>
           <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
             <Navbar />
-            <div className="flex flex-1 flex-col h-full w-full relative items-center overflow-auto">
+            <div className="flex flex-1 flex-col h-full w-full pb-28 relative items-center overflow-hidden">
               <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">
                 <div className="flex flex-col items-center w-[800px] max-w-full gap-10 my-6">
                   <div className="flex items-center gap-2 font-space-grotesk w-full">

@@ -87,6 +87,8 @@ export const FungibleTokenCreate = () => {
         initialAmount: initialAmount.length ? initialAmount : '0',
         description,
         features: featuresToApply,
+        burnRate,
+        sendCommissionRate,
       });
 
       const txFee = await getTxFee([issueFTMsg]);

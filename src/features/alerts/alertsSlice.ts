@@ -1,9 +1,10 @@
+import { AlertType } from '@/shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface DispatchAlertPayload {
-  type: string;
+  type: AlertType;
   title: string;
-  message: string;
+  message?: string;
 }
 
 export interface AlertsState {

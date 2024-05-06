@@ -24,6 +24,7 @@ import { ConfirmGlobalFreezeModal } from "../ConfirmGlobalFreezeModal";
 import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
 import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
 import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
+import { Alerts } from "../Alerts";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -73,6 +74,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <ReduxProvider>
         <AppProvider>
           <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
+            <Alerts />
             <Navbar />
             <div className="flex flex-1 flex-col h-full w-full pb-28 relative items-center overflow-hidden">
               <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">

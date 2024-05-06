@@ -54,6 +54,7 @@ export enum GeneralIconType {
   Burn = 'burn',
   Manage = 'manage',
   Warning = 'warning',
+  AlertClose = 'alert_close',
 };
 
 export enum TabItemType {
@@ -194,4 +195,10 @@ export enum ConfirmationModalImageType {
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
   Burn = 'burn',
+}
+
+export enum AlertType {
+  Success = 'success',
+  Warning = 'warning',
+  Error = 'error',
 }

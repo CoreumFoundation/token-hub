@@ -9,7 +9,7 @@ import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { FT_TOKEN_CAPABILITIES } from "@/constants";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";

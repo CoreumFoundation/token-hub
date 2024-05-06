@@ -173,16 +173,16 @@ export const GeneralIcon: FC<GeneralIconProps> = ({
     case GeneralIconType.Warning:
       return (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_12419_4700)">
+          <g clipPath="url(#clip0_12419_4700)">
             <g filter="url(#filter0_f_12419_4700)">
-              <circle cx="9" cy="8.99994" r="9" fill="url(#paint0_linear_12419_4700)" fill-opacity="0.7"/>
+              <circle cx="9" cy="8.99994" r="9" fill="url(#paint0_linear_12419_4700)" fillOpacity="0.7"/>
             </g>
             <g filter="url(#filter1_b_12419_4700)">
-              <circle cx="9" cy="8.99994" r="9" fill="white" fill-opacity="0.3" style={{ mixBlendMode: "overlay" }} />
+              <circle cx="9" cy="8.99994" r="9" fill="white" fillOpacity="0.3" style={{ mixBlendMode: "overlay" }} />
               <circle cx="9" cy="8.99994" r="8.5" stroke="url(#paint1_linear_12419_4700)" style={{ mixBlendMode: "overlay" }} />
             </g>
             <circle cx="9" cy="8.99994" r="8.5" stroke="url(#paint2_linear_12419_4700)"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.53987 10.729H9.5005C9.57912 10.729 9.64398 10.6676 9.64847 10.5894L9.99827 5.29751C10.0143 5.01981 9.91806 4.75544 9.72709 4.55332C9.34457 4.14793 8.65193 4.14909 8.27071 4.55564C8.0796 4.75949 7.98419 5.02532 8.00214 5.30417L8.3919 10.5903C8.39697 10.6681 8.46168 10.729 8.53987 10.729ZM8.13086 12.619C8.13086 13.0979 8.52062 13.4877 8.9997 13.4877C9.47865 13.4877 9.8684 13.0979 9.8684 12.619C9.8684 12.1398 9.47865 11.75 8.9997 11.75C8.52062 11.75 8.13086 12.1398 8.13086 12.619Z" fill="white"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M8.53987 10.729H9.5005C9.57912 10.729 9.64398 10.6676 9.64847 10.5894L9.99827 5.29751C10.0143 5.01981 9.91806 4.75544 9.72709 4.55332C9.34457 4.14793 8.65193 4.14909 8.27071 4.55564C8.0796 4.75949 7.98419 5.02532 8.00214 5.30417L8.3919 10.5903C8.39697 10.6681 8.46168 10.729 8.53987 10.729ZM8.13086 12.619C8.13086 13.0979 8.52062 13.4877 8.9997 13.4877C9.47865 13.4877 9.8684 13.0979 9.8684 12.619C9.8684 12.1398 9.47865 11.75 8.9997 11.75C8.52062 11.75 8.13086 12.1398 8.13086 12.619Z" fill="white"/>
           </g>
           <defs>
             <filter id="filter0_f_12419_4700" x="-10" y="-10.0001" width="38" height="38" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">

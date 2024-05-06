@@ -4,26 +4,52 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
-import { setIsConfirmBurnModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmBurnModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { setBurnAmount } from "@/features/burn/burnSlice";
+import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { FT } from "coreum-js";
 
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
   const burnAmount = useAppSelector(state => state.burn.amount);
+  const walletAddress = useAppSelector(state => state.burn.walletAddress);
+  const account = useAppSelector(state => state.general.account);
+  const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleCancel = useCallback(() => {
     dispatch(setBurnAmount('0'));
     dispatch(setIsConfirmBurnModalOpen(false));
   }, []);
 
-  const handleConfirm = useCallback(() => {
-    // TODO: add burn
-    console.log({burnAmount});
-    dispatch(setBurnAmount('0'));
-    dispatch(setIsConfirmBurnModalOpen(false));
-  }, [burnAmount]);
+  const handleConfirm = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+
+    try {
+      const burnFTMsg = FT.Burn({
+        sender: account,
+        coin: {
+          denom: selectedCurrency!.denom,
+          amount: convertUnitToSubunit({
+            amount: burnAmount,
+            precision: selectedCurrency!.precision,
+          }),
+        },
+      });
+      const txFee = await getTxFee([burnFTMsg]);
+      await signingClient?.signAndBroadcast(account, [burnFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(setBurnAmount('0'));
+      dispatch(setIsConfirmBurnModalOpen(false));
+    } catch (error) {
+      console.log(error);
+    }
+
+    dispatch(setIsTxExecuting(false));
+  }, [account, burnAmount, getTxFee, selectedCurrency, signingClient, walletAddress]);
 
   return (
     <ConfirmationModal isOpen={isConfirmBurnModalOpen}>
@@ -49,6 +75,8 @@ export const ConfirmBurnModal = () => {
             onClick={handleConfirm}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            loading={isTxExecuting}
+            disabled={isTxExecuting}
           />
         </div>
       </div>

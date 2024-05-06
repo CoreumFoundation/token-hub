@@ -150,8 +150,6 @@ export const ManageTokensModal = () => {
     }
   }, [amount, selectedCurrency, selectedTab, walletAddress]);
 
-  console.log(selectedCurrency, manageFtTokensTabs);
-
   if (!manageFtTokensTabs.length) {
     return null;
   }

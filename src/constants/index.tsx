@@ -205,11 +205,11 @@ export const MANAGE_FT_TOKENS_TABS = {
     id: TabItemType.Mint,
     label: 'Mint',
   },
-  'burning': {
+  'freezing': {
     id: TabItemType.Freeze,
     label: 'Freeze',
   },
-  'freezing': {
+  'unfreezing': {
     id: TabItemType.Unfreeze,
     label: 'Unfreeze',
   },

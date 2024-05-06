@@ -4,20 +4,40 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
-import { setIsConfirmGlobalFreezeModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmGlobalFreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { FT } from "coreum-js";
 
 export const ConfirmGlobalFreezeModal = () => {
   const isConfirmGlobalFreezeModalOpen = useAppSelector(state => state.general.isConfirmGlobalFreezeModalOpen);
+  const account = useAppSelector(state => state.general.account);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+  const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
 
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleCancel = useCallback(() => {
     dispatch(setIsConfirmGlobalFreezeModalOpen(false));
   }, []);
 
-  const handleConfirm = useCallback(() => {
-    dispatch(setIsConfirmGlobalFreezeModalOpen(false));
-  }, []);
+  const handleConfirm = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+
+    try {
+      const globalFreezeFTMsg = FT.GloballyFreeze({
+        sender: account,
+        denom: selectedCurrency!.denom,
+      });
+      const txFee = await getTxFee([globalFreezeFTMsg]);
+      await signingClient?.signAndBroadcast(account, [globalFreezeFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(setIsConfirmGlobalFreezeModalOpen(false));
+    } catch (error) {
+      console.log(error);
+    }
+
+    dispatch(setIsTxExecuting(false));
+  }, [account, getTxFee, selectedCurrency, signingClient]);
 
   return (
     <ConfirmationModal isOpen={isConfirmGlobalFreezeModalOpen}>
@@ -43,6 +63,8 @@ export const ConfirmGlobalFreezeModal = () => {
             onClick={handleConfirm}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            loading={isTxExecuting}
+            disabled={isTxExecuting}
           />
         </div>
       </div>

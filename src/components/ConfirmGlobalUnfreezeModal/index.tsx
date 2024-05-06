@@ -4,20 +4,40 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
-import { setIsConfirmGlobalUnfreezeModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmGlobalUnfreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { FT } from "coreum-js";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 
 export const ConfirmGlobalUnfreezeModal = () => {
   const isConfirmGlobalUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmGlobalUnfreezeModalOpen);
+  const account = useAppSelector(state => state.general.account);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+  const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
 
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleCancel = useCallback(() => {
     dispatch(setIsConfirmGlobalUnfreezeModalOpen(false));
   }, []);
 
-  const handleConfirm = useCallback(() => {
-    dispatch(setIsConfirmGlobalUnfreezeModalOpen(false));
-  }, []);
+  const handleConfirm = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+
+    try {
+      const globalUnfreezeFTMsg = FT.GloballyUnfreeze({
+        sender: account,
+        denom: selectedCurrency!.denom,
+      });
+      const txFee = await getTxFee([globalUnfreezeFTMsg]);
+      await signingClient?.signAndBroadcast(account, [globalUnfreezeFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(setIsConfirmGlobalUnfreezeModalOpen(false));
+    } catch (error) {
+      console.log(error);
+    }
+
+    dispatch(setIsTxExecuting(false));
+  }, [account, getTxFee, selectedCurrency, signingClient]);
 
   return (
     <ConfirmationModal isOpen={isConfirmGlobalUnfreezeModalOpen}>
@@ -43,6 +63,8 @@ export const ConfirmGlobalUnfreezeModal = () => {
             onClick={handleConfirm}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            loading={isTxExecuting}
+            disabled={isTxExecuting}
           />
         </div>
       </div>

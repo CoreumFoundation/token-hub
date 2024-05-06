@@ -97,7 +97,17 @@ export const FungibleTokenCreate = () => {
       console.log(error);
     }
     dispatch(setIsTxExecuting(false));
-  }, [account, description, featuresToApply, getTxFee, initialAmount, precision, signingClient, subunit, symbol]);
+  }, [
+    account,
+    description,
+    featuresToApply,
+    getTxFee,
+    initialAmount,
+    precision,
+    signingClient,
+    subunit,
+    symbol,
+  ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
     switch (type) {

@@ -4,27 +4,53 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback } from "react";
-import { setIsConfirmFreezeModalOpen, setIsConfirmMintModalOpen } from "@/features/general/generalSlice";
-import { setBurnAmount } from "@/features/burn/burnSlice";
+import { setIsConfirmFreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { setFreezeAmount } from "@/features/freeze/freezeSlice";
+import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { FT } from "coreum-js";
 
 export const ConfirmFreezeModal = () => {
   const isConfirmFreezeModalOpen = useAppSelector(state => state.general.isConfirmFreezeModalOpen);
   const freezeAmount = useAppSelector(state => state.freeze.amount);
+  const walletAddress = useAppSelector(state => state.freeze.walletAddress);
+  const account = useAppSelector(state => state.general.account);
+  const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleCancel = useCallback(() => {
     dispatch(setFreezeAmount('0'));
     dispatch(setIsConfirmFreezeModalOpen(false));
   }, []);
 
-  const handleConfirm = useCallback(() => {
-    // TODO: add freeze
-    console.log({freezeAmount});
-    dispatch(setFreezeAmount('0'));
-    dispatch(setIsConfirmFreezeModalOpen(false));
-  }, [freezeAmount]);
+  const handleConfirm = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+
+    try {
+      const freezeFTMsg = FT.Freeze({
+        sender: account,
+        account: walletAddress,
+        coin: {
+          denom: selectedCurrency!.denom,
+          amount: convertUnitToSubunit({
+            amount: freezeAmount,
+            precision: selectedCurrency!.precision,
+          }),
+        },
+      });
+      const txFee = await getTxFee([freezeFTMsg]);
+      await signingClient?.signAndBroadcast(account, [freezeFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(setFreezeAmount('0'));
+      dispatch(setIsConfirmFreezeModalOpen(false));
+    } catch (error) {
+      console.log(error);
+    }
+
+    dispatch(setIsTxExecuting(false));
+  }, [account, freezeAmount, getTxFee, selectedCurrency, signingClient, walletAddress]);
 
   return (
     <ConfirmationModal isOpen={isConfirmFreezeModalOpen}>
@@ -50,6 +76,8 @@ export const ConfirmFreezeModal = () => {
             onClick={handleConfirm}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            loading={isTxExecuting}
+            disabled={isTxExecuting}
           />
         </div>
       </div>

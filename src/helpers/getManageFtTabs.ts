@@ -10,16 +10,14 @@ export const getManageFTTabs = (currency: Token | null) => {
   let resultTabs: TabItem[] = [];
 
   for (const feature of features) {
-    if (resultTabs.length === 3) {
-      break;
-    }
-
     switch (feature) {
       case 'minting':
-      case 'freezing':
       case 'whitelisting':
         resultTabs.push(MANAGE_FT_TOKENS_TABS[feature]);
         break;
+      case 'freezing':
+        resultTabs.push(MANAGE_FT_TOKENS_TABS[feature]);
+        resultTabs.push(MANAGE_FT_TOKENS_TABS['unfreezing']);
       default:
         break;
     }

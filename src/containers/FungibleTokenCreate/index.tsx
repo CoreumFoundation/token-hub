@@ -244,6 +244,7 @@ export const FungibleTokenCreate = () => {
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
           type="number"
           decimals={2}
+          error={+burnRate > 100 ? 'Max burn rate value is 100%' : ''}
         />
         <Input
           label="Send Commission Rate"
@@ -253,6 +254,7 @@ export const FungibleTokenCreate = () => {
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
           type="number"
           decimals={2}
+          error={+sendCommissionRate > 100 ? 'Max send commission rate value is 100%' : ''}
         />
       </div>
       <div className="flex w-full">

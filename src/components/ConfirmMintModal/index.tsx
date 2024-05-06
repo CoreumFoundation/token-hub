@@ -3,12 +3,14 @@ import { ConfirmationModal } from "../ConfirmationModal";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmMintModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { setMintAmount } from "@/features/mint/mintSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { ModalInfoRow } from "../ModalInfoRow";
+import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 
 export const ConfirmMintModal = () => {
   const isConfirmMintModalOpen = useAppSelector(state => state.general.isConfirmMintModalOpen);
@@ -17,12 +19,16 @@ export const ConfirmMintModal = () => {
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
+  const [isTxSuccessful, setIsTxSuccessful] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
-  const handleCancel = useCallback(() => {
+  const handleClose = useCallback(() => {
     dispatch(setMintAmount('0'));
     dispatch(setIsConfirmMintModalOpen(false));
+    dispatch(setSelectedCurrency(null));
+    setIsTxSuccessful(false);
   }, []);
 
   const handleConfirm = useCallback(async () => {
@@ -41,8 +47,7 @@ export const ConfirmMintModal = () => {
       });
       const txFee = await getTxFee([mintFTMsg]);
       await signingClient?.signAndBroadcast(account, [mintFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(setMintAmount('0'));
-      dispatch(setIsConfirmMintModalOpen(false));
+      setIsTxSuccessful(true);
     } catch (error) {
       console.log(error);
     }
@@ -50,9 +55,31 @@ export const ConfirmMintModal = () => {
     dispatch(setIsTxExecuting(false));
   }, [account, dispatch, getTxFee, mintAmount, selectedCurrency, signingClient]);
 
-  return (
-    <ConfirmationModal isOpen={isConfirmMintModalOpen}>
-      <ConfirmationModalImage type={ConfirmationModalImageType.Mint} />
+  const renderContent = useMemo(() => {
+    if (isTxSuccessful) {
+      return (
+        <div className="flex flex-col w-full p-8 gap-8">
+          <div className="flex flex-col text-center gap-6">
+            <div className="font-space-grotesk text-lg text-[#EEE] font-medium">
+              Successfully Minted Tokens
+            </div>
+            <div className="flex items-center w-full">
+              <ModalInfoRow label="Mint Amount" value={`${mintAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
+            </div>
+          </div>
+          <div className="flex items-center w-full">
+            <Button
+              label="Done"
+              onClick={handleClose}
+              type={ButtonType.Primary}
+              className="text-sm !py-2 px-6 rounded-[10px] font-semibold"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div className="flex flex-col w-full p-8 gap-8">
         <div className="flex flex-col text-center gap-2">
           <div className="font-space-grotesk text-lg text-[#EEE] font-medium">
@@ -65,7 +92,7 @@ export const ConfirmMintModal = () => {
         <div className="grid grid-cols-2 gap-2">
           <Button
             label="Cancel"
-            onClick={handleCancel}
+            onClick={handleClose}
             type={ButtonType.Secondary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
           />
@@ -79,6 +106,13 @@ export const ConfirmMintModal = () => {
           />
         </div>
       </div>
+    );
+  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, mintAmount, selectedCurrency?.symbol]);
+
+  return (
+    <ConfirmationModal isOpen={isConfirmMintModalOpen}>
+      <ConfirmationModalImage type={isTxSuccessful ? ConfirmationModalImageType.Success : ConfirmationModalImageType.Mint} />
+      {renderContent}
     </ConfirmationModal>
   );
 };

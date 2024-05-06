@@ -25,13 +25,13 @@ export const Alert: React.FC<AlertProps> = ({
     onCloseByClick?.();
   }, [onCloseByClick]);
 
-  // useEffect(() => {
-  //   if (ALERT_DISPLAY_TIME) {
-  //     setTimeout(() => {
-  //       onClose?.();
-  //     }, +ALERT_DISPLAY_TIME * 1000);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (ALERT_DISPLAY_TIME) {
+      setTimeout(() => {
+        onClose?.();
+      }, +ALERT_DISPLAY_TIME * 1000);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-start gap-1.5 min-w-[266px] w-fit max-w-xs h-max p-3 pr-2.5 bg-[#1B1D23] box-shadow-custom rounded-[10px] relative font-noto-sans">

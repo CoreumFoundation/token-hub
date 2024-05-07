@@ -16,6 +16,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } f
 import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import Big from "big.js";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -224,6 +225,16 @@ export const FungibleTokenCreate = () => {
     return `URL is invalid`;
   }, [url]);
 
+  const isPrecisionValid = useMemo(() => {
+    if (!precision.length) {
+      return '';
+    }
+
+    if (Big(precision).gt(20)) {
+      return 'Max value of precision is 20';
+    }
+  }, [precision]);
+
   const isFormValid = useMemo(() => {
     if (
       symbol.length
@@ -235,7 +246,8 @@ export const FungibleTokenCreate = () => {
       && +sendCommissionRate <= 100
       && !isEnteredSubunitsValid.length
       && !isEnteredSymbolValid.length
-      && !isURLValid.length) {
+      && !isURLValid.length
+      && !isPrecisionValid?.length) {
       return true;
     }
 
@@ -251,6 +263,7 @@ export const FungibleTokenCreate = () => {
     isEnteredSubunitsValid.length,
     isEnteredSymbolValid.length,
     isURLValid.length,
+    isPrecisionValid?.length,
   ]);
 
   const renderButton = useMemo(() => {
@@ -311,6 +324,7 @@ export const FungibleTokenCreate = () => {
           onChange={setPrecision}
           placeholder="0"
           type="number"
+          error={isPrecisionValid}
         />
         <Input
           label="Initial Amount"

@@ -52,7 +52,6 @@ export const ConfirmUnfreezeModal = () => {
       });
       const txFee = await getTxFee([unfreezeFTMsg]);
       await signingClient?.signAndBroadcast(account, [unfreezeFTMsg], txFee ? txFee.fee : 'auto');
-
       setIsTxSuccessful(true);
     } catch (error) {
       dispatch(dispatchAlert({
@@ -62,7 +61,7 @@ export const ConfirmUnfreezeModal = () => {
       }));
     }
 
-    dispatch(setIsTxExecuting(true));
+    dispatch(setIsTxExecuting(false));
   }, [account, getTxFee, selectedCurrency, signingClient, unfreezeAmount, walletAddress]);
 
   const renderContent = useMemo(() => {

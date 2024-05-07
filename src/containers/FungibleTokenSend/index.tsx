@@ -191,7 +191,7 @@ export const FungibleTokenSend = () => {
       <div className="flex flex-col w-full items-center gap-2">
         <InfoRow
           label={"Fee"}
-          value="~ 0.00 COREUM"
+          value={`~ ${convertSubunitToUnit({ amount: '8625', precision: 6 })} COREUM`}
         />
         <InfoRow
           label={"Estimated Time"}

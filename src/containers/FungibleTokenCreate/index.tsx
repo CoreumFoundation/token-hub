@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -118,8 +119,16 @@ export const FungibleTokenCreate = () => {
 
       const txFee = await getTxFee([issueFTMsg]);
       await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
-    } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Token was issued successfully',
+      }));
+    } catch (error: unknown) {
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Issue Failed',
+        message: (error as { message: string}).message,
+      }));
     }
     dispatch(setIsTxExecuting(false));
   }, [

@@ -1,4 +1,4 @@
-import { ButtonType, ConfirmationModalImageType } from "@/shared/types";
+import { AlertType, ButtonType, ConfirmationModalImageType } from "@/shared/types";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
@@ -11,6 +11,7 @@ import { FT } from "coreum-js";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const ConfirmMintModal = () => {
   const isConfirmMintModalOpen = useAppSelector(state => state.general.isConfirmMintModalOpen);
@@ -49,7 +50,11 @@ export const ConfirmMintModal = () => {
       await signingClient?.signAndBroadcast(account, [mintFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Mint Failed',
+        message: (error as { message: string}).message,
+      }));
     }
 
     dispatch(setIsTxExecuting(false));

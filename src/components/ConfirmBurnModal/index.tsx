@@ -1,4 +1,4 @@
-import { ButtonType, ConfirmationModalImageType } from "@/shared/types";
+import { AlertType, ButtonType, ConfirmationModalImageType } from "@/shared/types";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
@@ -11,6 +11,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
@@ -50,7 +51,11 @@ export const ConfirmBurnModal = () => {
       await signingClient?.signAndBroadcast(account, [burnFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Burn Failed',
+        message: (error as { message: string}).message,
+      }));
     }
 
     dispatch(setIsTxExecuting(false));

@@ -1,4 +1,4 @@
-import { ButtonType, ConfirmationModalImageType } from "@/shared/types";
+import { AlertType, ButtonType, ConfirmationModalImageType } from "@/shared/types";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
@@ -8,6 +8,7 @@ import { setIsConfirmGlobalUnfreezeModalOpen, setIsTxExecuting } from "@/feature
 import { FT } from "coreum-js";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const ConfirmGlobalUnfreezeModal = () => {
   const isConfirmGlobalUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmGlobalUnfreezeModalOpen);
@@ -38,7 +39,11 @@ export const ConfirmGlobalUnfreezeModal = () => {
       await signingClient?.signAndBroadcast(account, [globalUnfreezeFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Global Unfreeze Failed',
+        message: (error as { message: string}).message,
+      }));
     }
 
     dispatch(setIsTxExecuting(false));

@@ -1,4 +1,4 @@
-import { ButtonType, ConfirmationModalImageType } from "@/shared/types";
+import { AlertType, ButtonType, ConfirmationModalImageType } from "@/shared/types";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
@@ -11,6 +11,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const ConfirmUnfreezeModal = () => {
   const isConfirmUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmUnfreezeModalOpen);
@@ -53,7 +54,11 @@ export const ConfirmUnfreezeModal = () => {
 
       setIsTxSuccessful(true);
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Unfreeze Failed',
+        message: (error as { message: string}).message,
+      }));
     }
 
     dispatch(setIsTxExecuting(true));

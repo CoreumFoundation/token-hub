@@ -8,12 +8,13 @@ import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { convertSubunitToUnit, convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";
 import Big from "big.js";
@@ -134,8 +135,16 @@ export const FungibleTokenSend = () => {
 
       const txFee = await getTxFee([sendFTMsg]);
       await signingClient?.signAndBroadcast(account, [sendFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Token was sent successfully',
+      }));
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Send Failed',
+        message: (error as { message: string}).message,
+      }));
     }
     dispatch(setIsTxExecuting(false));
   }, [account, amount, currentCurrency, destinationAddress, getTxFee, signingClient]);

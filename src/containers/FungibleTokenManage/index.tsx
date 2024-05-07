@@ -21,6 +21,7 @@ export const FungibleTokenManage = () => {
   const isFetching = useAppSelector(state => state.currencies.isLoading);
   const isConnected = useAppSelector(state => state.general.isConnected);
   const balances = useAppSelector(state => state.balances.list);
+  const network = useAppSelector(state => state.general.network);
 
   const dispatch = useAppDispatch();
 
@@ -117,7 +118,7 @@ export const FungibleTokenManage = () => {
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>View and manage the Smart Tokens you created or own.</li>
-          <li>There are many ways to get on-chain data. Here we simply query a <Link className="text-[#25D695] underline font-medium" href="/">public REST server</Link> that expose different endpoints to query the blockchain.</li>
+          <li>There are many ways to get on-chain data. Here we simply query a <Link className="text-[#25D695] underline font-medium" href={`https://full-node.${network}-1.coreum.dev:1317`} target="_blank">public REST server</Link> that expose different endpoints to query the blockchain.</li>
         </ul>
       </MessageBox>
       {renderContent}

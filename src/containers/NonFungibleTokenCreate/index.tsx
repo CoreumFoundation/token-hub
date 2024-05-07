@@ -71,7 +71,7 @@ export const NonFungibleTokenCreate = () => {
     <div className="flex flex-col gap-10">
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
-          <li>Smart tokens on the Coreum network enable enterprises to set <Link className="text-[#25D695] underline font-medium" href="/">predetermine behaviours</Link> and <Link className="text-[#25D695] underline" href="">deterministic gas fee</Link> for certain tokens, facilitating the execution of contract-like functions directly on the blockchain&apos;s storage.</li>
+          <li>Smart tokens on the Coreum network enable enterprises to set predetermine behaviours and <Link className="text-[#25D695] underline" href="https://docs.coreum.dev/docs/modules/coreum-deterministic-gas" target="_blank">deterministic gas fee</Link> for certain tokens, facilitating the execution of contract-like functions directly on the blockchain&apos;s storage.</li>
           <li>Your <span className="text-[#9FA2AC] font-semibold">Non-Fungible Tokens (NFTs)</span> will be stored in a collection that defines their behavior.</li>
           <li>After creating a collection, you can mint NFTs and transfer them to others.</li>
           <li>Each collection can feature its unique set of rules and functionalities.</li>

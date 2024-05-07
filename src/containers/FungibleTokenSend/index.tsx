@@ -32,18 +32,6 @@ export const FungibleTokenSend = () => {
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const network = useAppSelector(state => state.general.network);
 
-  const handleClearState = useCallback(() => {
-    setDestinationAddress('');
-    setAmount('');
-    setSelectedCurrency(null);
-  }, []);
-
-  useEffect(() => {
-    if (!isConnected) {
-      handleClearState();
-    }
-  }, [isConnected]);
-
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
@@ -58,6 +46,18 @@ export const FungibleTokenSend = () => {
       };
     });
   }, [currencies]);
+
+  const handleClearState = useCallback(() => {
+    setDestinationAddress('');
+    setAmount('');
+    setSelectedCurrency(currenciesToDropdownItem[0]);
+  }, [currenciesToDropdownItem]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      handleClearState();
+    }
+  }, [isConnected]);
 
   useEffect(() => {
     if (!selectedCurrency && currenciesToDropdownItem.length) {

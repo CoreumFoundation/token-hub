@@ -1,10 +1,11 @@
-import { AccountActionType, DropdownItem, DropdownType } from "@/shared/types";
+import { AccountActionType, AlertType, DropdownItem, DropdownType } from "@/shared/types";
 import { Dropdown } from "../Dropdown";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo } from "react";
 import { ACTION_ITEMS_OPTIONS } from "@/constants";
 import { useDisconnect } from "graz";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 
 export const AccountActions = () => {
@@ -33,6 +34,11 @@ export const AccountActions = () => {
     // Execute the copy command
     document.execCommand('copy');
     document.body.removeChild(tempTextArea);
+
+    dispatch(dispatchAlert({
+      type: AlertType.Success,
+      title: 'Account address was copied!'
+    }));
   }, [account]);
 
   const handleSwitchWallet = useCallback(() => {

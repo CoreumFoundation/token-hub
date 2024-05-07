@@ -12,6 +12,7 @@ import { FT } from "coreum-js";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { shortenAddress } from "@/helpers/shortenAddress";
 
 export const ConfirmUnfreezeModal = () => {
   const isConfirmUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmUnfreezeModalOpen);
@@ -73,7 +74,7 @@ export const ConfirmUnfreezeModal = () => {
               Successfully Unfreezed Tokens
             </div>
             <div className="flex flex-col items-center w-full gap-2">
-              <ModalInfoRow label="Wallet Address" value={walletAddress} />
+              <ModalInfoRow label="Wallet Address" value={shortenAddress(walletAddress)} />
               <ModalInfoRow label="Unfreeze Amount" value={`${unfreezeAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
             </div>
           </div>

@@ -16,7 +16,6 @@ import { dispatchAlert } from "@/features/alerts/alertsSlice";
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
   const burnAmount = useAppSelector(state => state.burn.amount);
-  const walletAddress = useAppSelector(state => state.burn.walletAddress);
   const account = useAppSelector(state => state.general.account);
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
@@ -59,7 +58,7 @@ export const ConfirmBurnModal = () => {
     }
 
     dispatch(setIsTxExecuting(false));
-  }, [account, burnAmount, getTxFee, selectedCurrency, signingClient, walletAddress]);
+  }, [account, burnAmount, getTxFee, selectedCurrency, signingClient]);
 
   const renderContent = useMemo(() => {
     if (isTxSuccessful) {

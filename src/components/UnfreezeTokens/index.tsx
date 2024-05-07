@@ -12,6 +12,7 @@ interface UnfreezeTokensProps {
   setWalletAddress: (value: string) => void;
   handleGloballyUnfreezeTokens: () => void;
   handleUnfreezeTokens: () => void;
+  walletAddressValidationError: string;
 }
 
 export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
@@ -22,6 +23,7 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
   setWalletAddress,
   handleGloballyUnfreezeTokens,
   handleUnfreezeTokens,
+  walletAddressValidationError,
 }) => {
   return (
     <div className="flex flex-col w-full gap-8">
@@ -31,6 +33,7 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
         onChange={setWalletAddress}
         placeholder="Enter wallet address"
         buttonLabel="Paste"
+        error={walletAddressValidationError}
       />
       <Input
         label="Unfreeze Amount"
@@ -59,6 +62,7 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
           onClick={handleUnfreezeTokens}
           type={ButtonType.Primary}
           className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+          disabled={!unfreezeAmount.length || +unfreezeAmount === 0 || !walletAddress.length || !!walletAddressValidationError.length}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
@@ -10,12 +10,27 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { ButtonType, GeneralIconType } from "@/shared/types";
 import { Button } from "../Button";
 import { setBurnAmount } from "@/features/burn/burnSlice";
+import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
+import { Coin } from "@cosmjs/proto-signing";
+import Big from "big.js";
 
 export const BurnTokensModal = () => {
   const [amount, setAmount] = useState<string>('');
 
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const isBurnCurrencyModalOpen = useAppSelector(state => state.general.isBurnCurrencyModalOpen);
+  const balances = useAppSelector(state => state.balances.list);
+
+  const currentCurrencyBalance = useMemo(() => {
+    return balances.find((balanceItem: Coin) => balanceItem.denom === selectedCurrency?.denom);
+  }, [balances, selectedCurrency]);
+
+  const availableBalance = useMemo(() => {
+    return convertSubunitToUnit({
+      amount: currentCurrencyBalance?.amount || '0',
+      precision: selectedCurrency?.precision || 0,
+    });
+  }, [selectedCurrency?.precision, currentCurrencyBalance?.amount]);
 
   const dispatch = useAppDispatch();
 
@@ -28,7 +43,6 @@ export const BurnTokensModal = () => {
     dispatch(setBurnAmount(amount));
     dispatch(setIsBurnCurrencyModalOpen(false));
     dispatch(setIsConfirmBurnModalOpen(true));
-    console.log('burn');
   }, [amount]);
 
   return (
@@ -53,6 +67,7 @@ export const BurnTokensModal = () => {
           )}
           warning="The burnt tokens will not be recoverable"
           decimals={selectedCurrency?.precision || 0}
+          error={Big(amount || '0').gt(availableBalance) ? 'Insufficient Balance' : ''}
         />
         <div className="flex w-full justify-end">
           <div className="flex items-center">
@@ -61,6 +76,7 @@ export const BurnTokensModal = () => {
               onClick={handleBurnTokens}
               type={ButtonType.Primary}
               className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+              disabled={!amount.length || +amount === 0 || Big(amount || '0').gt(availableBalance)}
             />
           </div>
         </div>

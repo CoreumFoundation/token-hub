@@ -88,7 +88,7 @@ export const FungibleTokenSend = () => {
     const validatedDestinationAddress = validateAddress(destinationAddress);
 
     if (!validatedDestinationAddress.result) {
-      return 'Destionation address is invalid. Please double check entered value!';
+      return 'Destination address is invalid. Please double check entered value!';
     }
 
     if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {

@@ -5,7 +5,7 @@ import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
-import { TabItem, TabItemType } from "@/shared/types";
+import { ChainInfo, TabItem, TabItemType } from "@/shared/types";
 import { MANAGE_FT_TOKENS_TABS } from "@/constants";
 import { Tabs } from "../Tabs";
 import { MintTokens } from "../MintTokens";
@@ -17,10 +17,17 @@ import { setFreezeAmount, setFreezeWalletAddress } from "@/features/freeze/freez
 import { setUnfreezeAmount, setUnfreezeWalletAddress } from "@/features/unfreeze/unfreezeSlice";
 import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitelist/whitelistSlice";
 import { getManageFTTabs } from "@/helpers/getManageFtTabs";
+import { validateAddress } from "@/helpers/validateAddress";
 
 export const ManageTokensModal = () => {
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const manageFtTokensTabs = getManageFTTabs(selectedCurrency);
+
+  const chains = useAppSelector(state => state.chains.list);
+
+  const coreumChain = useMemo(() => {
+    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+  }, [chains]);
 
   const [selectedTab, setSelectedTab] = useState<TabItem | null>(manageFtTokensTabs?.[0] || null);
 
@@ -100,6 +107,24 @@ export const ManageTokensModal = () => {
     );
   }, [selectedTab, manageFtTokensTabs]);
 
+  const walletAddressValidationError = useMemo(() => {
+    if (!walletAddress.length) {
+      return '';
+    }
+
+    const validatedWalletAddress = validateAddress(walletAddress);
+
+    if (!validatedWalletAddress.result) {
+      return 'Wallet address is invalid. Please double check entered value!';
+    }
+
+    if (validatedWalletAddress.prefix !== coreumChain?.bech32_prefix) {
+      return `Prefix of wallet address is not matched with ${coreumChain?.bech32_prefix}!`;
+    }
+
+    return '';
+  }, [coreumChain?.bech32_prefix, walletAddress]);
+
   const renderContent = useMemo(() => {
     switch (selectedTab?.id) {
       case TabItemType.Mint:
@@ -121,6 +146,7 @@ export const ManageTokensModal = () => {
             setWalletAddress={setWalletAddress}
             handleGloballyFreezeTokens={handleGloballyFreezeTokens}
             handleFreezeTokens={handleFreezeTokens}
+            walletAddressValidationError={walletAddressValidationError}
           />
         );
       case TabItemType.Unfreeze:
@@ -133,6 +159,7 @@ export const ManageTokensModal = () => {
             setWalletAddress={setWalletAddress}
             handleGloballyUnfreezeTokens={handleGloballyUnfreezeTokens}
             handleUnfreezeTokens={handleUnfreezeTokens}
+            walletAddressValidationError={walletAddressValidationError}
           />
         );
       case TabItemType.Whitelist:
@@ -144,11 +171,12 @@ export const ManageTokensModal = () => {
             walletAddress={walletAddress}
             setWalletAddress={setWalletAddress}
             handleWhitelistTokens={handleWhitelistTokens}
+            walletAddressValidationError={walletAddressValidationError}
           />
         );
       default:
     }
-  }, [amount, selectedCurrency, selectedTab, walletAddress]);
+  }, [amount, selectedCurrency, selectedTab, walletAddress, walletAddressValidationError]);
 
   if (!manageFtTokensTabs.length) {
     return null;

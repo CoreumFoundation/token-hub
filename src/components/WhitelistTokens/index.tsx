@@ -11,6 +11,7 @@ interface WhitelistTokensProps {
   walletAddress: string;
   setWalletAddress: (value: string) => void;
   handleWhitelistTokens: () => void;
+  walletAddressValidationError: string;
 }
 
 export const WhitelistTokens: FC<WhitelistTokensProps> = ({
@@ -20,6 +21,7 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
   walletAddress,
   setWalletAddress,
   handleWhitelistTokens,
+  walletAddressValidationError,
 }) => {
   return (
     <div className="flex flex-col w-full gap-8">
@@ -29,6 +31,7 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
         onChange={setWalletAddress}
         placeholder="Enter wallet address"
         buttonLabel="Paste"
+        error={walletAddressValidationError}
       />
       <Input
         label="Whitelist Amount"
@@ -52,6 +55,7 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
             onClick={handleWhitelistTokens}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            disabled={!whitelistAmount.length || +whitelistAmount === 0 || !walletAddress.length || !!walletAddressValidationError.length}
           />
         </div>
       </div>

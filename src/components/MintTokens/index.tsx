@@ -41,6 +41,7 @@ export const MintTokens: FC<MintTokensProps> = ({
             onClick={handleMintTokens}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            disabled={!mintAmount.length || +mintAmount === 0}
           />
         </div>
       </div>

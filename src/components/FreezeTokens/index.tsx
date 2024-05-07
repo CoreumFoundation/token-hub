@@ -12,6 +12,7 @@ interface FreezeTokensProps {
   setWalletAddress: (value: string) => void;
   handleGloballyFreezeTokens: () => void;
   handleFreezeTokens: () => void;
+  walletAddressValidationError: string;
 }
 
 export const FreezeTokens: FC<FreezeTokensProps> = ({
@@ -22,6 +23,7 @@ export const FreezeTokens: FC<FreezeTokensProps> = ({
   setWalletAddress,
   handleGloballyFreezeTokens,
   handleFreezeTokens,
+  walletAddressValidationError,
 }) => {
   return (
     <div className="flex flex-col w-full gap-8">
@@ -31,6 +33,7 @@ export const FreezeTokens: FC<FreezeTokensProps> = ({
         onChange={setWalletAddress}
         placeholder="Enter wallet address"
         buttonLabel="Paste"
+        error={walletAddressValidationError}
       />
       <Input
         label="Freeze Amount"
@@ -59,6 +62,7 @@ export const FreezeTokens: FC<FreezeTokensProps> = ({
           onClick={handleFreezeTokens}
           type={ButtonType.Primary}
           className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+          disabled={!freezeAmount.length || +freezeAmount === 0 || !walletAddress.length || !!walletAddressValidationError.length}
         />
       </div>
     </div>

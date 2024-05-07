@@ -18,6 +18,7 @@ interface InputProps {
   icon?: React.ReactNode;
   warning?: string;
   decimals?: number;
+  errorClassName?: string;
 }
 
 export const Input: FC<InputProps> = ({
@@ -34,6 +35,7 @@ export const Input: FC<InputProps> = ({
   icon,
   warning,
   decimals = 0,
+  errorClassName,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -104,7 +106,7 @@ export const Input: FC<InputProps> = ({
         </div>
       )}
       {error && (
-        <div className="absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]">
+        <div className={classNames('absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]', errorClassName)}>
           <GeneralIcon type={GeneralIconType.Error} /> {error}
         </div>
       )}

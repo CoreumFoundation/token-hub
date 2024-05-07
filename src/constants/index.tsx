@@ -218,3 +218,6 @@ export const MANAGE_FT_TOKENS_TABS = {
     label: 'Whitelist',
   }
 };
+
+export const SUBUNITS_REGEX = new RegExp(`^[a-z][a-z0-9/:._]{0,50}$`);
+export const SYMBOL_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._-]{2,127}$`);

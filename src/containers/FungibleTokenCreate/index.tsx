@@ -7,9 +7,9 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { FT_TOKEN_CAPABILITIES } from "@/constants";
+import { FT_TOKEN_CAPABILITIES, SUBUNITS_REGEX, SYMBOL_REGEX } from "@/constants";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
@@ -38,6 +38,7 @@ export const FungibleTokenCreate = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const account = useAppSelector(state => state.general.account);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+  const currencies = useAppSelector(state => state.currencies.issuedList);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -180,6 +181,36 @@ export const FungibleTokenCreate = () => {
     );
   }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
 
+  const isEnteredSymbolValid = useMemo(() => {
+    if (!symbol.length) {
+      return '';
+    }
+
+    const symbolInExistingCurrencies = currencies.find((item: Token) => item.symbol === symbol);
+    if (symbolInExistingCurrencies) {
+      return `You already issued the token with symbol: ${symbol}. Please, use another value for symbol.`;
+    } else if (SYMBOL_REGEX.test(symbol)) {
+      return '';
+    }
+
+    return `Symbol must match regex format: ${SYMBOL_REGEX}`;
+  }, [symbol, currencies]);
+
+  const isEnteredSubunitsValid = useMemo(() => {
+    if (!subunit.length) {
+      return '';
+    }
+
+    const subunitInExistingCurrencies = currencies.find((item: Token) => item.subunit === subunit);
+    if (subunitInExistingCurrencies) {
+      return `You already issued the token with subunit: ${subunit}. Please, use another value for subunit.`;
+    } else if (SUBUNITS_REGEX.test(subunit)) {
+      return '';
+    }
+
+    return `Symbol must match regex format: ${SUBUNITS_REGEX}`;
+  }, [subunit, currencies]);
+
   return (
     <div className="flex flex-col gap-10">
       <MessageBox>
@@ -194,12 +225,16 @@ export const FungibleTokenCreate = () => {
           value={symbol}
           onChange={setSymbol}
           placeholder="Example: TOKEN"
+          error={isEnteredSymbolValid}
+          errorClassName="!-mb-9"
         />
         <Input
           label="Subunit"
           value={subunit}
           onChange={setSubunit}
           placeholder="Example: utoken"
+          error={isEnteredSubunitsValid}
+          errorClassName="!-mb-9"
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -1,3 +1,4 @@
+import { COREUM_TOKEN } from "@/constants";
 import { setBalances } from "@/features/balances/balancesSlice";
 import { setCurrencies } from "@/features/currencies/currenciesSlice";
 import { setAccount, setIsConnected } from "@/features/general/generalSlice";
@@ -15,7 +16,7 @@ export const useCurrentNetwork = () => {
       dispatch(setAccount(''));
       dispatch(setIsConnected(false));
       dispatch(setBalances([]));
-      dispatch(setCurrencies([]));
+      dispatch(setCurrencies([COREUM_TOKEN]));
     }
   }, [network]);
 };

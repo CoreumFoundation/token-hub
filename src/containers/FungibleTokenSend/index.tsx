@@ -42,7 +42,7 @@ export const FungibleTokenSend = () => {
       return {
         id: item.denom,
         label: item.symbol,
-        icon: item.denom === 'utestcore'
+        icon: (item.denom === 'utestcore' || item.denom === 'ucore')
           ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
           : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
       };
@@ -59,7 +59,7 @@ export const FungibleTokenSend = () => {
     if (!isConnected) {
       handleClearState();
     }
-  }, [isConnected]);
+  }, [network, isConnected, currenciesToDropdownItem]);
 
   useEffect(() => {
     if (!selectedCurrency && currenciesToDropdownItem.length) {

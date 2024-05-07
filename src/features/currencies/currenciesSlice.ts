@@ -1,4 +1,4 @@
-import { COREUM_TOKEN_TESTNET } from '@/constants';
+import { COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
 import { Network, Token } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
@@ -10,26 +10,32 @@ interface FetchCurrenciesByAccountArgs {
 
 export const fetchCurrenciesByAccount = createAsyncThunk(
   'currencies/fetchByAccount',
-  async ({ account, network }: FetchCurrenciesByAccountArgs, thinkAPI) => {
-    const tokensRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
-    const {
-      data: {
-        pagination: { total: tokensTotal },
-        tokens,
-      },
-    }: AxiosResponse<{ pagination: { total: string }; tokens: Token[]; }> = await axios.get(tokensRequestUrl);
+  async ({ account, network }: FetchCurrenciesByAccountArgs) => {
+    const responseTokens = network === Network.Mainnet ? [COREUM_TOKEN_MAINNET] : [COREUM_TOKEN_TESTNET];
 
-    if (Number(tokensTotal) > tokens.length) {
+    try {
+      const tokensRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
       const {
         data: {
-          tokens: allTokens,
-        }
-      }: AxiosResponse<{ tokens: Token[] }> = await axios.get(`${tokensRequestUrl}&pagination.limit=${tokensTotal}`);
+          pagination: { total: tokensTotal },
+          tokens,
+        },
+      }: AxiosResponse<{ pagination: { total: string }; tokens: Token[]; }> = await axios.get(tokensRequestUrl);
 
-      return allTokens;
+      if (Number(tokensTotal) > tokens.length) {
+        const {
+          data: {
+            tokens: allTokens,
+          }
+        }: AxiosResponse<{ tokens: Token[] }> = await axios.get(`${tokensRequestUrl}&pagination.limit=${tokensTotal}`);
+
+        return allTokens;
+      }
+
+      return responseTokens.concat(tokens);
+    } catch (error) {
+      return responseTokens;
     }
-
-    return tokens;
   },
 );
 
@@ -53,7 +59,7 @@ const currenciesSlice = createSlice({
   name: 'currencies',
   initialState: initialCurrenciesState,
   reducers: {
-    setCurrencies(state, action: PayloadAction<any[]>) {
+    setCurrencies(state, action: PayloadAction<Token[]>) {
       state.list = action.payload;
       state.issuedList = action.payload;
       state.isLoading = false;
@@ -61,23 +67,27 @@ const currenciesSlice = createSlice({
     setSelectedCurrency(state, action: PayloadAction<Token | null>) {
       state.selectedCurrency = action.payload;
     },
+    setIsFetched(state, action: PayloadAction<boolean>) {
+      state.isFetched = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCurrenciesByAccount.pending, (state, action) => {
+    builder.addCase(fetchCurrenciesByAccount.pending, (state) => {
       state.isLoading = true;
     })
     builder.addCase(fetchCurrenciesByAccount.rejected, (state, action) => {
-      state.list = [];
+      state.list = action.payload as Token[];
       state.isLoading = false;
+      state.issuedList = [];
     })
     builder.addCase(fetchCurrenciesByAccount.fulfilled, (state, action) => {
-      state.list = state.list.concat(action.payload);
+      state.list = action.payload;
       state.isLoading = false;
-      state.issuedList = action.payload;
+      state.issuedList = action.payload.length === 1 ? [] : action.payload.slice(1);
     })
   },
 });
 
-export const { setCurrencies, setSelectedCurrency } = currenciesSlice.actions;
+export const { setCurrencies, setSelectedCurrency, setIsFetched } = currenciesSlice.actions;
 export const currenciesReducer = currenciesSlice.reducer;
 export default currenciesSlice.reducer;

@@ -12,8 +12,12 @@ export const useCurrencies = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isConnected && currencies.length === 1 && !isFetched) {
+    if (!isFetched) {
       dispatch(fetchCurrenciesByAccount({ account, network }));
     }
-  }, [account, currencies.length, isConnected, isFetched, network]);
+  }, [account, currencies.length, dispatch, isConnected, isFetched, network]);
+
+  useEffect(() => {
+    dispatch(fetchCurrenciesByAccount({ account, network }));
+  }, [network]);
 };

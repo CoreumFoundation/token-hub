@@ -7,7 +7,7 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { FT_TOKEN_CAPABILITIES, SUBUNITS_REGEX, SYMBOL_REGEX } from "@/constants";
+import { FT_TOKEN_CAPABILITIES, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -113,6 +113,7 @@ export const FungibleTokenCreate = () => {
         features: featuresToApply,
         burnRate: parseFloatToRoyaltyRate(burnRate),
         sendCommissionRate: parseFloatToRoyaltyRate(sendCommissionRate),
+        uri: url,
       });
 
       const txFee = await getTxFee([issueFTMsg]);
@@ -133,6 +134,7 @@ export const FungibleTokenCreate = () => {
     symbol,
     burnRate,
     sendCommissionRate,
+    url,
   ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
@@ -171,39 +173,6 @@ export const FungibleTokenCreate = () => {
     });
   }, [getTokenStateItem]);
 
-  const isFormValid = useMemo(() => {
-    if (symbol.length && subunit.length && url.length && description.length && +precision > 0 && +burnRate <= 100 && +sendCommissionRate <= 100) {
-      return true;
-    }
-
-    return false;
-  }, [symbol.length, subunit.length, url.length, description.length, precision, burnRate, sendCommissionRate]);
-
-  const renderButton = useMemo(() => {
-    if (isConnected) {
-      return (
-        <Button
-          label="Create Token"
-          onClick={handleIssueFTToken}
-          type={ButtonType.Primary}
-          iconType={ButtonIconType.Token}
-          disabled={!isFormValid || isTxExecuting}
-          loading={isTxExecuting}
-          className="min-w-[200px]"
-        />
-      );
-    }
-
-    return (
-      <Button
-        label="Connect Wallet"
-        onClick={handleConnectWalletClick}
-        type={ButtonType.Primary}
-        iconType={ButtonIconType.Wallet}
-      />
-    );
-  }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
-
   const isEnteredSymbolValid = useMemo(() => {
     if (!symbol.length) {
       return '';
@@ -233,6 +202,72 @@ export const FungibleTokenCreate = () => {
 
     return `Symbol must match regex format: ${SUBUNITS_REGEX}`;
   }, [subunit, currencies]);
+
+  const isURLValid = useMemo(() => {
+    if (!url.length) {
+      return '';
+    }
+
+    if (URL_REGEX.test(url)) {
+      return '';
+    }
+
+    return `URL is invalid`;
+  }, [url]);
+
+  const isFormValid = useMemo(() => {
+    if (
+      symbol.length
+      && subunit.length
+      && url.length
+      && description.length
+      && +precision > 0
+      && +burnRate <= 100
+      && +sendCommissionRate <= 100
+      && !isEnteredSubunitsValid.length
+      && !isEnteredSymbolValid.length
+      && !isURLValid.length) {
+      return true;
+    }
+
+    return false;
+  }, [
+    symbol.length,
+    subunit.length,
+    url.length,
+    description.length,
+    precision,
+    burnRate,
+    sendCommissionRate,
+    isEnteredSubunitsValid.length,
+    isEnteredSymbolValid.length,
+    isURLValid.length,
+  ]);
+
+  const renderButton = useMemo(() => {
+    if (isConnected) {
+      return (
+        <Button
+          label="Create Token"
+          onClick={handleIssueFTToken}
+          type={ButtonType.Primary}
+          iconType={ButtonIconType.Token}
+          disabled={!isFormValid || isTxExecuting}
+          loading={isTxExecuting}
+          className="min-w-[200px]"
+        />
+      );
+    }
+
+    return (
+      <Button
+        label="Connect Wallet"
+        onClick={handleConnectWalletClick}
+        type={ButtonType.Primary}
+        iconType={ButtonIconType.Wallet}
+      />
+    );
+  }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -282,6 +317,7 @@ export const FungibleTokenCreate = () => {
           value={url}
           onChange={setUrl}
           placeholder="http://example.com"
+          error={isURLValid}
         />
       </div>
       <div className="grid grid-cols-1">

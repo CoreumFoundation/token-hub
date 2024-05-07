@@ -221,3 +221,4 @@ export const MANAGE_FT_TOKENS_TABS = {
 
 export const SUBUNITS_REGEX = new RegExp(`^[a-z][a-z0-9/:._]{0,50}$`);
 export const SYMBOL_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._-]{2,127}$`);
+export const URL_REGEX = new RegExp(`^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$`);

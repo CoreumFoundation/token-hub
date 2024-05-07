@@ -60,13 +60,13 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
         <div className="grid-cols-2 flex items-center gap-3">
           <GeneralIcon
             type={GeneralIconType.DefaultToken}
-            className="w-10 h-10"
+            className="w-10 h-10 min-w-10 min-h-10"
           />
           <div className="flex flex-col items-start gap-1">
-            <div className="text-base text-[#EEE] font-medium">
+            <div className="text-left text-base text-[#EEE] font-medium break-all max-w-full pr-4">
               {symbol}
             </div>
-            <div className="text-sm text-[#868991]">
+            <div className="text-sm text-[#868991] break-all max-w-full">
               {subunit}
             </div>
           </div>
@@ -86,7 +86,7 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
             </div>
             <div className="text-base text-[#EEE] items-end flex flex-wrap max-w-full gap-1">
               <span className="text-left items-start break-words max-w-full">{balance}</span>
-              <span className="text-sm">{symbol.toUpperCase()}</span>
+              <span className="text-left text-sm max-w-full break-all">{symbol.toUpperCase()}</span>
             </div>
           </div>
         </div>

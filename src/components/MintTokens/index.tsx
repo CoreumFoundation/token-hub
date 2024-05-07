@@ -32,6 +32,7 @@ export const MintTokens: FC<MintTokensProps> = ({
           </div>
         )}
         warning="The minted tokens will be transferred to the issuer address"
+        decimals={selectedCurrency?.precision || 0}
       />
       <div className="flex w-full justify-end">
         <div className="flex items-center">

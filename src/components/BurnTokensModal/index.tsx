@@ -52,6 +52,7 @@ export const BurnTokensModal = () => {
             </div>
           )}
           warning="The burnt tokens will not be recoverable"
+          decimals={selectedCurrency?.precision || 0}
         />
         <div className="flex w-full justify-end">
           <div className="flex items-center">

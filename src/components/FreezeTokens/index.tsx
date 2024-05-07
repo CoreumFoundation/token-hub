@@ -45,6 +45,7 @@ export const FreezeTokens: FC<FreezeTokensProps> = ({
           </div>
         )}
         warning={`The target account will have this amount of ${selectedCurrency?.symbol.toUpperCase()} frozen and won't be able to transfer it.`}
+        decimals={selectedCurrency?.precision || 0}
       />
       <div className="flex w-full justify-between gap-4">
         <Button

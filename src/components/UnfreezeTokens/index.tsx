@@ -45,10 +45,11 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
           </div>
         )}
         warning={`The target account will have this amount of ${selectedCurrency?.symbol.toUpperCase()} unfrozen and will be able to transfer it.`}
+        decimals={selectedCurrency?.precision || 0}
       />
       <div className="flex w-full justify-between gap-4">
         <Button
-          label="Globally Unreeze"
+          label="Globally Unfreeze"
           onClick={handleGloballyUnfreezeTokens}
           type={ButtonType.Secondary}
           className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"

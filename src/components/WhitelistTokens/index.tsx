@@ -43,6 +43,7 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
           </div>
         )}
         warning={`The target account will be able to hold up to this amount of ${selectedCurrency?.symbol.toUpperCase()}`}
+        decimals={selectedCurrency?.precision || 0}
       />
       <div className="flex w-full justify-end">
         <div className="flex items-center">

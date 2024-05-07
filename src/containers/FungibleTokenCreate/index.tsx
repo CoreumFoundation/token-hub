@@ -12,7 +12,7 @@ import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/gene
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 
@@ -39,6 +39,29 @@ export const FungibleTokenCreate = () => {
   const account = useAppSelector(state => state.general.account);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const currencies = useAppSelector(state => state.currencies.issuedList);
+
+  const handleClearState = useCallback(() => {
+    setSymbol('');
+    setSubunit('');
+    setPrecision('0');
+    setInitialAmount('0');
+    setUrl('');
+    setDescription('');
+    setBurnRate('0');
+    setSendCommissionRate('0');
+    setMintingEnabled(false);
+    setBurningEnabled(false);
+    setFreezingEnabled(false);
+    setWhitelistingEnabled(false);
+    setIBCEnabled(false);
+    setBlockEnabled(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      handleClearState();
+    }
+  }, [isConnected]);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();

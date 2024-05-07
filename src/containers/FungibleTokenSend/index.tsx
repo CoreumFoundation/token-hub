@@ -32,6 +32,18 @@ export const FungibleTokenSend = () => {
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const network = useAppSelector(state => state.general.network);
 
+  const handleClearState = useCallback(() => {
+    setDestinationAddress('');
+    setAmount('');
+    setSelectedCurrency(null);
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      handleClearState();
+    }
+  }, [isConnected]);
+
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 

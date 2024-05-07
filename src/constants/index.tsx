@@ -193,10 +193,17 @@ export const ACTION_ITEMS_OPTIONS: DropdownItem[] = [
   },
 ];
 
-export const COREUM_TOKEN: Token = {
+export const COREUM_TOKEN_TESTNET: Token = {
   denom: 'utestcore',
   symbol: 'Coreum',
   subunit: 'utestcore',
+  precision: 6,
+};
+
+export const COREUM_TOKEN_MAINNET: Token = {
+  denom: 'ucore',
+  symbol: 'Coreum',
+  subunit: 'ucore',
   precision: 6,
 };
 

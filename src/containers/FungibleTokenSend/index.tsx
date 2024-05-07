@@ -176,18 +176,25 @@ export const FungibleTokenSend = () => {
           <li>Please note, you will not be able to re-claim the assets unless the receiver sends it back to you.</li>
         </ul>
       </MessageBox>
-      <SectionWithLabel label="Amount">
-        <Amount
-          value={amount}
-          onChangeValue={setAmount}
-          selectedCurrency={selectedCurrency}
-          currencies={currenciesToDropdownItem}
-          onSelectCurrency={setSelectedCurrency}
-          onMaxButtonClick={handleMaxButtonClick}
-          balance={availableBalance}
-          precision={currentCurrency?.precision || 0}
-        />
-      </SectionWithLabel>
+      <div className="flex flex-col w-full relative">
+        <SectionWithLabel label="Amount">
+          <Amount
+            value={amount}
+            onChangeValue={setAmount}
+            selectedCurrency={selectedCurrency}
+            currencies={currenciesToDropdownItem}
+            onSelectCurrency={setSelectedCurrency}
+            onMaxButtonClick={handleMaxButtonClick}
+            balance={availableBalance}
+            precision={currentCurrency?.precision || 0}
+          />
+        </SectionWithLabel>
+        {!Big(amount || '0').lte(Big(availableBalance)) && (
+          <div className="absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]">
+            <GeneralIcon type={GeneralIconType.Error} /> Insufficient balance
+          </div>
+        )}
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <ChainSelector />
         <div className="col-span-2">

@@ -10,6 +10,7 @@ import { MessageBox } from "@/components/MessageBox";
 import { SectionWithLabel } from "@/components/SectionWithLabel";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { convertSubunitToUnit, convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
@@ -204,6 +205,8 @@ export const FungibleTokenSend = () => {
             onChange={setDestinationAddress}
             placeholder="Enter Destination Address"
             error={isDestinationAddressInvalid.length ? isDestinationAddressInvalid : undefined}
+            buttonLabel={destinationAddress.length ? '' : 'Paste'}
+            handleOnButtonClick={() => !destinationAddress.length && pasteValueFromClipboard(setDestinationAddress)}
           />
         </div>
       </div>

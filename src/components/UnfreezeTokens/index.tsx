@@ -3,6 +3,7 @@ import { GeneralIconType, ButtonType, Token } from "@/shared/types";
 import { FC } from "react";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 
 interface UnfreezeTokensProps {
   selectedCurrency: Token | null;
@@ -32,8 +33,9 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
         value={walletAddress}
         onChange={setWalletAddress}
         placeholder="Enter wallet address"
-        buttonLabel="Paste"
+        buttonLabel={walletAddress.length ? '' : 'Paste'}
         error={walletAddressValidationError}
+        handleOnButtonClick={() => !walletAddress.length && pasteValueFromClipboard(setWalletAddress)}
       />
       <Input
         label="Unfreeze Amount"

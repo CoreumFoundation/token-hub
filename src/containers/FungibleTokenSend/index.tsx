@@ -137,7 +137,7 @@ export const FungibleTokenSend = () => {
       const txFee = await getTxFee([sendFTMsg]);
       await signingClient?.signAndBroadcast(account, [sendFTMsg], txFee ? txFee.fee : 'auto');
       dispatch(dispatchAlert({
-        type: AlertType.Error,
+        type: AlertType.Success,
         title: 'Token was sent successfully',
       }));
     } catch (error) {

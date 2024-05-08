@@ -7,17 +7,22 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { NFT_TOKEN_CAPABILITIES } from "@/constants";
-import { setIsConnectModalOpen } from "@/features/general/generalSlice";
-import { ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
-import { useAppDispatch } from "@/store/hooks";
+import { CID_REGEX, IPFS_REGEX, NFT_TOKEN_CAPABILITIES, SYMBOL_NFT_REGEX, URL_REGEX } from "@/constants";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import Big from "big.js";
+import { ClassFeature, Feature, NFT, parseFloatToRoyaltyRate } from "coreum-js";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 
 export const NonFungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [url, setUrl] = useState<string>('');
+  const [uri, setUri] = useState<string>('');
+  const [uriHash, setUriHash] = useState<string>('');
   const [royalties, setRoyalties] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
@@ -27,11 +32,36 @@ export const NonFungibleTokenCreate = () => {
   const [disableSendingEnabled, setDisableSendingEnabled] = useState<boolean>(false);
   const [soulboundEnabled, setSoulboundEnabled] = useState<boolean>(false);
 
+  const isConnected = useAppSelector(state => state.general.isConnected);
+  const account = useAppSelector(state => state.general.account);
+  const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+
   const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
+
+  const handleClearState = useCallback(() => {
+    setSymbol('');
+    setName('');
+    setUri('');
+    setRoyalties('');
+    setUriHash('');
+    setDescription('');
+    setBurningEnabled(false);
+    setFreezingEnabled(false);
+    setWhitelistingEnabled(false);
+    setDisableSendingEnabled(false);
+    setSoulboundEnabled(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      handleClearState();
+    }
+  }, [isConnected]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
     switch (type) {
@@ -67,6 +97,173 @@ export const NonFungibleTokenCreate = () => {
     });
   }, [getTokenStateItem]);
 
+  const isEnteredSymbolValid = useMemo(() => {
+    if (!symbol.length) {
+      return '';
+    }
+
+    if (SYMBOL_NFT_REGEX.test(symbol)) {
+      return '';
+    }
+
+    return `Symbol must match regex format: ${SYMBOL_NFT_REGEX}`;
+  }, [symbol]);
+
+  const isRoyaltiesValid = useMemo(() => {
+    if (!royalties.length) {
+      return '';
+    }
+
+    if (Big(royalties).lt(0)) {
+      return 'Min royalties value is 0%';
+    }
+
+    if (Big(royalties).gt(100)) {
+      return 'Max royalties value is 100%';
+    }
+
+    return '';
+  }, [royalties]);
+
+  const isURIValid = useMemo(() => {
+    if (!uri.length) {
+      return '';
+    }
+
+    if (uri.startsWith('i')) {
+      if (IPFS_REGEX.test(uri)) {
+        return '';
+      }
+    } else {
+      if (URL_REGEX.test(uri)) {
+        return '';
+      }
+    }
+
+    return `URL is invalid`;
+  }, [uri]);
+
+  const isURIHashValid = useMemo(() => {
+    if (!uriHash.length) {
+      return '';
+    }
+
+    if (uri === 'ipfs://') {
+      if (CID_REGEX.test(uriHash)) {
+        return '';
+      }
+
+      return 'URI Hash is invalid';
+    }
+
+    return '';
+  }, [uri, uriHash]);
+
+  const isFormValid = useMemo(() => {
+    if (
+      symbol.length
+      && name.length
+      && uri.length
+      && uriHash.length
+      && description.length
+      && !isEnteredSymbolValid.length
+      && !isRoyaltiesValid.length
+      && !isURIValid.length
+      && !isURIHashValid.length
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [
+    symbol.length,
+    name.length,
+    uri.length,
+    uriHash.length,
+    description.length,
+    isRoyaltiesValid.length,
+    isURIValid.length,
+    isURIHashValid.length,
+    isEnteredSymbolValid.length,
+  ]);
+
+  const featuresToApply = useMemo(() => {
+    let featuresArray: number[] = [];
+
+    if (burningEnabled) {
+      featuresArray.push(ClassFeature.burning);
+    }
+
+    if (freezingEnabled) {
+      featuresArray.push(ClassFeature.freezing);
+    }
+
+    if (whitelistingEnabled) {
+      featuresArray.push(ClassFeature.whitelisting);
+    }
+
+    if (disableSendingEnabled) {
+      featuresArray.push(ClassFeature.disable_sending);
+    }
+
+    return featuresArray;
+  }, [burningEnabled, disableSendingEnabled, freezingEnabled, whitelistingEnabled]);
+
+  const handleIssueNFTCollection = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+    try {
+      const issueNFTMsg = NFT.IssueClass({
+        issuer: account,
+        symbol,
+        name,
+        description,
+        uri,
+        uriHash,
+        features: featuresToApply,
+        royaltyRate: parseFloatToRoyaltyRate(royalties),
+      });
+
+      const txFee = await getTxFee([issueNFTMsg]);
+      await signingClient?.signAndBroadcast(account, [issueNFTMsg], txFee ? txFee.fee : 'auto');
+      dispatch(dispatchAlert({
+        type: AlertType.Success,
+        title: 'Collection was issued successfully',
+      }));
+    } catch (error) {
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'NFT Issue Class Failed',
+        message: (error as { message: string}).message,
+      }))
+    }
+    dispatch(setIsTxExecuting(false));
+  }, [account, description, dispatch, featuresToApply, getTxFee, name, royalties, signingClient, symbol, uri, uriHash]);
+
+  const renderButton = useMemo(() => {
+    if (isConnected) {
+      return (
+        <Button
+          label="Create Collection"
+          onClick={handleIssueNFTCollection}
+          type={ButtonType.Primary}
+          iconType={ButtonIconType.Plus}
+          disabled={!isFormValid || isTxExecuting}
+          loading={isTxExecuting}
+          className="min-w-[200px]"
+        />
+      );
+    }
+
+    return (
+      <Button
+        label="Connect Wallet"
+        onClick={handleConnectWalletClick}
+        type={ButtonType.Primary}
+        iconType={ButtonIconType.Wallet}
+      />
+    );
+  }, [handleConnectWalletClick, handleIssueNFTCollection, isConnected, isFormValid, isTxExecuting]);
+
   return (
     <div className="flex flex-col gap-10">
       <MessageBox>
@@ -90,14 +287,26 @@ export const NonFungibleTokenCreate = () => {
           value={symbol}
           onChange={setSymbol}
           placeholder="e. g. TOKEN"
+          error={isEnteredSymbolValid}
+          errorClassName="!-mb-9"
         />
       </div>
       <div className="grid grid-cols-1">
         <Input
-          label="URL"
-          value={url}
-          onChange={setUrl}
-          placeholder="http://example.com"
+          label="URI"
+          value={uri}
+          onChange={setUri}
+          placeholder="ipfs://"
+          error={isURIValid}
+        />
+      </div>
+      <div className="grid grid-cols-1">
+        <Input
+          label="URI Hash"
+          value={uriHash}
+          onChange={setUriHash}
+          placeholder="Enter CID"
+          error={isURIHashValid}
         />
       </div>
       <div className="grid grid-cols-1">
@@ -117,6 +326,8 @@ export const NonFungibleTokenCreate = () => {
           placeholder="0"
           icon={<GeneralIcon type={GeneralIconType.Percentage} />}
           type="number"
+          decimals={2}
+          error={isRoyaltiesValid}
         />
       </div>
       <div className="flex w-full">
@@ -127,12 +338,7 @@ export const NonFungibleTokenCreate = () => {
       </div>
       <div className="flex w-full justify-end">
         <div className="flex items-center">
-          <Button
-            label="Connect Wallet"
-            onClick={handleConnectWalletClick}
-            type={ButtonType.Primary}
-            iconType={ButtonIconType.Wallet}
-          />
+          {renderButton}
         </div>
       </div>
     </div>

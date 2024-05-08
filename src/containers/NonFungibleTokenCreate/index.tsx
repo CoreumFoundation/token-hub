@@ -97,6 +97,18 @@ export const NonFungibleTokenCreate = () => {
     });
   }, [getTokenStateItem]);
 
+  const isEnteredNameValid = useMemo(() => {
+    if (!name.length) {
+      return '';
+    }
+
+    if (name.length > 128) {
+      return 'Max length of NFT Collection Name is 128';
+    }
+
+    return '';
+  }, [name]);
+
   const isEnteredSymbolValid = useMemo(() => {
     if (!symbol.length) {
       return '';
@@ -170,6 +182,7 @@ export const NonFungibleTokenCreate = () => {
       && !isRoyaltiesValid.length
       && !isURIValid.length
       && !isURIHashValid.length
+      && !isEnteredNameValid.length
     ) {
       return true;
     }
@@ -185,6 +198,7 @@ export const NonFungibleTokenCreate = () => {
     isURIValid.length,
     isURIHashValid.length,
     isEnteredSymbolValid.length,
+    isEnteredNameValid.length
   ]);
 
   const featuresToApply = useMemo(() => {
@@ -281,6 +295,7 @@ export const NonFungibleTokenCreate = () => {
           value={name}
           onChange={setName}
           placeholder="e. g. Collection Name"
+          error={isEnteredNameValid}
         />
         <Input
           label="Symbol"

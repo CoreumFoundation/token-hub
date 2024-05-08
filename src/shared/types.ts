@@ -55,6 +55,7 @@ export enum GeneralIconType {
   Manage = 'manage',
   Warning = 'warning',
   AlertClose = 'alert_close',
+  Hand = 'hand',
 };
 
 export enum TabItemType {

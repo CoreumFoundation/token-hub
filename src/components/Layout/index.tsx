@@ -25,6 +25,8 @@ import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
 import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
 import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
 import { Alerts } from "../Alerts";
+import { MintNFTModal } from "../MintNFTModal";
+import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -117,6 +119,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ConfirmUnfreezeModal />
             <ConfirmGlobalUnfreezeModal />
             <ConfirmWhitelistModal />
+            <MintNFTModal />
+            <ViewNFTCollectionModal />
           </div>
         </AppProvider>
       </ReduxProvider>

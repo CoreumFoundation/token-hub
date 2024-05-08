@@ -44,7 +44,7 @@ export const ManageTokensModal = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleCloseConnectWalletModal = useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setSelectedCurrency(null));
     setSelectedTab(null);
@@ -186,7 +186,7 @@ export const ManageTokensModal = () => {
     <Modal
       isOpen={isManageCurrencyModalOpen}
       title={renderTitle}
-      onClose={handleCloseConnectWalletModal}
+      onClose={handleCloseModal}
       wrapperClassName="w-[480px] pt-4"
       headerClassName="!text-base"
     >

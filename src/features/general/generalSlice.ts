@@ -21,6 +21,9 @@ export interface GeneralState {
   isConfirmGlobalUnfreezeModalOpen: boolean;
   isConfirmWhitelistModalOpen: boolean;
   isConfirmBurnModalOpen: boolean;
+  isSelectNFTModalOpen: boolean;
+  isNFTCollectionViewModalOpen: boolean;
+  isNFTMintModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -40,6 +43,9 @@ export const initialGeneralState: GeneralState = {
   isConfirmGlobalUnfreezeModalOpen: false,
   isConfirmWhitelistModalOpen: false,
   isConfirmBurnModalOpen: false,
+  isSelectNFTModalOpen: false,
+  isNFTCollectionViewModalOpen: false,
+  isNFTMintModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -97,6 +103,15 @@ const generalSlice = createSlice({
     setIsConfirmBurnModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmBurnModalOpen = action.payload;
     },
+    setIsSelectNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSelectNFTModalOpen = action.payload;
+    },
+    setisNFTCollectionViewModalOpen(state, action: PayloadAction<boolean>) {
+      state.isNFTCollectionViewModalOpen = action.payload;
+    },
+    setIsNFTMintModalOpen(state, action: PayloadAction<boolean>) {
+      state.isNFTMintModalOpen = action.payload;
+    },
   },
 });
 
@@ -116,6 +131,9 @@ export const {
   setIsConfirmGlobalUnfreezeModalOpen,
   setIsConfirmWhitelistModalOpen,
   setIsConfirmBurnModalOpen,
+  setIsSelectNFTModalOpen,
+  setisNFTCollectionViewModalOpen,
+  setIsNFTMintModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

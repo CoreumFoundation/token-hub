@@ -2,12 +2,13 @@
 
 import { useCallback } from "react";
 import { Modal } from "../Modal";
-import { WalletOption, WalletType } from "@/shared/types";
+import { AlertType, WalletOption, WalletType } from "@/shared/types";
 import { WalletItem } from "../WalletItem";
 import { CONNECT_WALLET_OPTIONS } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { WalletType as GrazWalletType, useDisconnect, useSuggestChainAndConnect } from "graz";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
 
 export const ConnectWalletModal = () => {
   const { suggestAndConnectAsync } = useSuggestChainAndConnect();
@@ -30,7 +31,10 @@ export const ConnectWalletModal = () => {
       });
       dispatch(setIsConnectModalOpen(false));
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Wallet connect is failed. Please, try again!',
+      }));
     }
   }, [currentNetworkInfo, disconnectAsync, dispatch, suggestAndConnectAsync]);
 

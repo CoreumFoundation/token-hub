@@ -4,6 +4,7 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { Amount } from "@/components/Amount";
 import { Button } from "@/components/Button";
 import { ChainSelector } from "@/components/ChainSelector";
+import { Decimal } from "@/components/Decimal";
 import { InfoRow } from "@/components/InfoRow";
 import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
@@ -222,7 +223,13 @@ export const FungibleTokenSend = () => {
       <div className="flex flex-col w-full items-center gap-2">
         <InfoRow
           label={"Fee"}
-          value={`~ ${convertSubunitToUnit({ amount: '8625', precision: 6 })} COREUM`}
+          value={(
+            <div className="flex items-baseline gap-1">
+              ~
+              <Decimal value={convertSubunitToUnit({ amount: '8625', precision: 6 })} precision={6} />
+              <span className="text-xs">COREUM</span>
+            </div>
+          )}
         />
         <InfoRow
           label={"Estimated Time"}

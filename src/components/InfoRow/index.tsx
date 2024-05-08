@@ -17,7 +17,6 @@ export const InfoRow: FC<InfoRowProps> = ({
         <div className="text-sm capitalize text-[#5E6773]">
           {label}
         </div>
-        <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
       </div>
       <div className="flex items-center text-[#EEE] font-noto-sans text-base">
         {value}

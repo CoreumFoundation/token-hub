@@ -13,6 +13,7 @@ import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
+import { Decimal } from "../Decimal";
 
 export const ConfirmUnfreezeModal = () => {
   const isConfirmUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmUnfreezeModalOpen);
@@ -74,7 +75,15 @@ export const ConfirmUnfreezeModal = () => {
             </div>
             <div className="flex flex-col items-center w-full gap-2">
               <ModalInfoRow label="Wallet Address" value={shortenAddress(walletAddress)} />
-              <ModalInfoRow label="Unfreeze Amount" value={`${unfreezeAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
+              <ModalInfoRow
+                label="Unfreeze Amount"
+                value={(
+                  <div className="flex flex-wrap max-w-full gap-1 w-full items-baseline justify-end">
+                    <Decimal className="break-all max-w-full !inline" value={unfreezeAmount} precision={selectedCurrency?.precision || 0} />
+                    <span className="text-left text-xs max-w-full break-all">{selectedCurrency?.symbol.toUpperCase()}</span>
+                  </div>
+                )}
+              />
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -117,7 +126,7 @@ export const ConfirmUnfreezeModal = () => {
         </div>
       </div>
     );
-  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency?.symbol, unfreezeAmount, walletAddress]);
+  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency, unfreezeAmount, walletAddress]);
 
   return (
     <ConfirmationModal isOpen={isConfirmUnfreezeModalOpen}>

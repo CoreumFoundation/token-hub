@@ -56,13 +56,31 @@ export const Input: FC<InputProps> = ({
     }
 
     if (type === 'number') {
-      if (getNumberRegex(decimals).test(e.target.value)) {
-        onChange(e.target.value);
+      const currentValue = e.target.value.replaceAll(',', '');
+
+      if (getNumberRegex(decimals).test(currentValue)) {
+        onChange(currentValue);
       }
     } else {
       onChange(e.target.value);
     }
   }, [onChange, type, decimals]);
+
+  const renderFormattedValue = useMemo(() => {
+    if (value.length && type === 'number') {
+      const [integerPart, decimalPart] = value.split('.');
+
+      const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+      const formattedValue = decimalPart !== undefined
+        ? `${formattedIntegerPart}.${decimalPart.slice(0, decimals)}`
+        : formattedIntegerPart;
+
+      return formattedValue;
+    }
+
+    return value;
+  }, [value, type, decimals]);
 
   return (
     <div className="flex flex-col w-full gap-2 relative">
@@ -79,7 +97,7 @@ export const Input: FC<InputProps> = ({
           className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
           placeholder={placeholder}
           disabled={disabled}
-          value={value}
+          value={renderFormattedValue}
           onChange={handleChangeInput}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

@@ -39,7 +39,7 @@ export const ManageTokensModal = () => {
 
   const isManageCurrencyModalOpen = useAppSelector(state => state.general.isManageCurrencyModalOpen);
 
-  const [amount, setAmount] = useState<string>('0');
+  const [amount, setAmount] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
 
   const dispatch = useAppDispatch();
@@ -52,7 +52,7 @@ export const ManageTokensModal = () => {
 
   const handleSetTab = useCallback((value: TabItem) => {
     setSelectedTab(value);
-    setAmount('0');
+    setAmount('');
     setWalletAddress('');
   }, []);
 

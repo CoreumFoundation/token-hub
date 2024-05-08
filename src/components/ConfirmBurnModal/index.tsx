@@ -12,6 +12,7 @@ import { FT } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { Decimal } from "../Decimal";
 
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
@@ -69,7 +70,15 @@ export const ConfirmBurnModal = () => {
               Successfully Burned Tokens
             </div>
             <div className="flex items-center w-full">
-              <ModalInfoRow label="Burn Amount" value={`${burnAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
+              <ModalInfoRow
+                label="Burn Amount"
+                value={(
+                  <div className="flex flex-wrap max-w-full gap-1 w-full items-baseline justify-end">
+                    <Decimal className="break-all max-w-full !inline" value={burnAmount} precision={selectedCurrency?.precision || 0} />
+                    <span className="text-left text-xs max-w-full break-all">{selectedCurrency?.symbol.toUpperCase()}</span>
+                  </div>
+                )}
+              />
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -112,7 +121,7 @@ export const ConfirmBurnModal = () => {
         </div>
       </div>
     );
-  }, [burnAmount, handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency?.symbol]);
+  }, [burnAmount, handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency]);
 
   return (
     <ConfirmationModal isOpen={isConfirmBurnModalOpen}>

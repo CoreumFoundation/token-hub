@@ -21,14 +21,14 @@ import Big from "big.js";
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
   const [subunit, setSubunit] = useState<string>('');
-  const [precision, setPrecision] = useState<string>('0');
-  const [initialAmount, setInitialAmount] = useState<string>('0');
+  const [precision, setPrecision] = useState<string>('');
+  const [initialAmount, setInitialAmount] = useState<string>('');
 
   const [url, setUrl] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
-  const [burnRate, setBurnRate] = useState<string>('0');
-  const [sendCommissionRate, setSendCommissionRate] = useState<string>('0');
+  const [burnRate, setBurnRate] = useState<string>('');
+  const [sendCommissionRate, setSendCommissionRate] = useState<string>('');
 
   const [mintingEnabled, setMintingEnabled] = useState<boolean>(false);
   const [burningEnabled, setBurningEnabled] = useState<boolean>(false);
@@ -121,7 +121,7 @@ export const FungibleTokenCreate = () => {
       const txFee = await getTxFee([issueFTMsg]);
       await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
       dispatch(dispatchAlert({
-        type: AlertType.Error,
+        type: AlertType.Success,
         title: 'Token was issued successfully',
       }));
     } catch (error: unknown) {
@@ -230,6 +230,10 @@ export const FungibleTokenCreate = () => {
       return '';
     }
 
+    if (Big(precision).lt(1)) {
+      return 'Min value of precision is 1';
+    }
+
     if (Big(precision).gt(20)) {
       return 'Max value of precision is 20';
     }
@@ -241,7 +245,6 @@ export const FungibleTokenCreate = () => {
       && subunit.length
       && url.length
       && description.length
-      && +precision > 0
       && +burnRate <= 100
       && +sendCommissionRate <= 100
       && !isEnteredSubunitsValid.length
@@ -257,7 +260,6 @@ export const FungibleTokenCreate = () => {
     subunit.length,
     url.length,
     description.length,
-    precision,
     burnRate,
     sendCommissionRate,
     isEnteredSubunitsValid.length,

@@ -6,6 +6,7 @@ import { Dropdown } from "../Dropdown";
 import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { getNumberRegex } from "@/helpers/getNumberRegex";
+import { Decimal } from "../Decimal";
 
 interface AmountProps {
   value: string;
@@ -34,10 +35,23 @@ export const Amount: FC<AmountProps> = ({
       return;
     }
 
-    if (getNumberRegex(precision).test(e.target.value)) {
-      onChangeValue(e.target.value);
+    const currentValue = e.target.value.replaceAll(',', '');
+    if (getNumberRegex(precision).test(currentValue)) {
+      onChangeValue(currentValue);
     }
   }, [onChangeValue, precision]);
+
+  const renderFormattedValue = useMemo(() => {
+    const [integerPart, decimalPart] = value.split('.');
+
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    const formattedValue = decimalPart !== undefined
+      ? `${formattedIntegerPart}.${decimalPart.slice(0, precision)}`
+      : formattedIntegerPart;
+
+    return formattedValue;
+  }, [precision, value]);
 
   return (
     <div className="flex flex-col w-full items-center gap-2">
@@ -45,7 +59,7 @@ export const Amount: FC<AmountProps> = ({
         <input
           className="flex-1 w-full bg-transparent text-2xl font-medium placeholder:text-[#5E6773] text-[#EEE] outline-none"
           placeholder="0.00"
-          value={value}
+          value={renderFormattedValue}
           onChange={handleChangeAmount}
         />
         <div className="flex-none">
@@ -77,8 +91,8 @@ export const Amount: FC<AmountProps> = ({
             <div className="text-[#5E6773] text-xs">
               Available:
             </div>
-            <div className="text-[#eee] text-base">
-              {balance} {(selectedCurrency?.label as string)?.toUpperCase()}
+            <div className="flex text-[#eee] text-base gap-1 items-baseline">
+              <Decimal value={balance} precision={precision} /> <span className="text-xs">{(selectedCurrency?.label as string)?.toUpperCase()}</span>
             </div>
           </div>
         </div>

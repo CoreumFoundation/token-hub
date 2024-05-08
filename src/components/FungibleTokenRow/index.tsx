@@ -2,6 +2,7 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { ActionItem, GeneralIconType } from "@/shared/types";
 import { FC } from "react";
 import { ActionRow } from "../ActionRow";
+import { Decimal } from "../Decimal";
 
 interface FungibleTokenRowProps {
   symbol: string;
@@ -84,9 +85,9 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
             <div className="text-sm text-[#5E6773]">
               Balance
             </div>
-            <div className="text-base text-[#EEE] items-end flex flex-wrap max-w-full gap-1">
-              <span className="text-left items-start break-words max-w-full">{balance}</span>
-              <span className="text-left text-sm max-w-full break-all">{symbol.toUpperCase()}</span>
+            <div className="text-base text-[#EEE] flex items-baseline flex-wrap max-w-full gap-1">
+              <Decimal className="break-all max-w-full !inline" value={balance} precision={precision} />
+              <span className="text-left text-xs max-w-full break-all">{symbol.toUpperCase()}</span>
             </div>
           </div>
         </div>

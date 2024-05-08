@@ -13,6 +13,7 @@ import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
+import { Decimal } from "../Decimal";
 
 export const ConfirmWhitelistModal = () => {
   const isConfirmWhitelistModalOpen = useAppSelector(state => state.general.isConfirmWhitelistModalOpen);
@@ -74,7 +75,15 @@ export const ConfirmWhitelistModal = () => {
             </div>
             <div className="flex flex-col items-center w-full gap-2">
               <ModalInfoRow label="Wallet Address" value={shortenAddress(walletAddress)} />
-              <ModalInfoRow label="Whitelist Amount" value={`${whitelistAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
+              <ModalInfoRow
+                label="Whitelist Amount"
+                value={(
+                  <div className="flex flex-wrap max-w-full gap-1 w-full items-baseline justify-end">
+                    <Decimal className="break-all max-w-full !inline" value={whitelistAmount} precision={selectedCurrency?.precision || 0} />
+                    <span className="text-left text-xs max-w-full break-all">{selectedCurrency?.symbol.toUpperCase()}</span>
+                  </div>
+                )}
+              />
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -117,7 +126,7 @@ export const ConfirmWhitelistModal = () => {
         </div>
       </div>
     );
-  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency?.symbol, walletAddress, whitelistAmount]);
+  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, selectedCurrency, walletAddress, whitelistAmount]);
 
   return (
     <ConfirmationModal isOpen={isConfirmWhitelistModalOpen}>

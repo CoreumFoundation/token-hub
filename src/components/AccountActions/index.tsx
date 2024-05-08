@@ -49,7 +49,10 @@ export const AccountActions = () => {
     try {
       await disconnectAsync();
     } catch (error) {
-      console.log(error);
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Wallet disconnect is failed. Please, try again!',
+      }));
     }
   }, []);
 

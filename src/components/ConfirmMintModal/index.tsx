@@ -12,6 +12,7 @@ import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { Decimal } from "../Decimal";
 
 export const ConfirmMintModal = () => {
   const isConfirmMintModalOpen = useAppSelector(state => state.general.isConfirmMintModalOpen);
@@ -69,7 +70,15 @@ export const ConfirmMintModal = () => {
               Successfully Minted Tokens
             </div>
             <div className="flex items-center w-full">
-              <ModalInfoRow label="Mint Amount" value={`${mintAmount} ${selectedCurrency?.symbol.toUpperCase()}`} />
+              <ModalInfoRow
+                label="Mint Amount"
+                value={(
+                  <div className="flex flex-wrap max-w-full gap-1 w-full items-baseline justify-end">
+                    <Decimal className="break-all max-w-full !inline" value={mintAmount} precision={selectedCurrency?.precision || 0} />
+                    <span className="text-left text-xs max-w-full break-all">{selectedCurrency?.symbol.toUpperCase()}</span>
+                  </div>
+                )}
+              />
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -112,7 +121,7 @@ export const ConfirmMintModal = () => {
         </div>
       </div>
     );
-  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, mintAmount, selectedCurrency?.symbol]);
+  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, mintAmount, selectedCurrency]);
 
   return (
     <ConfirmationModal isOpen={isConfirmMintModalOpen}>

@@ -6,6 +6,7 @@ import { currenciesReducer } from '@/features/currencies/currenciesSlice';
 import { freezeReducer } from '@/features/freeze/freezeSlice';
 import { generalReducer } from '@/features/general/generalSlice';
 import { mintReducer } from '@/features/mint/mintSlice';
+import { nftsReducer } from '@/features/nft/nftSlice';
 import { unfreezeReducer } from '@/features/unfreeze/unfreezeSlice';
 import { whitelistReducer } from '@/features/whitelist/whitelistSlice';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
@@ -20,6 +21,7 @@ export const store = configureStore({
     freeze: freezeReducer,
     general: generalReducer,
     mint: mintReducer,
+    nfts: nftsReducer,
     unfreeze: unfreezeReducer,
     whitelist: whitelistReducer,
   },

@@ -3,6 +3,7 @@ import { useAccountBalances } from '@/hooks/useBalances';
 import { useChains } from '@/hooks/useChains';
 import { useCurrencies } from '@/hooks/useCurrencies';
 import { useCurrentNetwork } from '@/hooks/useCurrentNetwork';
+import { useNFTs } from '@/hooks/useNFTs';
 import { FC } from 'react';
 
 interface AppProviderProps {
@@ -15,6 +16,7 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
   useCurrencies();
   useAccountBalances();
   useCurrentNetwork();
+  useNFTs();
 
   return children;
 };

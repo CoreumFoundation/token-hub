@@ -58,7 +58,7 @@ export const FungibleTokenManage = () => {
           <div className="flex flex-col w-full gap-3">
             {currencies.map((currency: Token) => {
               const currentTokenBalance = balances.find((item: Coin) => item.denom === currency.denom);
-              let [isBurnable, isManageable] = getFTCurrencyOptions(currency);
+              const [isBurnable, isManageable] = getFTCurrencyOptions(currency);
 
               return (
                 <FungibleTokenRow

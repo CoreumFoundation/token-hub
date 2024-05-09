@@ -108,7 +108,7 @@ const generalSlice = createSlice({
     setIsSelectNFTModalOpen(state, action: PayloadAction<boolean>) {
       state.isSelectNFTModalOpen = action.payload;
     },
-    setisNFTCollectionViewModalOpen(state, action: PayloadAction<boolean>) {
+    setIsNFTCollectionViewModalOpen(state, action: PayloadAction<boolean>) {
       state.isNFTCollectionViewModalOpen = action.payload;
     },
     setIsNFTMintModalOpen(state, action: PayloadAction<boolean>) {
@@ -137,7 +137,7 @@ export const {
   setIsConfirmWhitelistModalOpen,
   setIsConfirmBurnModalOpen,
   setIsSelectNFTModalOpen,
-  setisNFTCollectionViewModalOpen,
+  setIsNFTCollectionViewModalOpen,
   setIsNFTMintModalOpen,
   setIsConfirmNFTMintModalOpen,
 } = generalSlice.actions;

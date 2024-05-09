@@ -28,6 +28,7 @@ import { Alerts } from "../Alerts";
 import { MintNFTModal } from "../MintNFTModal";
 import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
 import { ConfirmNFTMintModal } from "../ConfirmNFTMintModal";
+import { SelectNFTModal } from "../SelectNFTModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -123,6 +124,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <MintNFTModal />
             <ConfirmNFTMintModal />
             <ViewNFTCollectionModal />
+            <SelectNFTModal />
           </div>
         </AppProvider>
       </ReduxProvider>

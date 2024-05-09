@@ -7,10 +7,9 @@ import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import Image from "next/image";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { ButtonIconType, ButtonType, GeneralIconType } from "@/shared/types";
-import { Class } from 'coreum-js/dist/main/coreum/asset/nft/v1/nft';
+import { ButtonIconType, ButtonType, GeneralIconType, NFTClass } from "@/shared/types";
 import { Button } from "@/components/Button";
-import { setIsConnectModalOpen, setIsNFTMintModalOpen, setisNFTCollectionViewModalOpen } from "@/features/general/generalSlice";
+import { setIsConnectModalOpen, setIsNFTMintModalOpen, setIsNFTCollectionViewModalOpen } from "@/features/general/generalSlice";
 import { NonFungibleTokenRow } from "@/components/NonFungibleTokenRow";
 import { setSelectedNFTClass } from "@/features/nft/nftSlice";
 
@@ -26,12 +25,12 @@ export const NonFungibleTokenManage = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
-  const handleClassViewClick = useCallback((collection: Class) => {
+  const handleClassViewClick = useCallback((collection: NFTClass) => {
     dispatch(setSelectedNFTClass(collection));
-    dispatch(setisNFTCollectionViewModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(true));
   }, []);
 
-  const handleClassMintClick = useCallback((collection: Class) => {
+  const handleClassMintClick = useCallback((collection: NFTClass) => {
     dispatch(setSelectedNFTClass(collection));
     dispatch(setIsNFTMintModalOpen(true));
   }, []);
@@ -49,7 +48,7 @@ export const NonFungibleTokenManage = () => {
       if (collections.length) {
         return (
           <div className="flex flex-col w-full gap-3">
-            {collections.map((collection: Class) => {
+            {collections.map((collection: NFTClass) => {
               return (
                 <NonFungibleTokenRow
                   key={collection.id}

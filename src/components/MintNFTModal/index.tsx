@@ -77,6 +77,10 @@ export const MintNFTModal = () => {
       return 'URI Hash is invalid';
     }
 
+    if (uriHash.length > 128) {
+      return `The length of URI Hash must be less than or equal 128. Current length is ${uriHash.length}`;
+    }
+
     return '';
   }, [uri, uriHash]);
 
@@ -98,11 +102,19 @@ export const MintNFTModal = () => {
     return '';
   }, [coreumChain?.bech32_prefix, recipient]);
 
+  const isFormValid = useMemo(() => {
+    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length && uri.length && recipient.length) {
+      return true;
+    }
+
+    return false;
+  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length, recipient.length, uri.length]);
+
   const handleMintNFT = useCallback(() => {
     dispatch(setNFTID(nftId));
     dispatch(setNFTURI(uri));
     dispatch(setNFTURIHash(uriHash));
-    dispatch(setNFTRecipient(account));
+    dispatch(setNFTRecipient(recipient));
     dispatch(setNFTData(data));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
@@ -111,7 +123,7 @@ export const MintNFTModal = () => {
     setUriHash('');
     setData('');
     setRecipient('');
-  }, [account, data, dispatch, nftId, uri, uriHash]);
+  }, [data, nftId, recipient, uri, uriHash]);
 
   return (
     <Modal
@@ -162,7 +174,7 @@ export const MintNFTModal = () => {
               label="Continue"
               onClick={handleMintNFT}
               type={ButtonType.Primary}
-              disabled={isTxExecuting}
+              disabled={!isFormValid || isTxExecuting}
               loading={isTxExecuting}
               className="min-w-40 !py-2 !px-6 text-sm"
             />

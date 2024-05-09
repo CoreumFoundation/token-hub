@@ -1,6 +1,8 @@
-import { Feature } from 'coreum-js';
+import { ClassFeature, Feature } from 'coreum-js';
 import { Switch } from './../components/Switch/index';
 import { Chain } from '@chain-registry/types';
+import { Any } from 'coreum-js/dist/main/google/protobuf/any';
+import { Class } from 'coreum-js/dist/main/coreum/asset/nft/v1/nft';
 
 export enum FooterIconType {
   X = 'twitter',
@@ -204,4 +206,28 @@ export enum AlertType {
   Success = 'success',
   Warning = 'warning',
   Error = 'error',
+}
+
+export interface NFT {
+  classId: string;
+  id: string;
+  uri: string;
+  uri_hash: string;
+  data?: Any;
+  image: string;
+  name: string;
+}
+
+export interface NFTClass {
+  id: string;
+  issuer: string;
+  name: string;
+  symbol: string;
+  description: string;
+  uri: string;
+  uri_hash: string;
+  data?: Any;
+  features: ClassFeature[];
+  royaltyRate: string;
+  image: string;
 }

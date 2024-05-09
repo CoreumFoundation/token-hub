@@ -89,7 +89,7 @@ export const ConfirmNFTMintModal = () => {
               />
               <ModalInfoRow
                 label="URI Hash"
-                value={nftURIHash}
+                value={shortenAddress(nftURIHash)}
               />
               <ModalInfoRow
                 label="Recipient"

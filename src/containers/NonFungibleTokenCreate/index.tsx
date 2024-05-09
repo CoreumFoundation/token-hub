@@ -168,6 +168,10 @@ export const NonFungibleTokenCreate = () => {
       return 'URI Hash is invalid';
     }
 
+    if (uriHash.length > 128) {
+      return `The length of URI Hash must be less than or equal 128. Current length is ${uriHash.length}`;
+    }
+
     return '';
   }, [uri, uriHash]);
 

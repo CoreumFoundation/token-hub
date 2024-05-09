@@ -1,4 +1,4 @@
-import { fetchIssuedNFTCollectionsByAccount } from "@/features/nft/nftSlice";
+import { fetchIssuedNFTCollectionsByAccount, fetchNFTsByOwnerAndClass } from "@/features/nft/nftSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 
@@ -8,6 +8,8 @@ export const useNFTs = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const nftCollections = useAppSelector(state => state.nfts.collections);
   const isFetched = useAppSelector(state => state.nfts.isFetched);
+
+  const isNFTItemsFetched = useAppSelector(state => state.nfts.isNFTItemsFetched);
 
   const dispatch = useAppDispatch();
 
@@ -22,4 +24,16 @@ export const useNFTs = () => {
       dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
     }
   }, [network, account]);
+
+  useEffect(() => {
+    if (!isNFTItemsFetched && account && nftCollections.length) {
+      for (const collection of nftCollections) {
+        dispatch(fetchNFTsByOwnerAndClass({
+          account,
+          network,
+          classId: collection.id,
+        }));
+      }
+    }
+  }, [account, isNFTItemsFetched, network, nftCollections]);
 };

@@ -24,8 +24,6 @@ export const MintNFTModal = () => {
   const account = useAppSelector(state => state.general.account);
   const chains = useAppSelector(state => state.chains.list);
 
-  console.log(chains);
-
   const dispatch = useAppDispatch();
 
   const handleCloseModal = useCallback(() => {

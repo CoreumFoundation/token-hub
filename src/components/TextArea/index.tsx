@@ -66,7 +66,7 @@ export const TextArea: FC<TextAreaProps> = ({
       </div>
       {error && (
         <div className="absolute bottom-0 flex items-center gap-2 -mb-7 text-xs text-[#DE0F3E]">
-          <GeneralIcon type={GeneralIconType.Error} /> Error Message
+          <GeneralIcon type={GeneralIconType.Error} /> {error}
         </div>
       )}
     </div>

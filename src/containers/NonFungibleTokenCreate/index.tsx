@@ -171,6 +171,18 @@ export const NonFungibleTokenCreate = () => {
     return '';
   }, [uri, uriHash]);
 
+  const isDescriptionValid = useMemo(() => {
+    if (!description.length) {
+      return '';
+    }
+
+    if (description.length > 256) {
+      return `The length of description mush be less than or equal 256. Current length is ${description.length}`;
+    }
+
+    return '';
+  }, [description]);
+
   const isFormValid = useMemo(() => {
     if (
       symbol.length
@@ -183,6 +195,7 @@ export const NonFungibleTokenCreate = () => {
       && !isURIValid.length
       && !isURIHashValid.length
       && !isEnteredNameValid.length
+      && !isDescriptionValid.length
     ) {
       return true;
     }
@@ -198,7 +211,8 @@ export const NonFungibleTokenCreate = () => {
     isURIValid.length,
     isURIHashValid.length,
     isEnteredSymbolValid.length,
-    isEnteredNameValid.length
+    isEnteredNameValid.length,
+    isDescriptionValid.length,
   ]);
 
   const featuresToApply = useMemo(() => {
@@ -263,7 +277,7 @@ export const NonFungibleTokenCreate = () => {
           iconType={ButtonIconType.Plus}
           disabled={!isFormValid || isTxExecuting}
           loading={isTxExecuting}
-          className="min-w-[200px]"
+          className="min-w-[200px] px-2"
         />
       );
     }
@@ -331,6 +345,7 @@ export const NonFungibleTokenCreate = () => {
           onChange={setDescription}
           placeholder="Enter token description"
           rows={4}
+          error={isDescriptionValid}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

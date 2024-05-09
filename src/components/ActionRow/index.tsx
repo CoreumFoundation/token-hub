@@ -18,7 +18,7 @@ export const ActionRow: FC<ActionRowProps> = ({
   itemsClassName,
 }) => {
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left w-full">
       {({ open }) => (
         <>
           <Menu.Button

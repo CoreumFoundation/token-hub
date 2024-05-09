@@ -34,7 +34,7 @@ export const BurnTokensModal = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleCloseConnectWalletModal = useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     dispatch(setIsBurnCurrencyModalOpen(false));
     dispatch(setSelectedCurrency(null));
   }, []);
@@ -49,7 +49,7 @@ export const BurnTokensModal = () => {
     <Modal
       isOpen={isBurnCurrencyModalOpen}
       title="Burn Tokens"
-      onClose={handleCloseConnectWalletModal}
+      onClose={handleCloseModal}
       wrapperClassName="w-[480px]"
     >
       <div className="flex flex-col w-full gap-8">

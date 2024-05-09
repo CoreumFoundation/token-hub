@@ -25,6 +25,10 @@ export interface GeneralState {
   isNFTCollectionViewModalOpen: boolean;
   isNFTMintModalOpen: boolean;
   isConfirmNFTMintModalOpen: boolean;
+  isFreezeNFTModalOpen: boolean;
+  isUnfreezeNFTModalOpen: boolean;
+  isBurnNFTModalOpen: boolean;
+  isWhitelistNFTModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -48,6 +52,10 @@ export const initialGeneralState: GeneralState = {
   isNFTCollectionViewModalOpen: false,
   isNFTMintModalOpen: false,
   isConfirmNFTMintModalOpen: false,
+  isFreezeNFTModalOpen: false,
+  isUnfreezeNFTModalOpen: false,
+  isBurnNFTModalOpen: false,
+  isWhitelistNFTModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -117,6 +125,18 @@ const generalSlice = createSlice({
     setIsConfirmNFTMintModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmNFTMintModalOpen = action.payload;
     },
+    setIsFreezeNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isFreezeNFTModalOpen = action.payload;
+    },
+    setIsUnfreezeNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isUnfreezeNFTModalOpen = action.payload;
+    },
+    setIsBurnNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isBurnNFTModalOpen = action.payload;
+    },
+    setIsWhitelistNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isWhitelistNFTModalOpen = action.payload;
+    },
   },
 });
 
@@ -140,6 +160,10 @@ export const {
   setIsNFTCollectionViewModalOpen,
   setIsNFTMintModalOpen,
   setIsConfirmNFTMintModalOpen,
+  setIsFreezeNFTModalOpen,
+  setIsUnfreezeNFTModalOpen,
+  setIsBurnNFTModalOpen,
+  setIsWhitelistNFTModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

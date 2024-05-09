@@ -60,6 +60,9 @@ export enum GeneralIconType {
   Hand = 'hand',
   Mint = 'mint',
   View = 'view',
+  Freeze = 'freeze',
+  Unfreeze = 'unfreeze',
+  Whitelist = 'whitelist',
 };
 
 export enum TabItemType {
@@ -227,7 +230,7 @@ export interface NFTClass {
   uri: string;
   uri_hash: string;
   data?: Any;
-  features: ClassFeature[];
+  features: string[];
   royaltyRate: string;
   image: string;
 }

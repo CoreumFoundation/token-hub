@@ -42,6 +42,9 @@ export const FungibleTokenCreate = () => {
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const currencies = useAppSelector(state => state.currencies.issuedList);
 
+  const dispatch = useAppDispatch();
+  const { signingClient, getTxFee } = useEstimateTxGasFee();
+
   const handleClearState = useCallback(() => {
     setSymbol('');
     setSubunit('');
@@ -64,9 +67,6 @@ export const FungibleTokenCreate = () => {
       handleClearState();
     }
   }, [isConnected]);
-
-  const dispatch = useAppDispatch();
-  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const featuresToApply = useMemo(() => {
     let featuresArray: number[] = [];

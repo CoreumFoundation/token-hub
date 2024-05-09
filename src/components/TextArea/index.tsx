@@ -12,6 +12,7 @@ interface TextAreaProps {
   disabled?: boolean;
   id?: string;
   error?: string;
+  className?: string;
 }
 
 export const TextArea: FC<TextAreaProps> = ({
@@ -23,6 +24,7 @@ export const TextArea: FC<TextAreaProps> = ({
   id,
   error,
   rows,
+  className,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -33,8 +35,8 @@ export const TextArea: FC<TextAreaProps> = ({
       'border-[#17191E]': !isFocused && !disabled && !error?.length && value.length,
       'border-[#DE0F3E]': error?.length,
       'border-transparent': disabled,
-    });
-  }, [disabled, error?.length, isFocused, value.length]);
+    }, className);
+  }, [disabled, error?.length, isFocused, value.length, className]);
 
   const handleChangeInput = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);

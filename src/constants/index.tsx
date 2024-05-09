@@ -234,3 +234,4 @@ export const IPFS_REGEX = new RegExp(`^ipfs:\/\/(?:[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-
 export const CID_REGEX = new RegExp(`^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$`);
 
 export const SYMBOL_NFT_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._]{0,30}$`);
+export const NFT_ID_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._-]{2,100}$`);

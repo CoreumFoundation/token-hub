@@ -12,12 +12,14 @@ export const useNFTs = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isFetched) {
+    if (!isFetched && account) {
       dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
     }
   }, [account, nftCollections, isConnected, isFetched, network]);
 
   useEffect(() => {
-    dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
-  }, [network]);
+    if (account) {
+      dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
+    }
+  }, [network, account]);
 };

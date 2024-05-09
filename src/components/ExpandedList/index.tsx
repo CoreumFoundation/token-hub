@@ -15,7 +15,7 @@ export const ExpandedList: FC<ExpandedListProps> = ({
 }) => {
   return (
     <div className="flex flex-col items-center w-full bg-secondary-gradient rounded-xl backdrop-blur-sm px-5">
-      <Disclosure>
+      <Disclosure defaultOpen={true}>
         {({ open }) => (
           <>
             <Disclosure.Button className={classNames('flex items-center w-full justify-between py-5 border-b', { 'border-[#1B1D23]': open, 'border-transparent': !open })}>

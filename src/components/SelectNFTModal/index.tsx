@@ -5,8 +5,7 @@ import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsSelectNFTModalOpen } from "@/features/general/generalSlice";
 import { NFTItem } from "../NFTItem";
-import { ButtonType, GeneralIconType, NFT, NFTClass } from "@/shared/types";
-import { GeneralIcon } from "@/assets/GeneralIcon";
+import { ButtonType, NFT, NFTClass } from "@/shared/types";
 import { Button } from "../Button";
 import { setSelectedNFTSend, setSelectedNFTClass as setSelectedNFTCollection } from "@/features/nft/nftSlice";
 
@@ -104,13 +103,6 @@ export const SelectNFTModal = () => {
                 label={item.name.length ? item.name : item.id}
                 onClick={() => onNFTClick(item)}
                 isActive={isActive}
-                icon={(
-                  <GeneralIcon
-                    type={GeneralIconType.Dots}
-                    className="group cursor-pointer"
-                    pathClassName={isActive ? 'fill-[#25D695]' : 'group-hover:fill-[#eee]'}
-                  />
-                )}
               />
             );
           })}

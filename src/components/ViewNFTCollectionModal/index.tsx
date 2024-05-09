@@ -44,21 +44,25 @@ export const ViewNFTCollectionModal = () => {
   const onUnfreezeClick = useCallback((nft: NFT) => {
     dispatch(setSelectedNFTSend(nft));
     dispatch(setIsUnfreezeNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
   const onFreezeClick = useCallback((nft: NFT) => {
     dispatch(setSelectedNFTSend(nft));
     dispatch(setIsFreezeNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
   const onBurnClick = useCallback((nft: NFT) => {
     dispatch(setSelectedNFTSend(nft));
     dispatch(setIsBurnNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
   const onWhitelistClick = useCallback((nft: NFT) => {
     dispatch(setSelectedNFTSend(nft));
     dispatch(setIsWhitelistNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
   return (

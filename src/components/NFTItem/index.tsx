@@ -12,7 +12,7 @@ interface NFTItemProps {
   className?: string;
   description?: string;
   isActionRow?: boolean;
-  actionItems: ActionItem[];
+  actionItems?: ActionItem[];
 }
 
 export const NFTItem: FC<NFTItemProps> = ({
@@ -35,7 +35,7 @@ export const NFTItem: FC<NFTItemProps> = ({
       <Image className="w-full h-40 rounded-t-lg" src={imgPath} alt={label} width="160" height="160" />
       {isActionRow ? (
         <ActionRow
-          actionItems={actionItems}
+          actionItems={actionItems || []}
           className="rounded-b-lg p-3 gap-2 w-full hover:bg-[#2B3138] hover:text-[#eee] !border-transparent"
         >
           <div className="flex flex-col w-full gap-1">

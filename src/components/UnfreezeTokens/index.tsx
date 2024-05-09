@@ -57,7 +57,7 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
           label="Globally Unfreeze"
           onClick={handleGloballyUnfreezeTokens}
           type={ButtonType.Secondary}
-          className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+          className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent pl-0"
         />
         <Button
           label="Continue"

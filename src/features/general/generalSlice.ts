@@ -29,6 +29,10 @@ export interface GeneralState {
   isUnfreezeNFTModalOpen: boolean;
   isBurnNFTModalOpen: boolean;
   isWhitelistNFTModalOpen: boolean;
+  isConfirmNFTBurnModalOpen: boolean;
+  isConfirmNFTFreezeModalOpen: boolean;
+  isConfirmNFTUnfreezeModalOpen: boolean;
+  isConfirmNFTWhitelistModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -56,6 +60,10 @@ export const initialGeneralState: GeneralState = {
   isUnfreezeNFTModalOpen: false,
   isBurnNFTModalOpen: false,
   isWhitelistNFTModalOpen: false,
+  isConfirmNFTBurnModalOpen: false,
+  isConfirmNFTFreezeModalOpen: false,
+  isConfirmNFTUnfreezeModalOpen: false,
+  isConfirmNFTWhitelistModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -137,6 +145,18 @@ const generalSlice = createSlice({
     setIsWhitelistNFTModalOpen(state, action: PayloadAction<boolean>) {
       state.isWhitelistNFTModalOpen = action.payload;
     },
+    setIsConfirmNFTBurnModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmNFTBurnModalOpen = action.payload;
+    },
+    setIsConfirmNFTFreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmNFTFreezeModalOpen = action.payload;
+    },
+    setIsConfirmNFTUnfreezeModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmNFTUnfreezeModalOpen = action.payload;
+    },
+    setIsConfirmNFTWhitelistModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmNFTWhitelistModalOpen = action.payload;
+    },
   },
 });
 
@@ -164,6 +184,10 @@ export const {
   setIsUnfreezeNFTModalOpen,
   setIsBurnNFTModalOpen,
   setIsWhitelistNFTModalOpen,
+  setIsConfirmNFTBurnModalOpen,
+  setIsConfirmNFTFreezeModalOpen,
+  setIsConfirmNFTUnfreezeModalOpen,
+  setIsConfirmNFTWhitelistModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

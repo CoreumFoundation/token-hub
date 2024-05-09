@@ -183,6 +183,7 @@ export interface NFTsState {
   };
   isNFTItemsFetched: boolean;
   isNFTItemsLoading: boolean;
+  whitelistAccount: string;
 }
 
 export const initialNFTsState: NFTsState = {
@@ -199,6 +200,7 @@ export const initialNFTsState: NFTsState = {
   isNFTItemsFetched: false,
   isNFTItemsLoading: false,
   selectedNFTSend: null,
+  whitelistAccount: '',
 };
 
 const nftsSlice = createSlice({
@@ -242,6 +244,9 @@ const nftsSlice = createSlice({
     setIsNFTItemsLoading(state, action: PayloadAction<boolean>) {
       state.isNFTItemsLoading = action.payload;
     },
+    setWhitelistAccount(state, action: PayloadAction<string>) {
+      state.whitelistAccount = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIssuedNFTCollectionsByAccount.pending, (state) => {
@@ -284,6 +289,7 @@ export const {
   setNFTData,
   setNFTItems,
   setSelectedNFTSend,
+  setWhitelistAccount,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

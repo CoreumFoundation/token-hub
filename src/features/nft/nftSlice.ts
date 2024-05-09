@@ -42,6 +42,11 @@ export interface NFTsState {
   collections: Class[];
   isFetched: boolean;
   selectedNFTClass: Class | null;
+  nftID: string;
+  nftURI: string;
+  nftURIHash: string;
+  nftRecipient: string;
+  nftData: string;
 }
 
 export const initialNFTsState: NFTsState = {
@@ -49,6 +54,11 @@ export const initialNFTsState: NFTsState = {
   collections: [],
   isFetched: false,
   selectedNFTClass: null,
+  nftID: '',
+  nftURI: '',
+  nftURIHash: '',
+  nftRecipient: '',
+  nftData: '',
 };
 
 const nftsSlice = createSlice({
@@ -64,6 +74,21 @@ const nftsSlice = createSlice({
     },
     setIsFetched(state, action: PayloadAction<boolean>) {
       state.isFetched = action.payload;
+    },
+    setNFTID(state, action: PayloadAction<string>) {
+      state.nftID = action.payload;
+    },
+    setNFTURI(state, action: PayloadAction<string>) {
+      state.nftURI = action.payload;
+    },
+    setNFTURIHash(state, action: PayloadAction<string>) {
+      state.nftURIHash = action.payload;
+    },
+    setNFTRecipient(state, action: PayloadAction<string>) {
+      state.nftRecipient = action.payload;
+    },
+    setNFTData(state, action: PayloadAction<string>) {
+      state.nftData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,6 +107,15 @@ const nftsSlice = createSlice({
   },
 });
 
-export const { setNFTCollections, setSelectedNFTClass, setIsFetched } = nftsSlice.actions;
+export const {
+  setNFTCollections,
+  setSelectedNFTClass,
+  setIsFetched,
+  setNFTID,
+  setNFTURI,
+  setNFTURIHash,
+  setNFTRecipient,
+  setNFTData,
+} = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

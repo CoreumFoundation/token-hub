@@ -27,6 +27,7 @@ import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
 import { Alerts } from "../Alerts";
 import { MintNFTModal } from "../MintNFTModal";
 import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
+import { ConfirmNFTMintModal } from "../ConfirmNFTMintModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -120,6 +121,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ConfirmGlobalUnfreezeModal />
             <ConfirmWhitelistModal />
             <MintNFTModal />
+            <ConfirmNFTMintModal />
             <ViewNFTCollectionModal />
           </div>
         </AppProvider>

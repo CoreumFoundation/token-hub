@@ -3,16 +3,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIsNFTMintModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { setIsConfirmNFTMintModalOpen, setIsNFTMintModalOpen } from "@/features/general/generalSlice";
 import { Input } from "../Input";
 import { IPFS_REGEX, URL_REGEX, CID_REGEX, NFT_ID_REGEX } from "@/constants";
 import { TextArea } from "../TextArea";
 import { Button } from "../Button";
-import { AlertType, ButtonType, ChainInfo } from "@/shared/types";
-import { NFT, convertStringToAny } from "coreum-js";
-import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
+import { ButtonType, ChainInfo } from "@/shared/types";
 import { validateAddress } from "@/helpers/validateAddress";
+import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash } from "@/features/nft/nftSlice";
 
 export const MintNFTModal = () => {
   const [nftId, setNFTId] = useState<string>('');
@@ -24,11 +22,11 @@ export const MintNFTModal = () => {
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const account = useAppSelector(state => state.general.account);
-  const selectedCollection = useAppSelector(state => state.nfts.selectedNFTClass);
   const chains = useAppSelector(state => state.chains.list);
 
+  console.log(chains);
+
   const dispatch = useAppDispatch();
-  const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsNFTMintModalOpen(false));
@@ -102,38 +100,20 @@ export const MintNFTModal = () => {
     return '';
   }, [coreumChain?.bech32_prefix, recipient]);
 
-  const handleMintNFT = useCallback(async () => {
-    dispatch(setIsTxExecuting(true));
-    try {
-      const nftData = convertStringToAny(data);
-      const nftMintObj = {
-        sender: account,
-        classId: selectedCollection?.id || '',
-        id: nftId,
-        uri: uri,
-        uriHash: uriHash,
-        recipient: account,
-        data: nftData,
-      };
-
-      const mintNFTMsg = NFT.Mint(nftMintObj);
-
-      const txFee = await getTxFee([mintNFTMsg]);
-      await signingClient?.signAndBroadcast(account, [mintNFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(dispatchAlert({
-        type: AlertType.Success,
-        title: 'NFT is minted successfully',
-      }));
-    } catch (error) {
-      dispatch(dispatchAlert({
-        type: AlertType.Error,
-        title: 'NFT Mint Failed',
-        message: (error as { message: string}).message,
-      }));
-    }
-
-    dispatch(setIsTxExecuting(false));
-  }, [account, data, getTxFee, name, selectedCollection?.id, signingClient, uri, uriHash]);
+  const handleMintNFT = useCallback(() => {
+    dispatch(setNFTID(nftId));
+    dispatch(setNFTURI(uri));
+    dispatch(setNFTURIHash(uriHash));
+    dispatch(setNFTRecipient(account));
+    dispatch(setNFTData(data));
+    dispatch(setIsConfirmNFTMintModalOpen(true));
+    dispatch(setIsNFTMintModalOpen(false));
+    setNFTId('');
+    setUri('');
+    setUriHash('');
+    setData('');
+    setRecipient('');
+  }, [account, data, dispatch, nftId, uri, uriHash]);
 
   return (
     <Modal

@@ -48,5 +48,5 @@ export const useChains = () => {
 
     dispatch(setIBCChains(supportedIBCChains));
     dispatch(setDestinationChain(supportedIBCChains[0]));
-  }, [network]);
+  }, [network, compareNetworkChainName]);
 };

@@ -21,7 +21,6 @@ export const MintNFTModal = () => {
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
-  const account = useAppSelector(state => state.general.account);
   const chains = useAppSelector(state => state.chains.list);
 
   const dispatch = useAppDispatch();
@@ -103,12 +102,12 @@ export const MintNFTModal = () => {
   }, [coreumChain?.bech32_prefix, recipient]);
 
   const isFormValid = useMemo(() => {
-    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length && uri.length && recipient.length) {
+    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length && uri.length) {
       return true;
     }
 
     return false;
-  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length, recipient.length, uri.length]);
+  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length, uri.length]);
 
   const handleMintNFT = useCallback(() => {
     dispatch(setNFTID(nftId));

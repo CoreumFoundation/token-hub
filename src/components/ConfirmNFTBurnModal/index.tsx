@@ -69,7 +69,7 @@ export const ConfirmNFTBurnModal = () => {
           <div className="flex items-center justify-center w-full">
             <div className="flex flex-col items-center">
               <NFTItem
-                label={selectedNFTSend?.name || ''}
+                label={selectedNFTSend?.name || selectedNFTSend?.id || ''}
                 imgPath={selectedNFTSend?.image || ''}
                 description={selectedNFTClass?.name}
                 className="text-[#eee] text-base hover:bg-[#17191E] hover"

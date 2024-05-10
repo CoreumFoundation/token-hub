@@ -200,6 +200,7 @@ export const NonFungibleTokenCreate = () => {
       && !isURIHashValid.length
       && !isEnteredNameValid.length
       && !isDescriptionValid.length
+      && royalties.length
     ) {
       return true;
     }
@@ -217,6 +218,7 @@ export const NonFungibleTokenCreate = () => {
     isEnteredSymbolValid.length,
     isEnteredNameValid.length,
     isDescriptionValid.length,
+    royalties,
   ]);
 
   const featuresToApply = useMemo(() => {

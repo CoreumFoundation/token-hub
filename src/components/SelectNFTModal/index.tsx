@@ -5,9 +5,11 @@ import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsSelectNFTModalOpen } from "@/features/general/generalSlice";
 import { NFTItem } from "../NFTItem";
-import { ButtonType, NFT, NFTClass } from "@/shared/types";
+import { ButtonType, GeneralIconType, NFT, NFTClass } from "@/shared/types";
 import { Button } from "../Button";
 import { setSelectedNFTSend, setSelectedNFTClass as setSelectedNFTCollection } from "@/features/nft/nftSlice";
+import Image from 'next/image';
+import { GeneralIcon } from "@/assets/GeneralIcon";
 
 export const SelectNFTModal = () => {
   const [selectedNFTClass, setSelectedNFTClass] = useState<NFTClass | null>(null);
@@ -23,6 +25,9 @@ export const SelectNFTModal = () => {
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsSelectNFTModalOpen(false));
+    dispatch(setSelectedNFTCollection(null));
+    setSelectedNFTClass(null);
+    setDraftSelectedNFTClass(null);
   }, []);
 
   const onNFTClick = useCallback((nft: NFT) => {
@@ -60,21 +65,31 @@ export const SelectNFTModal = () => {
     if (!selectedNFTClass) {
       return (
         <div className="flex flex-col w-full gap-8">
-          <div className="grid grid-cols-3 w-full gap-4">
-            {nftClasses.map((collection: NFTClass) => {
-              const isActive = collection.id === draftSelectedNFTClass?.id;
+          {nftClasses?.length ? (
+            <div className="grid grid-cols-3 w-full gap-4">
+              {nftClasses.map((collection: NFTClass) => {
+                const isActive = collection.id === draftSelectedNFTClass?.id;
 
-              return (
-                <NFTItem
-                  key={collection.id}
-                  imgPath={collection.image}
-                  label={collection.name}
-                  onClick={() => onNFTClassClick(collection)}
-                  isActive={isActive}
-                />
-              );
-            })}
-          </div>
+                return (
+                  <NFTItem
+                    key={collection.id}
+                    imgPath={collection.image}
+                    label={collection.name}
+                    onClick={() => onNFTClassClick(collection)}
+                    isActive={isActive}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-col w-full items-center p-10">
+              <Image src="/images/coins.svg" width="200" height="200" alt="coins" />
+              <div className="flex items-center gap-2">
+                <GeneralIcon type={GeneralIconType.Error} />
+                You don&apos;t have any NFT Collection yet!
+              </div>
+            </div>
+          )}
           <div className="flex w-full justify-end">
             <div className="flex items-center">
               <Button
@@ -92,21 +107,31 @@ export const SelectNFTModal = () => {
 
     return (
       <div className="flex flex-col w-full gap-8">
-        <div className="grid grid-cols-3 w-full gap-4">
-          {currentNFTItems?.map((item: NFT) => {
-            const isActive = item.id === draftSelectedNFT?.id;
+        {currentNFTItems?.length ? (
+          <div className="grid grid-cols-3 w-full gap-4">
+            {currentNFTItems?.map((item: NFT) => {
+              const isActive = item.id === draftSelectedNFT?.id;
 
-            return (
-              <NFTItem
-                key={item.id}
-                imgPath={item.image}
-                label={item.name.length ? item.name : item.id}
-                onClick={() => onNFTClick(item)}
-                isActive={isActive}
-              />
-            );
-          })}
-        </div>
+              return (
+                <NFTItem
+                  key={item.id}
+                  imgPath={item.image}
+                  label={item.name.length ? item.name : item.id}
+                  onClick={() => onNFTClick(item)}
+                  isActive={isActive}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col w-full items-center p-10">
+            <Image src="/images/coins.svg" width="200" height="200" alt="coins" />
+            <div className="flex items-center gap-2">
+              <GeneralIcon type={GeneralIconType.Error} />
+              You don&apos;t have any NFT in this collection yet!
+            </div>
+          </div>
+        )}
         <div className="flex w-full justify-end">
             <div className="flex items-center">
               <Button
@@ -127,7 +152,7 @@ export const SelectNFTModal = () => {
       isOpen={isSelectNFTModalOpen}
       title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
       onClose={handleCloseModal}
-      wrapperClassName="w-[568px] max-w-full"
+      wrapperClassName="w-[568px] max-w-full !overflow-visible"
     >
       <div className="flex flex-col">
         {renderContent}

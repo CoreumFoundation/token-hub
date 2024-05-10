@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsBurnNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
@@ -8,9 +8,11 @@ import { NFTItem } from "../NFTItem";
 import { ActionItem, GeneralIconType, NFT } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { setSelectedNFTSend } from "@/features/nft/nftSlice";
+import { useRouter } from "next/navigation";
 
 export const ViewNFTCollectionModal = () => {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
+  const router = useRouter();
 
   const isNFTCollectionViewModalOpen = useAppSelector(state => state.general.isNFTCollectionViewModalOpen);
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
@@ -39,6 +41,8 @@ export const ViewNFTCollectionModal = () => {
 
   const onSendClick = useCallback((nft: NFT) => {
     dispatch(setSelectedNFTSend(nft));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
+    router.push('/nft/send');
   }, []);
 
   const onUnfreezeClick = useCallback((nft: NFT) => {

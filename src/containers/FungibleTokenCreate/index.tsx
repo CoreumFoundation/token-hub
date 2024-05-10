@@ -17,6 +17,7 @@ import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";
+import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -124,6 +125,7 @@ export const FungibleTokenCreate = () => {
         type: AlertType.Success,
         title: 'Token was issued successfully',
       }));
+      dispatch(shouldRefetchCurrencies(false));
     } catch (error: unknown) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

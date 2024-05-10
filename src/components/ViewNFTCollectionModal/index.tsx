@@ -16,6 +16,7 @@ export const ViewNFTCollectionModal = () => {
 
   const isNFTCollectionViewModalOpen = useAppSelector(state => state.general.isNFTCollectionViewModalOpen);
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
+  const isConnected = useAppSelector(state => state.general.isConnected);
 
   const nftItems = useAppSelector(state => state.nfts.nftItems);
 

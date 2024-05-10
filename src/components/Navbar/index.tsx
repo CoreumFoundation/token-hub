@@ -11,6 +11,8 @@ import { setIsConnectModalOpen, setNetwork } from "@/features/general/generalSli
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { AccountActions } from "../AccountActions";
 import { useDisconnect } from "graz";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
+import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 
 export const Navbar = () => {
   const [selected, setSelected] = useState<DropdownItem>(NETWORK_SELECTOR_ITEMS[0]);
@@ -27,6 +29,8 @@ export const Navbar = () => {
     disconnect();
     dispatch(setNetwork(value.id as Network));
     setSelected(value);
+    dispatch(shouldRefetchBalances(true));
+    dispatch(shouldRefetchCurrencies(true));
   }, [selected]);
 
   const handleConnectButtonClick = useCallback(() => {

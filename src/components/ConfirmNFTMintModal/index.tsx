@@ -9,7 +9,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT, convertStringToAny } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash, setSelectedNFTClass } from "@/features/nft/nftSlice";
+import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash, setSelectedNFTClass, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 
 export const ConfirmNFTMintModal = () => {
@@ -59,6 +59,7 @@ export const ConfirmNFTMintModal = () => {
       const txFee = await getTxFee([mintNFTMsg]);
       await signingClient?.signAndBroadcast(account, [mintNFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(setShouldRefetchNFTItems(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

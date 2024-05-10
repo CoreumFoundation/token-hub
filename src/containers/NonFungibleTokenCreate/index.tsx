@@ -10,6 +10,7 @@ import { TokenCapability } from "@/components/TokenCapability";
 import { CID_REGEX, IPFS_REGEX, NFT_TOKEN_CAPABILITIES, SYMBOL_NFT_REGEX, URL_REGEX } from "@/constants";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { setShouldFetchNFTCollections } from "@/features/nft/nftSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -263,6 +264,7 @@ export const NonFungibleTokenCreate = () => {
         type: AlertType.Success,
         title: 'Collection was issued successfully',
       }));
+      dispatch(setShouldFetchNFTCollections(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

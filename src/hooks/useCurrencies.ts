@@ -1,4 +1,4 @@
-import { fetchCurrenciesByAccount } from "@/features/currencies/currenciesSlice";
+import { fetchCurrenciesByAccount, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 
@@ -8,6 +8,8 @@ export const useCurrencies = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const currencies = useAppSelector(state => state.currencies.list);
   const isFetched = useAppSelector(state => state.currencies.isFetched);
+
+  const shouldRefetch = useAppSelector(state => state.currencies.shouldRefetchCurrencies);
 
   const dispatch = useAppDispatch();
 
@@ -22,4 +24,11 @@ export const useCurrencies = () => {
       dispatch(fetchCurrenciesByAccount({ account, network }));
     }
   }, [network, account]);
+
+  useEffect(() => {
+    if (shouldRefetch) {
+      dispatch(fetchCurrenciesByAccount({ account, network }));
+      dispatch(shouldRefetchCurrencies(false));
+    }
+  }, [shouldRefetch, account, network]);
 };

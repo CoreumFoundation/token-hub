@@ -1,4 +1,4 @@
-import { setBalances } from "@/features/balances/balancesSlice";
+import { setBalances, shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";
@@ -10,10 +10,11 @@ export const useAccountBalances = () => {
   const currencies = useAppSelector(state => state.currencies.list);
   const account = useAppSelector(state => state.general.account);
   const isConnected = useAppSelector(state => state.general.isConnected);
+  const shouldRefetch = useAppSelector(state => state.balances.shouldRefetch);
 
   const dispatch = useAppDispatch();
 
-  const { data: balances } = useBalances({
+  const { data: balances, refetch } = useBalances({
     chainId: networkInfo.chainId,
     bech32Address: account,
   });
@@ -25,6 +26,15 @@ export const useAccountBalances = () => {
       );
 
       dispatch(setBalances(userBalances));
+    } else {
+      dispatch(setBalances([]));
     }
   }, [currencies, balances, isConnected]);
+
+  useEffect(() => {
+    if (shouldRefetch) {
+      refetch();
+      dispatch(shouldRefetchBalances(false));
+    }
+  }, [shouldRefetch, refetch]);
 };

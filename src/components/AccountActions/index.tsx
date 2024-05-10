@@ -6,7 +6,8 @@ import { ACTION_ITEMS_OPTIONS } from "@/constants";
 import { useDisconnect } from "graz";
 import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
+import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 
 export const AccountActions = () => {
   const account = useAppSelector(state => state.general.account);
@@ -48,6 +49,8 @@ export const AccountActions = () => {
   const handleDisconnect = useCallback(async () => {
     try {
       await disconnectAsync();
+      dispatch(shouldRefetchBalances(true));
+      dispatch(shouldRefetchCurrencies(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

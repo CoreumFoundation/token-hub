@@ -10,9 +10,10 @@ import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
-import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { Decimal } from "../Decimal";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const ConfirmBurnModal = () => {
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
@@ -50,6 +51,8 @@ export const ConfirmBurnModal = () => {
       const txFee = await getTxFee([burnFTMsg]);
       await signingClient?.signAndBroadcast(account, [burnFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(shouldRefetchBalances(true));
+      dispatch(shouldRefetchCurrencies(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

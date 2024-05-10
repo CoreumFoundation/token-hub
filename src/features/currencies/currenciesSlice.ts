@@ -13,6 +13,10 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
   async ({ account, network }: FetchCurrenciesByAccountArgs) => {
     const responseTokens = network === Network.Mainnet ? [COREUM_TOKEN_MAINNET] : [COREUM_TOKEN_TESTNET];
 
+    if (!account.length) {
+      return responseTokens;
+    }
+
     try {
       const tokensRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
       const {
@@ -45,6 +49,7 @@ export interface CurrenciesState {
   issuedList: Token[];
   isFetched: boolean;
   selectedCurrency: Token | null;
+  shouldRefetchCurrencies: boolean;
 }
 
 export const initialCurrenciesState: CurrenciesState = {
@@ -53,6 +58,7 @@ export const initialCurrenciesState: CurrenciesState = {
   issuedList: [],
   isFetched: false,
   selectedCurrency: null,
+  shouldRefetchCurrencies: false,
 };
 
 const currenciesSlice = createSlice({
@@ -69,6 +75,9 @@ const currenciesSlice = createSlice({
     },
     setIsFetched(state, action: PayloadAction<boolean>) {
       state.isFetched = action.payload;
+    },
+    shouldRefetchCurrencies(state, action: PayloadAction<boolean>) {
+      state.shouldRefetchCurrencies = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -88,6 +97,6 @@ const currenciesSlice = createSlice({
   },
 });
 
-export const { setCurrencies, setSelectedCurrency, setIsFetched } = currenciesSlice.actions;
+export const { setCurrencies, setSelectedCurrency, setIsFetched, shouldRefetchCurrencies } = currenciesSlice.actions;
 export const currenciesReducer = currenciesSlice.reducer;
 export default currenciesSlice.reducer;

@@ -16,11 +16,17 @@ export const useConnectedAccount = () => {
     if (data?.bech32Address && account !== data?.bech32Address) {
       dispatch(setAccount(data?.bech32Address));
     }
-  }, [account, data?.bech32Address]);
+  }, [account, data?.bech32Address, isConnected]);
 
   useEffect(() => {
     if (isConnected !== isAccountConnected) {
       dispatch(setIsConnected(isConnected));
+
+      if (isConnected && data?.bech32Address) {
+        dispatch(setAccount(data?.bech32Address));
+      } else {
+        dispatch(setAccount(''));
+      }
     }
-  }, [isAccountConnected, isConnected]);
+  }, [isAccountConnected, isConnected, data?.bech32Address]);
 };

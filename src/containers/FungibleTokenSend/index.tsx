@@ -22,6 +22,7 @@ import Big from "big.js";
 import { Bank, FT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { setSelectedCurrency as setSelectedFTCurrency } from "@/features/currencies/currenciesSlice";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -159,6 +160,7 @@ export const FungibleTokenSend = () => {
         message: (error as { message: string}).message,
       }));
     }
+    dispatch(shouldRefetchBalances(true));
     dispatch(setIsTxExecuting(false));
   }, [account, amount, currentCurrency, destinationAddress, getTxFee, signingClient]);
 

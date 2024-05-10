@@ -3,10 +3,12 @@ import { Coin } from "@cosmjs/amino";
 
 export interface BalancesState {
   list: Coin[];
+  shouldRefetch: boolean;
 }
 
 export const initialBalancesState: BalancesState = {
   list: [],
+  shouldRefetch: false,
 };
 
 const balancesSlice = createSlice({
@@ -16,9 +18,12 @@ const balancesSlice = createSlice({
     setBalances(state, action: PayloadAction<Coin[]>) {
       state.list = action.payload;
     },
+    shouldRefetchBalances(state, action: PayloadAction<boolean>) {
+      state.shouldRefetch = action.payload;
+    },
   },
 });
 
-export const { setBalances } = balancesSlice.actions;
+export const { setBalances, shouldRefetchBalances } = balancesSlice.actions;
 export const balancesReducer = balancesSlice.reducer;
 export default balancesSlice.reducer;

@@ -9,11 +9,12 @@ import { setFreezeAmount, setFreezeWalletAddress } from "@/features/freeze/freez
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
-import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { Decimal } from "../Decimal";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const ConfirmFreezeModal = () => {
   const isConfirmFreezeModalOpen = useAppSelector(state => state.general.isConfirmFreezeModalOpen);
@@ -54,6 +55,8 @@ export const ConfirmFreezeModal = () => {
       const txFee = await getTxFee([freezeFTMsg]);
       await signingClient?.signAndBroadcast(account, [freezeFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(shouldRefetchBalances(true));
+      dispatch(shouldRefetchCurrencies(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

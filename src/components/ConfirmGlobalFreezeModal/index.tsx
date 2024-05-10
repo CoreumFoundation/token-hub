@@ -7,8 +7,9 @@ import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmGlobalFreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
-import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const ConfirmGlobalFreezeModal = () => {
   const isConfirmGlobalFreezeModalOpen = useAppSelector(state => state.general.isConfirmGlobalFreezeModalOpen);
@@ -38,6 +39,8 @@ export const ConfirmGlobalFreezeModal = () => {
       const txFee = await getTxFee([globalFreezeFTMsg]);
       await signingClient?.signAndBroadcast(account, [globalFreezeFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(shouldRefetchBalances(true));
+      dispatch(shouldRefetchCurrencies(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

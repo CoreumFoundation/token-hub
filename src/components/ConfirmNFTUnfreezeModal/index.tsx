@@ -9,7 +9,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { NFTItem } from "../NFTItem";
-import { setSelectedNFTClass, setSelectedNFTSend } from "@/features/nft/nftSlice";
+import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 
 export const ConfirmNFTUnfreezeModal = () => {
   const isConfirmNFTUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmNFTUnfreezeModalOpen);
@@ -47,6 +47,7 @@ export const ConfirmNFTUnfreezeModal = () => {
       const txFee = await getTxFee([unfreezeNFTMsg]);
       await signingClient?.signAndBroadcast(account, [unfreezeNFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(setShouldRefetchNFTItems(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

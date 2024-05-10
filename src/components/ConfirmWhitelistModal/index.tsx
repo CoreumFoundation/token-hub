@@ -9,11 +9,12 @@ import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitel
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
-import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
+import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { Decimal } from "../Decimal";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const ConfirmWhitelistModal = () => {
   const isConfirmWhitelistModalOpen = useAppSelector(state => state.general.isConfirmWhitelistModalOpen);
@@ -54,6 +55,8 @@ export const ConfirmWhitelistModal = () => {
       const txFee = await getTxFee([whitelistFTMsg]);
       await signingClient?.signAndBroadcast(account, [whitelistFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(shouldRefetchBalances(true));
+      dispatch(shouldRefetchCurrencies(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

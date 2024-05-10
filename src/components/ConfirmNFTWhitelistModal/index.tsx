@@ -4,12 +4,12 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
-import { setIsBurnNFTModalOpen, setIsConfirmNFTUnfreezeModalOpen, setIsConfirmNFTWhitelistModalOpen, setIsTxExecuting, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmNFTWhitelistModalOpen, setIsTxExecuting, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { NFTItem } from "../NFTItem";
-import { setSelectedNFTClass, setSelectedNFTSend } from "@/features/nft/nftSlice";
+import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 
 export const ConfirmNFTWhitelistModal = () => {
   const isConfirmNFTWhitelistModalOpen = useAppSelector(state => state.general.isConfirmNFTWhitelistModalOpen);
@@ -49,6 +49,7 @@ export const ConfirmNFTWhitelistModal = () => {
       const txFee = await getTxFee([whitelistNFTMsg]);
       await signingClient?.signAndBroadcast(account, [whitelistNFTMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
+      dispatch(setShouldRefetchNFTItems(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

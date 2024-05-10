@@ -21,6 +21,7 @@ import { Coin } from "@cosmjs/amino";
 import Big from "big.js";
 import { Bank, FT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { setSelectedCurrency as setSelectedFTCurrency } from "@/features/currencies/currenciesSlice";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -34,6 +35,8 @@ export const FungibleTokenSend = () => {
   const account = useAppSelector(state => state.general.account);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const network = useAppSelector(state => state.general.network);
+
+  const selectedFTCurrency = useAppSelector(state => state.currencies.selectedCurrency);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -63,10 +66,19 @@ export const FungibleTokenSend = () => {
   }, [network, isConnected, currenciesToDropdownItem]);
 
   useEffect(() => {
-    if (!selectedCurrency && currenciesToDropdownItem.length) {
-      setSelectedCurrency(currenciesToDropdownItem[0]);
+    if (!selectedCurrency && (currenciesToDropdownItem.length || selectedFTCurrency)) {
+      if (selectedFTCurrency) {
+        setSelectedCurrency({
+          id: selectedFTCurrency.denom,
+          label: selectedFTCurrency.symbol,
+          icon: <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />,
+        });
+        dispatch(setSelectedFTCurrency(null));
+      } else {
+        setSelectedCurrency(currenciesToDropdownItem[0]);
+      }
     }
-  }, [currenciesToDropdownItem, selectedCurrency]);
+  }, [currenciesToDropdownItem, selectedCurrency, selectedFTCurrency]);
 
   const currentCurrency = useMemo(() => {
     return currencies.find((currencyItem: Token) => currencyItem.denom === selectedCurrency?.id);

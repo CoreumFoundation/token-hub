@@ -15,6 +15,7 @@ import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { Spinner } from "@/components/Spinner";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { getFTCurrencyOptions } from "@/helpers/getManageFtTabs";
+import { useRouter } from "next/navigation";
 
 export const FungibleTokenManage = () => {
   const currencies = useAppSelector(state => state.currencies.issuedList);
@@ -24,6 +25,7 @@ export const FungibleTokenManage = () => {
   const network = useAppSelector(state => state.general.network);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -31,6 +33,7 @@ export const FungibleTokenManage = () => {
 
   const handleCurrencySendClick = useCallback((currency: Token) => {
     dispatch(setSelectedCurrency(currency));
+    router.push('/ft/send');
   }, []);
 
   const handleCurrencyManageClick = useCallback((currency: Token) => {

@@ -39,6 +39,12 @@ export const NonFungibleTokenSend = () => {
     }
   }, [selectedNFTSend]);
 
+  useEffect(() => {
+    if (!isConnected && selectedNFT) {
+      setSelectedNFT(null);
+    }
+  }, [isConnected, selectedNFT]);
+
   const coreumChain = useMemo(() => {
     return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
   }, [chains]);

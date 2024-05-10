@@ -8,6 +8,7 @@ import { setIsConnectModalOpen } from "@/features/general/generalSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
+import { setShouldFetchNFTCollections, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 
 export const AccountActions = () => {
   const account = useAppSelector(state => state.general.account);
@@ -51,6 +52,8 @@ export const AccountActions = () => {
       await disconnectAsync();
       dispatch(shouldRefetchBalances(true));
       dispatch(shouldRefetchCurrencies(true));
+      dispatch(setShouldRefetchNFTItems(true));
+      dispatch(setShouldFetchNFTCollections(true));
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

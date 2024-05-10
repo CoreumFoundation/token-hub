@@ -13,6 +13,7 @@ import { AccountActions } from "../AccountActions";
 import { useDisconnect } from "graz";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
+import { setShouldFetchNFTCollections, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 
 export const Navbar = () => {
   const [selected, setSelected] = useState<DropdownItem>(NETWORK_SELECTOR_ITEMS[0]);
@@ -31,6 +32,8 @@ export const Navbar = () => {
     setSelected(value);
     dispatch(shouldRefetchBalances(true));
     dispatch(shouldRefetchCurrencies(true));
+    dispatch(setShouldRefetchNFTItems(true));
+    dispatch(setShouldFetchNFTCollections(true));
   }, [selected]);
 
   const handleConnectButtonClick = useCallback(() => {

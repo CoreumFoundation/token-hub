@@ -43,6 +43,11 @@ export const fetchIssuedNFTCollectionsByAccount = createAsyncThunk(
     try {
       const classesRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/nft/v1/classes?issuer=${account}`;
       let classesToReturn = [];
+
+      if (!account) {
+        return [];
+      }
+
       const {
         data: {
           pagination: { total: collectionsTotal },
@@ -104,6 +109,11 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
     try {
       const nftsRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}&owner=${account}`;
       let nftsToReturn = [];
+
+      if (!account) {
+        return [];
+      }
+
       const {
         data: {
           pagination: { total: nftsTotal },

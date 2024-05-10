@@ -32,7 +32,7 @@ export const NFTItem: FC<NFTItemProps> = ({
       }, className)}
       onClick={onClick}
     >
-      <Image className="w-full h-40 rounded-t-lg" src={imgPath} alt={label} width="160" height="160" />
+      <Image className="w-full h-40 rounded-t-lg" src={imgPath.length ? imgPath : '/images/default-token.svg'} alt={label} width="160" height="160" />
       {isActionRow ? (
         <ActionRow
           actionItems={actionItems || []}

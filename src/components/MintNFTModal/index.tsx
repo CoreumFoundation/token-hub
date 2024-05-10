@@ -102,12 +102,12 @@ export const MintNFTModal = () => {
   }, [coreumChain?.bech32_prefix, recipient]);
 
   const isFormValid = useMemo(() => {
-    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length && uri.length) {
+    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length) {
       return true;
     }
 
     return false;
-  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length, uri.length]);
+  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length]);
 
   const handleMintNFT = useCallback(() => {
     dispatch(setNFTID(nftId));

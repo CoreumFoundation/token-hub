@@ -1,6 +1,7 @@
 import { Network, NFT, NFTClass } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
+import { ClassFeature } from 'coreum-js';
 
 interface FetchIssuedCollectionsArgs {
   account: string;
@@ -167,6 +168,16 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
   },
 );
 
+interface IssuedNFTCollectionType {
+  name: string;
+  symbol: string;
+  royalties: string;
+  description: string;
+  features: ClassFeature[];
+  uri: string;
+  uriHash: string;
+}
+
 export interface NFTsState {
   isLoading: boolean;
   collections: NFTClass[];
@@ -186,6 +197,7 @@ export interface NFTsState {
   whitelistAccount: string;
   shouldRefetchCollections: boolean;
   shouldRefetchNFTItems: boolean;
+  issuedNFTCollection: IssuedNFTCollectionType | null;
 }
 
 export const initialNFTsState: NFTsState = {
@@ -205,6 +217,7 @@ export const initialNFTsState: NFTsState = {
   whitelistAccount: '',
   shouldRefetchCollections: false,
   shouldRefetchNFTItems: false,
+  issuedNFTCollection: null,
 };
 
 const nftsSlice = createSlice({
@@ -258,6 +271,9 @@ const nftsSlice = createSlice({
     setShouldRefetchNFTItems(state, action: PayloadAction<boolean>) {
       state.shouldRefetchNFTItems = action.payload;
     },
+    setIssuedNFTCollection(state, action: PayloadAction<IssuedNFTCollectionType | null>) {
+      state.issuedNFTCollection = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIssuedNFTCollectionsByAccount.pending, (state) => {
@@ -303,6 +319,7 @@ export const {
   setWhitelistAccount,
   setShouldFetchNFTCollections,
   setShouldRefetchNFTItems,
+  setIssuedNFTCollection,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

@@ -8,7 +8,7 @@ import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { FT_TOKEN_CAPABILITIES, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
-import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { setIsConnectModalOpen, setIsSuccessIssueFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
@@ -17,7 +17,8 @@ import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";
-import { shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
+import { setIssuedToken, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -49,12 +50,12 @@ export const FungibleTokenCreate = () => {
   const handleClearState = useCallback(() => {
     setSymbol('');
     setSubunit('');
-    setPrecision('0');
-    setInitialAmount('0');
+    setPrecision('');
+    setInitialAmount('');
     setUrl('');
     setDescription('');
-    setBurnRate('0');
-    setSendCommissionRate('0');
+    setBurnRate('');
+    setSendCommissionRate('');
     setMintingEnabled(false);
     setBurningEnabled(false);
     setFreezingEnabled(false);
@@ -121,11 +122,21 @@ export const FungibleTokenCreate = () => {
 
       const txFee = await getTxFee([issueFTMsg]);
       await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(dispatchAlert({
-        type: AlertType.Success,
-        title: 'Token was issued successfully',
+      dispatch(setIsSuccessIssueFTModalOpen(true));
+      dispatch(setIssuedToken({
+        symbol,
+        subunit,
+        precision,
+        initialAmount,
+        description,
+        features: featuresToApply,
+        burnRate,
+        sendCommissionRate,
+        uri: url,
       }));
-      dispatch(shouldRefetchCurrencies(false));
+      handleClearState();
+      dispatch(shouldRefetchCurrencies(true));
+      dispatch(shouldRefetchBalances(true));
     } catch (error: unknown) {
       dispatch(dispatchAlert({
         type: AlertType.Error,
@@ -241,6 +252,18 @@ export const FungibleTokenCreate = () => {
     }
   }, [precision]);
 
+  const isDescriptionValid = useMemo(() => {
+    if (!description.length) {
+      return '';
+    }
+
+    if (description.length > 200) {
+      return `The length of description mush be less than or equal 200. Current length is ${description.length}`;
+    }
+
+    return '';
+  }, [description]);
+
   const isFormValid = useMemo(() => {
     if (
       symbol.length
@@ -252,7 +275,9 @@ export const FungibleTokenCreate = () => {
       && !isEnteredSubunitsValid.length
       && !isEnteredSymbolValid.length
       && !isURLValid.length
-      && !isPrecisionValid?.length) {
+      && !isPrecisionValid?.length
+      && !isDescriptionValid.length
+    ) {
       return true;
     }
 
@@ -268,6 +293,7 @@ export const FungibleTokenCreate = () => {
     isEnteredSymbolValid.length,
     isURLValid.length,
     isPrecisionValid?.length,
+    isDescriptionValid.length,
   ]);
 
   const renderButton = useMemo(() => {
@@ -354,6 +380,7 @@ export const FungibleTokenCreate = () => {
           onChange={setDescription}
           placeholder="Enter Token Description"
           rows={4}
+          error={isDescriptionValid}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

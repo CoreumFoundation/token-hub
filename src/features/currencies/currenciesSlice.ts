@@ -2,6 +2,7 @@ import { COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
 import { Network, Token } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
+import { Feature } from 'coreum-js';
 
 interface FetchCurrenciesByAccountArgs {
   account: string;
@@ -43,6 +44,18 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
   },
 );
 
+interface IssuedTokenType {
+  symbol: string;
+  subunit: string;
+  precision: string;
+  initialAmount: string;
+  description: string;
+  features: Feature[];
+  burnRate: string;
+  sendCommissionRate: string;
+  uri: string;
+}
+
 export interface CurrenciesState {
   isLoading: boolean;
   list: Token[];
@@ -50,6 +63,7 @@ export interface CurrenciesState {
   isFetched: boolean;
   selectedCurrency: Token | null;
   shouldRefetchCurrencies: boolean;
+  issuedToken: IssuedTokenType | null;
 }
 
 export const initialCurrenciesState: CurrenciesState = {
@@ -59,6 +73,7 @@ export const initialCurrenciesState: CurrenciesState = {
   isFetched: false,
   selectedCurrency: null,
   shouldRefetchCurrencies: false,
+  issuedToken: null,
 };
 
 const currenciesSlice = createSlice({
@@ -79,6 +94,9 @@ const currenciesSlice = createSlice({
     shouldRefetchCurrencies(state, action: PayloadAction<boolean>) {
       state.shouldRefetchCurrencies = action.payload;
     },
+    setIssuedToken(state, action: PayloadAction<IssuedTokenType | null>) {
+      state.issuedToken = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrenciesByAccount.pending, (state) => {
@@ -97,6 +115,6 @@ const currenciesSlice = createSlice({
   },
 });
 
-export const { setCurrencies, setSelectedCurrency, setIsFetched, shouldRefetchCurrencies } = currenciesSlice.actions;
+export const { setCurrencies, setSelectedCurrency, setIsFetched, shouldRefetchCurrencies, setIssuedToken } = currenciesSlice.actions;
 export const currenciesReducer = currenciesSlice.reducer;
 export default currenciesSlice.reducer;

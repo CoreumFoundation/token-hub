@@ -33,6 +33,8 @@ export interface GeneralState {
   isConfirmNFTFreezeModalOpen: boolean;
   isConfirmNFTUnfreezeModalOpen: boolean;
   isConfirmNFTWhitelistModalOpen: boolean;
+  isSuccessIssueFTModalOpen: boolean;
+  isSuccessIssueNFTModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -64,6 +66,8 @@ export const initialGeneralState: GeneralState = {
   isConfirmNFTFreezeModalOpen: false,
   isConfirmNFTUnfreezeModalOpen: false,
   isConfirmNFTWhitelistModalOpen: false,
+  isSuccessIssueFTModalOpen: false,
+  isSuccessIssueNFTModalOpen: false,
 };
 
 const generalSlice = createSlice({
@@ -157,6 +161,12 @@ const generalSlice = createSlice({
     setIsConfirmNFTWhitelistModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmNFTWhitelistModalOpen = action.payload;
     },
+    setIsSuccessIssueFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSuccessIssueFTModalOpen = action.payload;
+    },
+    setIsSuccessIssueNFTModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSuccessIssueNFTModalOpen = action.payload;
+    },
   },
 });
 
@@ -188,6 +198,8 @@ export const {
   setIsConfirmNFTFreezeModalOpen,
   setIsConfirmNFTUnfreezeModalOpen,
   setIsConfirmNFTWhitelistModalOpen,
+  setIsSuccessIssueFTModalOpen,
+  setIsSuccessIssueNFTModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

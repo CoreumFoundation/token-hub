@@ -37,6 +37,8 @@ import { ConfirmNFTBurnModal } from "../ConfirmNFTBurnModal";
 import { ConfirmNFTFreezeModal } from "../ConfirmNFTFreezeModal";
 import { ConfirmNFTUnfreezeModal } from "../ConfirmNFTUnfreezeModal";
 import { ConfirmNFTWhitelistModal } from "../ConfirmNFTWhitelistModal";
+import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
+import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -141,6 +143,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ConfirmNFTFreezeModal />
             <ConfirmNFTUnfreezeModal />
             <ConfirmNFTWhitelistModal />
+            <SuccessIssueFTModal />
+            <SuccessIssueNFTModal />
           </div>
         </AppProvider>
       </ReduxProvider>

@@ -9,8 +9,9 @@ import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { CID_REGEX, IPFS_REGEX, NFT_TOKEN_CAPABILITIES, SYMBOL_NFT_REGEX, URL_REGEX } from "@/constants";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { setIsConnectModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { setShouldFetchNFTCollections } from "@/features/nft/nftSlice";
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
+import { setIsConnectModalOpen, setIsSuccessIssueNFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
+import { setIssuedNFTCollection, setShouldFetchNFTCollections } from "@/features/nft/nftSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -260,11 +261,19 @@ export const NonFungibleTokenCreate = () => {
 
       const txFee = await getTxFee([issueNFTMsg]);
       await signingClient?.signAndBroadcast(account, [issueNFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(dispatchAlert({
-        type: AlertType.Success,
-        title: 'Collection was issued successfully',
-      }));
+      dispatch(setIsSuccessIssueNFTModalOpen(true));
       dispatch(setShouldFetchNFTCollections(true));
+      dispatch(shouldRefetchBalances(true));
+      dispatch(setIssuedNFTCollection({
+        name,
+        symbol,
+        royalties,
+        description,
+        features: featuresToApply,
+        uri,
+        uriHash,
+      }));
+      handleClearState();
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

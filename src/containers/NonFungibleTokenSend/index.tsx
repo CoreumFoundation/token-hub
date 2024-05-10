@@ -14,10 +14,10 @@ import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { ButtonType, ButtonIconType, ChainInfo, GeneralIconType, AlertType } from "@/shared/types";
+import { ButtonType, ButtonIconType, ChainInfo, GeneralIconType, AlertType, NFT as NFTType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { NFT } from "coreum-js";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const NonFungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -29,6 +29,15 @@ export const NonFungibleTokenSend = () => {
 
   const selectedNFTSend = useAppSelector(state => state.nfts.selectedNFTSend);
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
+
+  const [selectedNFT, setSelectedNFT] = useState<NFTType | null>(null);
+
+  useEffect(() => {
+    if (selectedNFTSend) {
+      setSelectedNFT(selectedNFTSend);
+      dispatch(setSelectedNFTSend(null));
+    }
+  }, [selectedNFTSend]);
 
   const coreumChain = useMemo(() => {
     return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
@@ -42,7 +51,7 @@ export const NonFungibleTokenSend = () => {
     try {
       const sendNFTMsg = NFT.Send({
         classId: selectedNFTClass?.id || '',
-        id: selectedNFTSend?.id || '',
+        id: selectedNFT?.id || '',
         receiver: destinationAddress,
         sender: account,
       });
@@ -54,7 +63,6 @@ export const NonFungibleTokenSend = () => {
       }));
       dispatch(setShouldRefetchNFTItems(true));
       dispatch(setSelectedNFTClass(null));
-      dispatch(setSelectedNFTSend(null));
       setDestinationAddress('');
     } catch (error) {
       dispatch(dispatchAlert({
@@ -64,7 +72,7 @@ export const NonFungibleTokenSend = () => {
       }));
     }
     dispatch(setIsTxExecuting(false));
-  }, [account, destinationAddress, getTxFee, selectedNFTClass?.id, selectedNFTSend?.id, signingClient]);
+  }, [account, destinationAddress, getTxFee, selectedNFTClass?.id, selectedNFT?.id, signingClient]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -101,12 +109,12 @@ export const NonFungibleTokenSend = () => {
   }, [account, coreumChain?.bech32_prefix, destinationAddress]);
 
   const isFormValid = useMemo(() => {
-    if (selectedNFTClass && selectedNFTSend && !isDestinationAddressInvalid.length && destinationAddress.length) {
+    if (selectedNFTClass && selectedNFT && !isDestinationAddressInvalid.length && destinationAddress.length) {
       return true;
     }
 
     return false;
-  }, [isDestinationAddressInvalid.length, selectedNFTClass, selectedNFTSend, destinationAddress]);
+  }, [isDestinationAddressInvalid.length, selectedNFTClass, selectedNFT, destinationAddress]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {
@@ -146,11 +154,11 @@ export const NonFungibleTokenSend = () => {
           NFT
         </label>
         <div className="flex flex-col w-full items-center">
-          {selectedNFTSend ? (
+          {selectedNFT ? (
             <div className="flex flex-col items-center gap-2">
               <NFTItem
-                label={selectedNFTSend.name}
-                imgPath={selectedNFTSend.image}
+                label={selectedNFT.name}
+                imgPath={selectedNFT.image}
                 description={selectedNFTClass?.name}
                 className="text-[#eee] text-base"
               />

@@ -78,7 +78,7 @@ export const ViewNFTCollectionModal = () => {
       wrapperClassName="w-[568px] max-w-full"
     >
       <div className="grid grid-cols-3 w-full gap-4">
-        {currentNFTItems.map((item: NFT) => {
+        {currentNFTItems?.map((item: NFT) => {
           const isActive = item.id === selectedNFT?.id;
           let items: ActionItem[] = [];
           const isSendingDisabled = selectedNFTClass?.features.find((feature: string) => feature === 'disable_sending');

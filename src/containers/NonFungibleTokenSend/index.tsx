@@ -9,7 +9,7 @@ import { MessageBox } from "@/components/MessageBox";
 import { NFTItem } from "@/components/NFTItem";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { setIsConnectModalOpen, setIsSelectNFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
@@ -53,6 +53,9 @@ export const NonFungibleTokenSend = () => {
         title: 'NFT Send Successful',
       }));
       dispatch(setShouldRefetchNFTItems(true));
+      dispatch(setSelectedNFTClass(null));
+      dispatch(setSelectedNFTSend(null));
+      setDestinationAddress('');
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

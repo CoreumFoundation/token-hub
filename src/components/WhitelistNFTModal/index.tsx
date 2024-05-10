@@ -57,6 +57,14 @@ export const WhitelistNFTModal = () => {
     return '';
   }, [coreumChain?.bech32_prefix, whitelistAccountAddress]);
 
+  const isFormValid = useMemo(() => {
+    if (selectedNFTSend && !whitelistAddressValidationError.length && whitelistAccountAddress.length) {
+      return true;
+    }
+
+    return false;
+  }, [selectedNFTSend, whitelistAccountAddress.length, whitelistAddressValidationError.length]);
+
   return (
     <Modal
       isOpen={isWhitelistNFTModalOpen}
@@ -107,7 +115,7 @@ export const WhitelistNFTModal = () => {
               onClick={handleWhitelistNFTToken}
               type={ButtonType.Primary}
               className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-              disabled={!(selectedNFTSend && !whitelistAddressValidationError.length)}
+              disabled={!isFormValid}
             />
           </div>
         </div>

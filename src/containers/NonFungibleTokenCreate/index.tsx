@@ -242,8 +242,12 @@ export const NonFungibleTokenCreate = () => {
       featuresArray.push(ClassFeature.disable_sending);
     }
 
+    if (soulboundEnabled) {
+      featuresArray.push(ClassFeature.soulbound);
+    }
+
     return featuresArray;
-  }, [burningEnabled, disableSendingEnabled, freezingEnabled, whitelistingEnabled]);
+  }, [burningEnabled, disableSendingEnabled, freezingEnabled, soulboundEnabled, whitelistingEnabled]);
 
   const handleIssueNFTCollection = useCallback(async () => {
     dispatch(setIsTxExecuting(true));

@@ -153,11 +153,11 @@ export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     label: 'Disable Sending',
     content: 'If this feature is enabled, it will prevent transferring NFTs directly between users. This feature opens up the door for different use cases in the future, one of which is that it might be used to force transfer of ownership to go via DEX, so that the royalty fee is applied and the creator of the NFT always gets a royalty fee.',
   },
-  // {
-  //   type: TokenCapabilityType.Soulbound,
-  //   label: 'Soulbound',
-  //   content: 'If the soulbound feature is enabled, the NFT can not be sent by anyone, except the issuer. This feature is useful for NFTs that are created for a specific user, and the issuer wants to make sure that the NFT is not transferred to anyone else.',
-  // },
+  {
+    type: TokenCapabilityType.Soulbound,
+    label: 'Soulbound',
+    content: 'If the soulbound feature is enabled, the NFT can not be sent by anyone, except the issuer. This feature is useful for NFTs that are created for a specific user, and the issuer wants to make sure that the NFT is not transferred to anyone else.',
+  },
 ];
 
 export const CONNECT_WALLET_OPTIONS: WalletOption[] = [

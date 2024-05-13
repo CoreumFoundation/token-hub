@@ -31,6 +31,8 @@ export const ChainSelector = () => {
 
   const dropdownChains: DropdownItem[] = useMemo(() => {
     return chains.map((chainInfoItem: ChainInfo) => {
+      console.log(chainInfoItem.chain_name);
+
       return {
         id: chainInfoItem.chain_id,
         label: chainInfoItem.pretty_name,

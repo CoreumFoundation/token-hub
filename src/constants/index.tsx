@@ -256,66 +256,6 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
   {
     chain_1: {
       chain_name: "coreumtestnet",
-      client_id: "07-tendermint-72",
-      connection_id: "connection-52",
-    },
-    chain_2: {
-      chain_name: "celestiatestnet3",
-      client_id: "07-tendermint-250",
-      connection_id: "connection-235",
-    },
-    channels: [
-      {
-        chain_1: {
-          channel_id: "channel-36",
-          port_id: "transfer",
-        },
-        chain_2: {
-          channel_id: "channel-47",
-          port_id: "transfer",
-        },
-        ordering: "unordered",
-        version: "ics20-1",
-        tags: {
-          status: "live",
-          preferred: true,
-        },
-      },
-    ],
-  },
-  {
-    chain_1: {
-      chain_name: "coreumtestnet",
-      client_id: "07-tendermint-71",
-      connection_id: "connection-52",
-    },
-    chain_2: {
-      chain_name: "kavatestnet",
-      client_id: "07-tendermint-25",
-      connection_id: "connection-86",
-    },
-    channels: [
-      {
-        chain_1: {
-          channel_id: "channel-35",
-          port_id: "transfer",
-        },
-        chain_2: {
-          channel_id: "channel-75",
-          port_id: "transfer",
-        },
-        ordering: "unordered",
-        version: "ics20-1",
-        tags: {
-          status: "live",
-          preferred: true,
-        },
-      },
-    ],
-  },
-  {
-    chain_1: {
-      chain_name: "coreumtestnet",
       client_id: "07-tendermint-103",
       connection_id: "connection-50",
     },

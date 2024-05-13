@@ -15,7 +15,7 @@ import { convertSubunitToUnit, convertUnitToSubunit } from "@/helpers/convertUni
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { AlertType, ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Token } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Network, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Coin } from "@cosmjs/amino";
 import Big from "big.js";
@@ -23,6 +23,9 @@ import { Bank, FT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { setSelectedCurrency as setSelectedFTCurrency } from "@/features/currencies/currenciesSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
+import { MsgTransfer } from "cosmjs-types/ibc/applications/transfer/v1/tx";
+import { MsgTransferEncodeObject } from "@cosmjs/stargate";
+import { getSendFTviaIBCMsg } from "@/helpers/getSendFTviaIBCMsg";
 
 export const FungibleTokenSend = () => {
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -38,6 +41,8 @@ export const FungibleTokenSend = () => {
   const network = useAppSelector(state => state.general.network);
 
   const selectedFTCurrency = useAppSelector(state => state.currencies.selectedCurrency);
+
+  const coreumNetworkName = network === Network.Mainnet ? 'coreum' : 'coreumtestnet';
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -153,6 +158,8 @@ export const FungibleTokenSend = () => {
         type: AlertType.Success,
         title: 'Token was sent successfully',
       }));
+      setDestinationAddress('');
+      setAmount('');
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,
@@ -162,7 +169,70 @@ export const FungibleTokenSend = () => {
     }
     dispatch(shouldRefetchBalances(true));
     dispatch(setIsTxExecuting(false));
-  }, [account, amount, currentCurrency, destinationAddress, getTxFee, signingClient]);
+  }, [
+    account,
+    amount,
+    currentCurrency,
+    destinationAddress,
+    getTxFee,
+    signingClient,
+  ]);
+
+  const handleSendTokensIBC = useCallback(async () => {
+    dispatch(setIsTxExecuting(true));
+    try {
+      const sendFTIBCMsg: MsgTransferEncodeObject = getSendFTviaIBCMsg({
+        sourcePort: 'transfer',
+        sourceChannel: destinationChain?.coreum_channel_id || '',
+        token: {
+          denom: currentCurrency?.denom || '',
+          amount: convertUnitToSubunit({
+            amount,
+            precision: currentCurrency?.precision || 0,
+          }),
+        },
+        sender: account,
+        receiver: destinationAddress,
+        network,
+      });
+
+      const txFee = await getTxFee([sendFTIBCMsg]);
+      await signingClient?.signAndBroadcast(account, [sendFTIBCMsg], txFee ? txFee.fee : 'auto');
+      dispatch(dispatchAlert({
+        type: AlertType.Success,
+        title: 'Token was sent via IBC successfully',
+      }));
+      setDestinationAddress('');
+      setAmount('');
+    } catch (error) {
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: 'Fungible Token Send Failed',
+        message: (error as { message: string}).message,
+      }));
+      console.log(error);
+    }
+    dispatch(shouldRefetchBalances(true));
+    dispatch(setIsTxExecuting(false));
+  }, [
+    account,
+    amount,
+    currentCurrency?.denom,
+    currentCurrency?.precision,
+    destinationAddress,
+    destinationChain?.coreum_channel_id,
+    getTxFee,
+    network,
+    signingClient,
+  ]);
+
+  const handleSend = useCallback(() => {
+    if (destinationChain?.chain_name === coreumNetworkName) {
+      handleSendTokens();
+    } else {
+      handleSendTokensIBC();
+    }
+  }, [coreumNetworkName, destinationChain?.chain_name]);
 
   const handleMaxButtonClick = useCallback(() => {
     setAmount(availableBalance);
@@ -173,7 +243,7 @@ export const FungibleTokenSend = () => {
       return (
         <Button
           label="Send"
-          onClick={handleSendTokens}
+          onClick={handleSend}
           type={ButtonType.Primary}
           iconType={ButtonIconType.Send}
           disabled={!isFormValid || isTxExecuting}

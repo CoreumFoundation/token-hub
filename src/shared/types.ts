@@ -143,6 +143,8 @@ export interface ChainInfo extends Chain {
   client_id: string;
   channel_id: string;
   port_id: string;
+  coreum_channel_id: string;
+  coreum_client_id: string;
 }
 
 export enum ChainType {
@@ -157,6 +159,7 @@ export enum ChainType {
   Kujira = 'kujira',
   Noble = 'noble',
   Osmosis = 'osmosis',
+  OsmosisTestnet = 'osmosistestnet',
   Secret = 'secretnetwork',
   Coreum = 'coreum',
   CoreumTestnet = 'coreumtestnet',

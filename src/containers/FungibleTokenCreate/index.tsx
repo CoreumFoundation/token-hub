@@ -326,11 +326,11 @@ export const FungibleTokenCreate = () => {
   }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 scroll-smooth">
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>Smart tokens on the Coreum network enable enterprises to set predetermined behaviours and <Link className="text-[#25D695] underline" href="https://docs.coreum.dev/docs/modules/coreum-deterministic-gas" target="_blank">deterministic gas fee</Link> for certain tokens, facilitating the execution of contract-like functions directly on the blockchain&apos;s storage.</li>
-          <li>Your <span className="text-[#9FA2AC] font-semibold">Fungible Tokens (FT)</span> will be stored in a collection that defines their behavior.</li>
+          <li>Your <span className="text-[#9FA2AC] font-semibold">Fungible Tokens (FT)</span> will inherit a set of <Link className="text-[#25D695]" href="#features-ft">features</Link> that determine their behaviour.</li>
         </ul>
       </MessageBox>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -409,7 +409,7 @@ export const FungibleTokenCreate = () => {
           error={+sendCommissionRate > 100 ? 'Max send commission rate value is 100%' : ''}
         />
       </div>
-      <div className="flex w-full">
+      <div className="flex w-full" id="features-ft">
         <ExpandedList
           label="Token Features"
           listItems={tokenCapabilities}

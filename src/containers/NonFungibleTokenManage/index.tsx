@@ -67,7 +67,7 @@ export const NonFungibleTokenManage = () => {
           <Image src="/images/coins.svg" width="200" height="200" alt="coins" />
           <div className="flex items-center gap-2">
             <GeneralIcon type={GeneralIconType.Error} />
-            You don&apos;t have any asset!
+            You don&apos;t have any assets!
           </div>
         </div>
       );
@@ -98,7 +98,7 @@ export const NonFungibleTokenManage = () => {
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>View and manage the Smart Tokens you created or own.</li>
-          <li>There are many ways to get on-chain data. Here we simply query a <Link className="text-[#25D695] underline font-medium" href={`https://full-node.${network}-1.coreum.dev:1317`} target="_blank">public REST server</Link> that expose different endpoints to query the blockchain.</li>
+          <li>There are many ways to get on-chain data. Here we simply query a <Link className="text-[#25D695] underline font-medium" href={`https://full-node.${network}-1.coreum.dev:1317`} target="_blank">public REST server</Link> that exposes different endpoints to query the blockchain.</li>
         </ul>
       </MessageBox>
       {renderContent}

@@ -267,7 +267,7 @@ export const FungibleTokenSend = () => {
     <div className="flex flex-col gap-10">
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
-          <li>Depending of the nature of your Smart Token you can send it to another user.</li>
+          <li>Depending on the features of your token, you might need to apply some actions to your token before sending it to other users.</li>
           <li>Please note, you will not be able to re-claim the assets unless the receiver sends it back to you.</li>
         </ul>
       </MessageBox>

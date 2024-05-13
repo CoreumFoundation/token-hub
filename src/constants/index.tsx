@@ -103,12 +103,12 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.Mint,
     label: 'Minting',
-    content: 'If the minting feature is enabled, the issuer can mint more tokens and increase the current supply of the token.',
+    content: 'If the minting feature is enabled, the issuer can mint more tokens and increase the total supply of the token.',
   },
   {
     type: TokenCapabilityType.Burn,
     label: 'Burning',
-    content: 'The issuer of the token can burn the tokens that they hold. If the burning feature is enabled, then every holder of the token can burn the tokens they hold.',
+    content: 'If burning is enabled, token holders can burn their tokens. The issuer can always burn his tokens independently of this feature.',
   },
   {
     type: TokenCapabilityType.Freeze,
@@ -123,12 +123,12 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.IBC,
     label: 'IBC',
-    content: 'If the IBC feature is enabled, issuer decides if users may send and receive it over IBC transfer protocol. If IBC feature is disabled, token can never leave the Coreum chain to other Cosmos SDK chain.',
+    content: 'If the IBC feature is enabled the token can be transferred over IBC to other IBC-enabled chains. If it is disabled it can only live on the Coreum blockchain.',
   },
   {
     type: TokenCapabilityType.Block,
     label: 'Block Smart Contract',
-    content: 'If the block smart contract feature is enabled, then the token can only be sent to regular user addresses and not smart contract. It\'s important to point out that this doesn\'t mean that the token cannot be issued from a smart contract.',
+    content: 'If the block smart contract feature is enabled, then the token can only be sent to regular user addresses and not smart contracts. It\'s important to point out that this doesn\'t mean that the token cannot be issued from a smart contract.',
   },
 ];
 

@@ -383,7 +383,7 @@ export const NonFungibleTokenCreate = () => {
       </div>
       <div className="flex w-full">
         <ExpandedList
-          label="Token Capabilities"
+          label="Token Features"
           listItems={tokenCapabilities}
         />
       </div>

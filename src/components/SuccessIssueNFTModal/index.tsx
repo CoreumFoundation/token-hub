@@ -127,7 +127,7 @@ export const SuccessIssueNFTModal = () => {
                 value={shortenAddress(issuedNFTCollection?.uriHash || '')}
               />
               <ModalInfoRow
-                label="Token Capabilities"
+                label="Token Features"
                 value={convertedFeatures}
                 className={issuedNFTCollection?.features.length ? 'items-baseline' : ''}
               />

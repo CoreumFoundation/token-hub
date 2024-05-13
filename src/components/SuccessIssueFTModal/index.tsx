@@ -141,7 +141,7 @@ export const SuccessIssueFTModal = () => {
               value={shortenAddress(issuedFTToken?.uri || '')}
             />
             <ModalInfoRow
-              label="Token Capabilities"
+              label="Token Features"
               value={convertedFeatures}
               className={issuedFTToken?.features.length ? 'items-baseline' : ''}
             />

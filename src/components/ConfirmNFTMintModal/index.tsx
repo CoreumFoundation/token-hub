@@ -92,10 +92,12 @@ export const ConfirmNFTMintModal = () => {
                 label="URI Hash"
                 value={shortenAddress(nftURIHash)}
               />
-              <ModalInfoRow
-                label="Recipient"
-                value={shortenAddress(nftRecipient)}
-              />
+              {nftRecipient && (
+                <ModalInfoRow
+                  label="Recipient"
+                  value={shortenAddress(nftRecipient)}
+                />
+              )}
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -127,12 +129,14 @@ export const ConfirmNFTMintModal = () => {
             />
             <ModalInfoRow
               label="URI Hash"
-              value={nftURIHash}
+              value={shortenAddress(nftURIHash)}
             />
-            <ModalInfoRow
-              label="Recipient"
-              value={shortenAddress(nftRecipient)}
-            />
+            {nftRecipient && (
+              <ModalInfoRow
+                label="Recipient"
+                value={shortenAddress(nftRecipient)}
+              />
+            )}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConfirmNFTMintModalOpen, setIsNFTMintModalOpen } from "@/features/general/generalSlice";
@@ -11,6 +11,8 @@ import { Button } from "../Button";
 import { ButtonType, ChainInfo } from "@/shared/types";
 import { validateAddress } from "@/helpers/validateAddress";
 import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash } from "@/features/nft/nftSlice";
+import { FileUpload } from "../FileUpload";
+import classNames from "classnames";
 
 export const MintNFTModal = () => {
   const [nftId, setNFTId] = useState<string>('');
@@ -18,6 +20,8 @@ export const MintNFTModal = () => {
   const [uriHash, setUriHash] = useState<string>('');
   const [data, setData] = useState<string>('');
   const [recipient, setRecipient] = useState<string>('');
+
+  const [fileContent, setFileContent] = useState<string>('');
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
@@ -114,7 +118,7 @@ export const MintNFTModal = () => {
     dispatch(setNFTURI(uri));
     dispatch(setNFTURIHash(uriHash));
     dispatch(setNFTRecipient(recipient));
-    dispatch(setNFTData(data));
+    dispatch(setNFTData(fileContent.length ? fileContent : data));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
     setNFTId('');
@@ -122,7 +126,7 @@ export const MintNFTModal = () => {
     setUriHash('');
     setData('');
     setRecipient('');
-  }, [data, nftId, recipient, uri, uriHash]);
+  }, [data, nftId, recipient, uri, uriHash, fileContent]);
 
   return (
     <Modal
@@ -159,14 +163,35 @@ export const MintNFTModal = () => {
           placeholder="Enter recipient's address"
           error={isRecipientAddressValid}
         />
-        <TextArea
-          label="Data"
-          value={data}
-          onChange={setData}
-          placeholder="Type content here"
-          rows={4}
-          className="bg-[#080908] border-transparent"
-        />
+        <div className="flex flex-col w-full gap-2 items-center">
+          <div className="flex items-center justify-start w-full">
+            <label
+              className="block text-sm text-[#868991] font-noto-sans"
+            >
+              Data
+            </label>
+          </div>
+          <FileUpload
+            setFileContent={setFileContent}
+            disabled={!!data.length}
+          />
+          <div className="flex w-full items-center my-2 justify-center border-t border-dashed border-[#1B1D23] relative h-1">
+            <div className="flex items-center px-2 -mt-1 text-[#868991] text-sm font-noto-sans bg-[#101216]">
+              Or
+            </div>
+          </div>
+          <TextArea
+            id="data"
+            value={data}
+            onChange={setData}
+            placeholder="Type content here"
+            rows={4}
+            className={classNames({
+              '!bg-[#080908] !border-transparent': !!fileContent.length,
+            })}
+            disabled={!!fileContent.length}
+          />
+        </div>
         <div className="flex w-full justify-end">
           <div className="flex items-center">
             <Button

@@ -63,6 +63,7 @@ export enum GeneralIconType {
   Freeze = 'freeze',
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
+  File = 'file',
 };
 
 export enum TabItemType {

@@ -6,7 +6,7 @@ import { Spinner } from "../Spinner";
 
 interface ButtonProps {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   type: ButtonType;
   iconType?: ButtonIconType;

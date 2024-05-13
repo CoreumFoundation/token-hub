@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 
 interface TextAreaProps {
-  label: string;
+  label?: string;
   value: string;
   rows: number;
   onChange: (value: string) => void;
@@ -44,16 +44,18 @@ export const TextArea: FC<TextAreaProps> = ({
 
   return (
     <div className="flex flex-col w-full gap-2 relative">
-      <label
-        htmlFor={id || label.toLowerCase()}
-        className="block text-sm text-[#868991] font-noto-sans"
-      >
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={id || label?.toLowerCase()}
+          className="block text-sm text-[#868991] font-noto-sans"
+        >
+          {label}
+        </label>
+      )}
       <div className={textAreaCx}>
         <textarea
           rows={rows}
-          name={id || label.toLowerCase()}
+          name={id || label?.toLowerCase()}
           id={id}
           className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm resize-none"
           placeholder={placeholder}

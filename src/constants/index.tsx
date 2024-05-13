@@ -1,7 +1,23 @@
 import { FooterIcon } from "@/assets/FooterIcon";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { ExplorerLink } from "@/components/ExplorerLink";
-import { AccountActionType, DropdownItem, FooterIconType, GeneralIconType, Network, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType, Token, TokenCapabilityItem, TokenCapabilityType, WalletOption, WalletType } from "@/shared/types";
+import {
+  AccountActionType,
+  DropdownItem,
+  FooterIconType,
+  GeneralIconType,
+  Network,
+  TabItem,
+  TabItemType,
+  TabSwitchItem,
+  TabSwitchItemType,
+  Token,
+  TokenCapabilityItem,
+  TokenCapabilityType,
+  WalletOption,
+  WalletType,
+} from "@/shared/types";
+import { IBCInfo } from '@chain-registry/types';
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -235,3 +251,96 @@ export const CID_REGEX = new RegExp(`^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$`);
 
 export const SYMBOL_NFT_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._]{0,30}$`);
 export const NFT_ID_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._-]{2,100}$`);
+
+export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
+  {
+    chain_1: {
+      chain_name: "coreumtestnet",
+      client_id: "07-tendermint-72",
+      connection_id: "connection-52",
+    },
+    chain_2: {
+      chain_name: "celestiatestnet3",
+      client_id: "07-tendermint-250",
+      connection_id: "connection-235",
+    },
+    channels: [
+      {
+        chain_1: {
+          channel_id: "channel-36",
+          port_id: "transfer",
+        },
+        chain_2: {
+          channel_id: "channel-47",
+          port_id: "transfer",
+        },
+        ordering: "unordered",
+        version: "ics20-1",
+        tags: {
+          status: "live",
+          preferred: true,
+        },
+      },
+    ],
+  },
+  {
+    chain_1: {
+      chain_name: "coreumtestnet",
+      client_id: "07-tendermint-71",
+      connection_id: "connection-52",
+    },
+    chain_2: {
+      chain_name: "kavatestnet",
+      client_id: "07-tendermint-25",
+      connection_id: "connection-86",
+    },
+    channels: [
+      {
+        chain_1: {
+          channel_id: "channel-35",
+          port_id: "transfer",
+        },
+        chain_2: {
+          channel_id: "channel-75",
+          port_id: "transfer",
+        },
+        ordering: "unordered",
+        version: "ics20-1",
+        tags: {
+          status: "live",
+          preferred: true,
+        },
+      },
+    ],
+  },
+  {
+    chain_1: {
+      chain_name: "coreumtestnet",
+      client_id: "07-tendermint-103",
+      connection_id: "connection-50",
+    },
+    chain_2: {
+      chain_name: "osmosistestnet",
+      client_id: "07-tendermint-3503",
+      connection_id: "connection-2018",
+    },
+    channels: [
+      {
+        chain_1: {
+          channel_id: "channel-46",
+          port_id: "transfer",
+        },
+        chain_2: {
+          channel_id: "channel-7846",
+          port_id: "transfer",
+        },
+        ordering: "unordered",
+        version: "ics20-1",
+        tags: {
+          status: "live",
+          preferred: true,
+        },
+      },
+    ],
+  },
+];

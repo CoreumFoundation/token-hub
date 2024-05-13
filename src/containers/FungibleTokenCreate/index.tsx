@@ -19,6 +19,7 @@ import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";
 import { setIssuedToken, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
+import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -112,7 +113,7 @@ export const FungibleTokenCreate = () => {
         symbol,
         subunit,
         precision: Number(precision),
-        initialAmount: initialAmount.length ? initialAmount : '0',
+        initialAmount: convertUnitToSubunit({ amount: initialAmount, precision: Number(precision)}),
         description,
         features: featuresToApply,
         burnRate: parseFloatToRoyaltyRate(burnRate),
@@ -366,6 +367,7 @@ export const FungibleTokenCreate = () => {
           onChange={setInitialAmount}
           placeholder="0"
           type="number"
+          decimals={Number(precision)}
         />
       </div>
       <div className="grid grid-cols-1">

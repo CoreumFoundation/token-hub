@@ -129,7 +129,7 @@ export const SuccessIssueFTModal = () => {
                 <div className="flex flex-wrap max-w-full gap-1 w-full items-baseline justify-end">
                   <Decimal
                     className="break-all max-w-full !inline"
-                    value={convertSubunitToUnit({ amount: issuedFTToken?.initialAmount || '0', precision: Number(issuedFTToken?.precision) || 0})}
+                    value={issuedFTToken?.initialAmount || '0'}
                     precision={Number(issuedFTToken?.precision) || 0}
                   />
                   <span className="text-left text-xs max-w-full break-all">{issuedFTToken?.symbol.toUpperCase()}</span>

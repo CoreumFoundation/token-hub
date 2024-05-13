@@ -39,11 +39,11 @@ export const NFTItem: FC<NFTItemProps> = ({
           className="rounded-b-lg p-3 gap-2 w-full hover:bg-[#2B3138] hover:text-[#eee] !border-transparent"
         >
           <div className="flex flex-col w-full gap-1">
-            <div className="flex items-center w-full gap-1 text-sm tracking-[-0.21px]">
+            <div className="flex items-center w-full gap-1 text-sm tracking-[-0.21px] overflow-scroll scroll">
               {label}
             </div>
             {description && (
-              <div className="text-xs text-[#5E6773]">
+              <div className="text-xs text-[#5E6773] overflow-scroll scroll">
                 {description}
               </div>
             )}
@@ -51,11 +51,11 @@ export const NFTItem: FC<NFTItemProps> = ({
         </ActionRow>
       ) : (
         <div className="flex flex-col w-full gap-1 p-3">
-          <div className="flex items-center w-full gap-1 text-sm tracking-[-0.21px]">
+          <div className="flex items-center w-full gap-1 text-sm tracking-[-0.21px] overflow-scroll scroll">
             {label}
           </div>
           {description && (
-            <div className="text-xs text-[#5E6773]">
+            <div className="text-xs text-[#5E6773] overflow-scroll scroll">
               {description}
             </div>
           )}

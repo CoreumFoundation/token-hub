@@ -182,6 +182,7 @@ interface IssuedNFTCollectionType {
   features: ClassFeature[];
   uri: string;
   uriHash: string;
+  txHash: string;
 }
 
 export interface NFTsState {

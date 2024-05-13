@@ -54,6 +54,7 @@ interface IssuedTokenType {
   burnRate: string;
   sendCommissionRate: string;
   uri: string;
+  txHash: string;
 }
 
 export interface CurrenciesState {

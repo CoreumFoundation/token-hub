@@ -260,20 +260,24 @@ export const NonFungibleTokenCreate = () => {
       });
 
       const txFee = await getTxFee([issueNFTMsg]);
-      await signingClient?.signAndBroadcast(account, [issueNFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(setIsSuccessIssueNFTModalOpen(true));
-      dispatch(setShouldFetchNFTCollections(true));
-      dispatch(shouldRefetchBalances(true));
-      dispatch(setIssuedNFTCollection({
-        name,
-        symbol,
-        royalties,
-        description,
-        features: featuresToApply,
-        uri,
-        uriHash,
-      }));
-      handleClearState();
+      const response = await signingClient?.signAndBroadcast(account, [issueNFTMsg], txFee ? txFee.fee : 'auto');
+
+      if (response?.transactionHash) {
+        dispatch(setIsSuccessIssueNFTModalOpen(true));
+        dispatch(setShouldFetchNFTCollections(true));
+        dispatch(shouldRefetchBalances(true));
+        dispatch(setIssuedNFTCollection({
+          name,
+          symbol,
+          royalties,
+          description,
+          features: featuresToApply,
+          uri,
+          uriHash,
+          txHash: response?.transactionHash,
+        }));
+        handleClearState();
+      }
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

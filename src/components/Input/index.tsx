@@ -7,7 +7,7 @@ import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 interface InputProps {
   label: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   type?: string;
   placeholder: string;
   disabled?: boolean;
@@ -19,6 +19,7 @@ interface InputProps {
   warning?: string;
   decimals?: number;
   errorClassName?: string;
+  className?: string;
 }
 
 export const Input: FC<InputProps> = ({
@@ -36,6 +37,7 @@ export const Input: FC<InputProps> = ({
   warning,
   decimals = 0,
   errorClassName,
+  className,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -51,7 +53,7 @@ export const Input: FC<InputProps> = ({
 
   const handleChangeInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.length) {
-      onChange('');
+      onChange?.('');
       return;
     }
 
@@ -59,10 +61,10 @@ export const Input: FC<InputProps> = ({
       const currentValue = e.target.value.replaceAll(',', '');
 
       if (getNumberRegex(decimals).test(currentValue)) {
-        onChange(currentValue);
+        onChange?.(currentValue);
       }
     } else {
-      onChange(e.target.value);
+      onChange?.(e.target.value);
     }
   }, [onChange, type, decimals]);
 
@@ -83,7 +85,7 @@ export const Input: FC<InputProps> = ({
   }, [value, type, decimals]);
 
   return (
-    <div className="flex flex-col w-full gap-2 relative">
+    <div className={classNames('flex flex-col w-full gap-2 relative', className)}>
       <label
         className="block text-sm text-[#868991] font-noto-sans"
       >

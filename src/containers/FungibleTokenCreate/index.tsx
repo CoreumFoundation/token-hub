@@ -121,22 +121,26 @@ export const FungibleTokenCreate = () => {
       });
 
       const txFee = await getTxFee([issueFTMsg]);
-      await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
-      dispatch(setIsSuccessIssueFTModalOpen(true));
-      dispatch(setIssuedToken({
-        symbol,
-        subunit,
-        precision,
-        initialAmount,
-        description,
-        features: featuresToApply,
-        burnRate,
-        sendCommissionRate,
-        uri: url,
-      }));
-      handleClearState();
-      dispatch(shouldRefetchCurrencies(true));
-      dispatch(shouldRefetchBalances(true));
+      const response = await signingClient?.signAndBroadcast(account, [issueFTMsg], txFee ? txFee.fee : 'auto');
+
+      if (response?.transactionHash) {
+        dispatch(setIsSuccessIssueFTModalOpen(true));
+        dispatch(setIssuedToken({
+          symbol,
+          subunit,
+          precision,
+          initialAmount,
+          description,
+          features: featuresToApply,
+          burnRate,
+          sendCommissionRate,
+          uri: url,
+          txHash: response?.transactionHash,
+        }));
+        handleClearState();
+        dispatch(shouldRefetchCurrencies(true));
+        dispatch(shouldRefetchBalances(true));
+      }
     } catch (error: unknown) {
       dispatch(dispatchAlert({
         type: AlertType.Error,

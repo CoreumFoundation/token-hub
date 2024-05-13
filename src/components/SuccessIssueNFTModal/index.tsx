@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { ButtonType, ConfirmationModalImageType } from "@/shared/types";
+import { AlertType, ButtonType, ConfirmationModalImageType, GeneralIconType, Network } from "@/shared/types";
 import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { useCallback, useMemo } from "react";
 import { ModalInfoRow } from "../ModalInfoRow";
@@ -9,10 +9,15 @@ import { setIsSuccessIssueNFTModalOpen } from "@/features/general/generalSlice";
 import { ClassFeature } from "coreum-js";
 import { setIssuedNFTCollection } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
+import { Input } from "../Input";
+import { GeneralIcon } from "@/assets/GeneralIcon";
+import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import Link from "next/link";
 
 export const SuccessIssueNFTModal = () => {
   const isSuccessIssueNFTModalOpen = useAppSelector(state => state.general.isSuccessIssueNFTModalOpen);
   const issuedNFTCollection = useAppSelector(state => state.nfts.issuedNFTCollection);
+  const network = useAppSelector(state => state.general.network);
 
   const dispatch = useAppDispatch();
 
@@ -52,13 +57,44 @@ export const SuccessIssueNFTModal = () => {
               label={String(feature)}
               onClick={() => {}}
               type={ButtonType.Secondary}
-              className="py-0.5 px-2 text-sm !w-fit rounded"
+              className="!py-0.5 px-2 text-sm !w-fit !rounded"
             />
           );
         })}
       </div>
     );
   }, [convertFeatureToString, issuedNFTCollection]);
+
+  const handleCopyTransactionHash = useCallback(() => {
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = issuedNFTCollection?.txHash || '';
+
+    document.body.appendChild(tempTextArea);
+
+    tempTextArea.select();
+    tempTextArea.setSelectionRange(0, 99999);
+
+    document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+
+    dispatch(dispatchAlert({
+      type: AlertType.Success,
+      title: 'Transaction hash was copied!'
+    }));
+  }, [issuedNFTCollection]);
+
+  const renderTxHashIcons = useMemo(() => {
+    const explorerUrl = network === Network.Mainnet
+      ? `https://explorer.coreum.com/coreum/transactions/${issuedNFTCollection?.txHash || ''}`
+      : `https://explorer.testnet-1.coreum.dev/coreum/transactions/${issuedNFTCollection?.txHash || ''}`;
+
+    return (
+      <div className="flex items-center gap-1">
+        <GeneralIcon type={GeneralIconType.Copy} onClick={handleCopyTransactionHash} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+        <Link href={explorerUrl} target="_blank"><GeneralIcon type={GeneralIconType.Explorer} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" /></Link>
+      </div>
+    );
+  }, [handleCopyTransactionHash, issuedNFTCollection?.txHash, network]);
 
   return (
     <ConfirmationModal isOpen={isSuccessIssueNFTModalOpen}>
@@ -102,6 +138,15 @@ export const SuccessIssueNFTModal = () => {
                 valueClassName="!text-left"
               />
             </div>
+          </div>
+          <div className="flex items-center w-full">
+          <Input
+              label={"Transaction Hash"}
+              value={issuedNFTCollection?.txHash || ''}
+              placeholder=""
+              icon={renderTxHashIcons}
+              className="!items-start"
+            />
           </div>
           <div className="flex items-center w-full">
             <Button

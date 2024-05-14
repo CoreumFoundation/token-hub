@@ -337,7 +337,7 @@ export const FungibleTokenCreate = () => {
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>Smart tokens on the Coreum network enable enterprises to set predetermined behaviours and <Link className="text-[#25D695] underline" href="https://docs.coreum.dev/docs/modules/coreum-deterministic-gas" target="_blank">deterministic gas fee</Link> for certain tokens, facilitating the execution of contract-like functions directly on the blockchain&apos;s storage.</li>
-          <li>Your <span className="text-[#9FA2AC] font-semibold">Fungible Tokens (FT)</span> will inherit a set of <Link className="text-[#25D695]" href="#features-ft">features</Link> that determine their behaviour.</li>
+          <li>Your <span className="text-[#9FA2AC] font-semibold">Fungible Tokens (FTs)</span> will inherit a set of <Link className="text-[#25D695]" href="#features-ft">features</Link> that determine their behaviour.</li>
         </ul>
       </MessageBox>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -108,7 +108,7 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.Burn,
     label: 'Burning',
-    content: 'If burning is enabled, token holders can burn their tokens. The issuer can always burn his tokens independently of this feature.',
+    content: 'If the burning feature is enabled, it allows token holders to burn their tokens.',
   },
   {
     type: TokenCapabilityType.Freeze,

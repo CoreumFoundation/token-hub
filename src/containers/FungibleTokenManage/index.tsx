@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { setIsBurnCurrencyModalOpen, setIsConnectModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { ButtonType, ButtonIconType, Token, GeneralIconType } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
@@ -23,6 +23,8 @@ export const FungibleTokenManage = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const balances = useAppSelector(state => state.balances.list);
   const network = useAppSelector(state => state.general.network);
+
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -44,6 +46,10 @@ export const FungibleTokenManage = () => {
   const handleCurrencyBurnClick = useCallback((currency: Token) => {
     dispatch(setSelectedCurrency(currency));
     dispatch(setIsBurnCurrencyModalOpen(true));
+  }, []);
+
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   const renderContent = useMemo(() => {
@@ -115,6 +121,22 @@ export const FungibleTokenManage = () => {
       </div>
     );
   }, [currencies, isConnected, balances, isFetching]);
+
+  if (!isMounted) {
+    return (
+      <div className="flex flex-col gap-10">
+        <MessageBox>
+          <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
+            <li>View and manage the Smart Tokens you created.</li>
+            <li>There are many ways to get on-chain data. Here we simply query a <Link className="text-[#25D695] underline font-medium" href={`https://full-node.${network}-1.coreum.dev:1317`} target="_blank">public REST server</Link> that exposes different endpoints to query the blockchain.</li>
+          </ul>
+        </MessageBox>
+        <div className="flex flex-col items-center justify-center w-full py-20">
+          <Spinner className="w-12 h-12" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-10">

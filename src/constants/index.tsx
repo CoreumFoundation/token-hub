@@ -103,7 +103,7 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.Mint,
     label: 'Minting',
-    content: 'If the minting feature is enabled, the issuer can mint more tokens and increase the total supply of the token.',
+    content: 'If the minting feature is enabled, the issuer can mint more tokens and increase the current supply of the token.',
   },
   {
     type: TokenCapabilityType.Burn,

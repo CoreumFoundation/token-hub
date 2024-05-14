@@ -42,6 +42,12 @@ export const ManageTokensModal = () => {
   const [amount, setAmount] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
 
+  const handleClearState = useCallback(() => {
+    setAmount('');
+    setWalletAddress('');
+    setSelectedTab(null);
+  }, []);
+
   const dispatch = useAppDispatch();
 
   const handleCloseModal = useCallback(() => {
@@ -60,6 +66,7 @@ export const ManageTokensModal = () => {
     dispatch(setMintAmount(amount));
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmMintModalOpen(true));
+    handleClearState();
   }, [amount]);
 
   const handleFreezeTokens = useCallback(() => {
@@ -67,11 +74,13 @@ export const ManageTokensModal = () => {
     dispatch(setFreezeWalletAddress(walletAddress));
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmFreezeModalOpen(true));
+    handleClearState();
   }, [amount, walletAddress]);
 
   const handleGloballyFreezeTokens = useCallback(() => {
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmGlobalFreezeModalOpen(true));
+    handleClearState();
   }, [amount]);
 
   const handleUnfreezeTokens = useCallback(() => {
@@ -79,11 +88,13 @@ export const ManageTokensModal = () => {
     dispatch(setUnfreezeWalletAddress(walletAddress));
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmUnfreezeModalOpen(true));
+    handleClearState();
   }, [amount, walletAddress]);
 
   const handleGloballyUnfreezeTokens = useCallback(() => {
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmGlobalUnfreezeModalOpen(true));
+    handleClearState();
   }, [amount]);
 
   const handleWhitelistTokens = useCallback(() => {
@@ -91,6 +102,7 @@ export const ManageTokensModal = () => {
     dispatch(setWhitelistWalletAddress(walletAddress));
     dispatch(setIsManageCurrencyModalOpen(false));
     dispatch(setIsConfirmWhitelistModalOpen(true));
+    handleClearState();
   }, [amount, walletAddress]);
 
   const renderTitle = useMemo(() => {

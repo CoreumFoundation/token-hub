@@ -19,6 +19,7 @@ export const ViewNFTCollectionModal = () => {
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
 
   const nftItems = useAppSelector(state => state.nfts.nftItems);
+  const ownedNFTItems = useAppSelector(state => state.nfts.ownedNftItems);
 
   const dispatch = useAppDispatch();
 
@@ -87,7 +88,9 @@ export const ViewNFTCollectionModal = () => {
             const isFreezing = selectedNFTClass?.features.find((feature: string) => feature === 'freezing');
             const isWhitelistingEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'whitelisting');
 
-            if (!isSendingDisabled) {
+            const isNFTOwnedByUser = ownedNFTItems[selectedNFTClass?.id || ''].find((nft: NFT) => nft.id === item.id);
+
+            if (!isSendingDisabled && isNFTOwnedByUser) {
               items.push({
                 id: 'send',
                 label: 'Send',

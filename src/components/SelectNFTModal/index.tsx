@@ -19,7 +19,7 @@ export const SelectNFTModal = () => {
   const isSelectNFTModalOpen = useAppSelector(state => state.general.isSelectNFTModalOpen);
 
   const nftClasses = useAppSelector(state => state.nfts.collections);
-  const nftItems = useAppSelector(state => state.nfts.nftItems);
+  const nftItems = useAppSelector(state => state.nfts.ownedNftItems);
 
   const dispatch = useAppDispatch();
 

@@ -9,6 +9,7 @@ interface FetchIssuedCollectionsArgs {
 }
 
 interface FetchNFTSbyOwnerAndClassArgs {
+  account: string;
   classId: string
   network: Network;
 }
@@ -104,10 +105,11 @@ export const fetchIssuedNFTCollectionsByAccount = createAsyncThunk(
 
 export const fetchNFTsByOwnerAndClass = createAsyncThunk(
   'nfts/fetchNFTsByOwnerAndClass',
-  async ({ classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
+  async ({ account, classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
     try {
       const nftsRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}`;
       let nftsToReturn = [];
+      let ownNFTsToReturn = [];
 
       const {
         data: {
@@ -126,6 +128,25 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
         }: AxiosResponse<{ nfts: NFT[] }> = await axios.get(`${nftsRequestUrl}&pagination.limit=${nftsTotal}`);
 
         nftsToReturn = allNFTs;
+      }
+
+      const {
+        data: {
+          pagination: { total: ownNFTsTotal },
+          nfts: ownNFTs,
+        },
+      }: AxiosResponse<{ pagination: { total: string }; nfts: NFT[]; }> = await axios.get(`${nftsRequestUrl}&owner=${account}`);
+
+      ownNFTsToReturn = ownNFTs;
+
+      if (Number(ownNFTsTotal) > ownNFTs.length) {
+        const {
+          data: {
+            nfts: allOwnedNFTs,
+          }
+        }: AxiosResponse<{ nfts: NFT[] }> = await axios.get(`${nftsRequestUrl}&owner=${account}&pagination.limit=${ownNFTsTotal}`);
+
+        ownNFTsToReturn = allOwnedNFTs;
       }
 
       nftsToReturn = await Promise.all(nftsToReturn.map(async (nft: NFT) => {
@@ -160,14 +181,48 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
         };
       }));
 
+      ownNFTsToReturn = await Promise.all(ownNFTsToReturn.map(async (nft: NFT) => {
+        const uriPath = `${nft.uri}${nft.uri_hash ? nft.uri_hash : ''}`;
+
+        if (uriPath === 'ipfs://') {
+          return {
+            ...nft,
+            image: '',
+            name: '',
+          };
+        }
+
+        if (uriPath.startsWith('ipfs://')) {
+          const cid = uriPath.replace('ipfs://', '');
+
+          if (cid.length !== 46) {
+            return {
+              ...nft,
+              image: '',
+              name: '',
+            };
+          }
+        }
+
+        const { image, name } = await getMetadata(uriPath);
+
+        return {
+          ...nft,
+          image,
+          name,
+        };
+      }));
+
       return {
         class: classId,
         items: nftsToReturn,
+        ownedItems: ownNFTsToReturn,
       }
     } catch (error) {
       return {
         class: classId,
         items: [],
+        ownedItems: [],
       };
     }
   },
@@ -198,6 +253,9 @@ export interface NFTsState {
   nftItems: {
     [key: string]: NFT[];
   };
+  ownedNftItems: {
+    [key: string]: NFT[];
+  };
   isNFTItemsFetched: boolean;
   isNFTItemsLoading: boolean;
   whitelistAccount: string;
@@ -217,6 +275,7 @@ export const initialNFTsState: NFTsState = {
   nftRecipient: '',
   nftData: '',
   nftItems: {},
+  ownedNftItems: {},
   isNFTItemsFetched: false,
   isNFTItemsLoading: false,
   selectedNFTSend: null,
@@ -261,6 +320,9 @@ const nftsSlice = createSlice({
     setNFTItems(state, action: PayloadAction<{ [key: string]: NFT[] }>) {
       state.nftItems = action.payload;
     },
+    setOwnedNFTItems(state, action: PayloadAction<{ [key: string]: NFT[] }>) {
+      state.ownedNftItems = action.payload;
+    },
     setIsNFTItemsFetched(state, action: PayloadAction<boolean>) {
       state.isNFTItemsFetched = action.payload;
     },
@@ -285,7 +347,7 @@ const nftsSlice = createSlice({
     builder.addCase(fetchIssuedNFTCollectionsByAccount.pending, (state) => {
       state.isLoading = true;
     })
-    builder.addCase(fetchIssuedNFTCollectionsByAccount.rejected, (state, action) => {
+    builder.addCase(fetchIssuedNFTCollectionsByAccount.rejected, (state) => {
       state.collections = [];
       state.isLoading = false;
       state.isFetched = true;
@@ -297,14 +359,16 @@ const nftsSlice = createSlice({
     }),
     builder.addCase(fetchNFTsByOwnerAndClass.pending, (state) => {
       state.isNFTItemsLoading = true;
-    })
-    builder.addCase(fetchNFTsByOwnerAndClass.rejected, (state, action) => {
+    }),
+    builder.addCase(fetchNFTsByOwnerAndClass.rejected, (state) => {
       state.nftItems = {};
+      state.ownedNftItems = {};
       state.isNFTItemsLoading = false;
       state.isNFTItemsFetched = true;
-    })
+    }),
     builder.addCase(fetchNFTsByOwnerAndClass.fulfilled, (state, action) => {
       state.nftItems[action.payload.class] = action.payload.items;
+      state.ownedNftItems[action.payload.class] = action.payload.ownedItems;
       state.isNFTItemsLoading = false;
       state.isNFTItemsFetched = true;
     })
@@ -321,6 +385,7 @@ export const {
   setNFTRecipient,
   setNFTData,
   setNFTItems,
+  setOwnedNFTItems,
   setSelectedNFTSend,
   setWhitelistAccount,
   setShouldFetchNFTCollections,

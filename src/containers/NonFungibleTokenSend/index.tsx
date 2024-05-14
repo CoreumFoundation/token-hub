@@ -69,6 +69,7 @@ export const NonFungibleTokenSend = () => {
       }));
       dispatch(setShouldRefetchNFTItems(true));
       dispatch(setSelectedNFTClass(null));
+      setSelectedNFT(null);
       setDestinationAddress('');
     } catch (error) {
       dispatch(dispatchAlert({

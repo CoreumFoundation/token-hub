@@ -36,6 +36,8 @@ export const SuccessIssueNFTModal = () => {
         return 'whitelisting';
       case ClassFeature.disable_sending:
         return 'disable_sending';
+      case ClassFeature.soulbound:
+        return 'soulbound';
       default:
         return feature;
     }

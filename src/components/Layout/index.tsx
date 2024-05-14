@@ -76,10 +76,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [pathname, selectedTab.id, selectedTabSwitch.id]);
 
   const handleSetTab = useCallback((value: TabItem) => {
+    router.prefetch(`/${selectedTabSwitch.id}/${value.id}`);
     router.push(`/${selectedTabSwitch.id}/${value.id}`);
   }, [router, selectedTabSwitch.id]);
 
   const handleSetSwitchTab = useCallback((value: TabSwitchItem) => {
+    router.prefetch(`/${value.id}/${selectedTab.id}`);
     router.push(`/${value.id}/${selectedTab.id}`);
   }, [router, selectedTab.id]);
 

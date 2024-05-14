@@ -232,7 +232,7 @@ export const FungibleTokenSend = () => {
     } else {
       handleSendTokensIBC();
     }
-  }, [coreumNetworkName, destinationChain?.chain_name]);
+  }, [coreumNetworkName, destinationChain?.chain_name, handleSendTokens, handleSendTokensIBC]);
 
   const handleMaxButtonClick = useCallback(() => {
     setAmount(availableBalance);

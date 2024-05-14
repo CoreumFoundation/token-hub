@@ -7,7 +7,7 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { FT_TOKEN_CAPABILITIES, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
+import { FT_TOKEN_CAPABILITIES, IPFS_REGEX, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
 import { setIsConnectModalOpen, setIsSuccessIssueFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -236,8 +236,14 @@ export const FungibleTokenCreate = () => {
       return '';
     }
 
-    if (URL_REGEX.test(url)) {
-      return '';
+    if (url.startsWith('i')) {
+      if (IPFS_REGEX.test(url)) {
+        return '';
+      }
+    } else {
+      if (URL_REGEX.test(url)) {
+        return '';
+      }
     }
 
     return `URL is invalid`;

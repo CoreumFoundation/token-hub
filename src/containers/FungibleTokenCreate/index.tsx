@@ -405,6 +405,7 @@ export const FungibleTokenCreate = () => {
           type="number"
           decimals={2}
           error={+burnRate > 100 ? 'Max burn rate value is 100%' : ''}
+          tooltipContent="The percentage of each token transaction that is permanently removed from circulation; this reduction is applied on top of the sending amount."
         />
         <Input
           label="Send Commission Rate"
@@ -415,6 +416,7 @@ export const FungibleTokenCreate = () => {
           type="number"
           decimals={2}
           error={+sendCommissionRate > 100 ? 'Max send commission rate value is 100%' : ''}
+          tooltipContent="Percentage of each token transaction paid to the token's creator; the commission is applied on top of the sending amount."
         />
       </div>
       <div className="flex w-full" id="features-ft">

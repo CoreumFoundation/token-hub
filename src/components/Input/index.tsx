@@ -2,7 +2,9 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { getNumberRegex } from "@/helpers/getNumberRegex";
 import { GeneralIconType } from "@/shared/types";
 import classNames from "classnames";
+import Link from "next/link";
 import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
+import { Tooltip } from "../Tooltip";
 
 interface InputProps {
   label: string;
@@ -20,6 +22,7 @@ interface InputProps {
   decimals?: number;
   errorClassName?: string;
   className?: string;
+  tooltipContent?: string | React.ReactNode;
 }
 
 export const Input: FC<InputProps> = ({
@@ -38,6 +41,7 @@ export const Input: FC<InputProps> = ({
   decimals = 0,
   errorClassName,
   className,
+  tooltipContent,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -87,9 +91,16 @@ export const Input: FC<InputProps> = ({
   return (
     <div className={classNames('flex flex-col w-full gap-2 relative', className)}>
       <label
-        className="block text-sm text-[#868991] font-noto-sans"
+        className="flex items-center gap-1 text-sm text-[#868991] font-noto-sans"
       >
         {label}
+        {tooltipContent && (
+          <Tooltip
+            content={tooltipContent}
+          >
+            <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+          </Tooltip>
+        )}
       </label>
       <div className={inputCx}>
         <input

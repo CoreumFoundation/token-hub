@@ -39,6 +39,8 @@ import { ConfirmNFTUnfreezeModal } from "../ConfirmNFTUnfreezeModal";
 import { ConfirmNFTWhitelistModal } from "../ConfirmNFTWhitelistModal";
 import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
 import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
+import { Tooltip } from "../Tooltip";
+import Link from "next/link";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -99,7 +101,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <div className="text-3xl font-bold">
                       <span className="text-grey-gradient">Smart Tokens on </span><span className="text-green-gradient">Coreum</span>
                     </div>
-                    <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+                    <Tooltip
+                      content={(
+                        <div className="flex items-center gap-1">
+                          Find the codebase on
+                          <Link className="text-[#25D695]" href="https://github.com/CoreumFoundation/token-hub" target="_blank">Github</Link>
+                        </div>
+                      )}
+                    >
+                      <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+                    </Tooltip>
                   </div>
                   <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
                     <div className="flex justify-between gap-4 w-full">

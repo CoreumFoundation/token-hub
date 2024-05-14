@@ -36,7 +36,6 @@ export const useNFTs = () => {
     if (account && nftCollections.length && (!isNFTItemsFetched || shouldRefetchNFTItems)) {
       for (const collection of nftCollections) {
         dispatch(fetchNFTsByOwnerAndClass({
-          account,
           network,
           classId: collection.id,
         }));

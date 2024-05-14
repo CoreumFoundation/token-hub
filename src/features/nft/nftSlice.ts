@@ -9,7 +9,6 @@ interface FetchIssuedCollectionsArgs {
 }
 
 interface FetchNFTSbyOwnerAndClassArgs {
-  account: string;
   classId: string
   network: Network;
 }
@@ -105,9 +104,9 @@ export const fetchIssuedNFTCollectionsByAccount = createAsyncThunk(
 
 export const fetchNFTsByOwnerAndClass = createAsyncThunk(
   'nfts/fetchNFTsByOwnerAndClass',
-  async ({ account, classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
+  async ({ classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
     try {
-      const nftsRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}&owner=${account}`;
+      const nftsRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}`;
       let nftsToReturn = [];
 
       const {

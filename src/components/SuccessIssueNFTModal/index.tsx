@@ -59,7 +59,7 @@ export const SuccessIssueNFTModal = () => {
               label={String(feature)}
               onClick={() => {}}
               type={ButtonType.Secondary}
-              className="!py-0.5 px-2 text-sm !w-fit !rounded enabled:hover:opacity-100"
+              className="!py-0.5 px-2 text-sm !w-fit !rounded enabled:hover:!opacity-100"
             />
           );
         })}

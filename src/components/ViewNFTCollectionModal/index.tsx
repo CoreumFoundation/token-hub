@@ -120,7 +120,7 @@ export const ViewNFTCollectionModal = () => {
               });
             };
 
-            if (isBurnable) {
+            if (isBurnable && isNFTOwnedByUser) {
               items.push({
                 id: 'burn',
                 label: 'Burn',

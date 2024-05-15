@@ -32,6 +32,8 @@ export const NonFungibleTokenSend = () => {
 
   const [selectedNFT, setSelectedNFT] = useState<NFTType | null>(null);
 
+  const [txFee, setTxFee] = useState<string>('');
+
   useEffect(() => {
     if (selectedNFTSend) {
       setSelectedNFT(selectedNFTSend);
@@ -52,17 +54,37 @@ export const NonFungibleTokenSend = () => {
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
+  const sendNFTMsg = useMemo(() => {
+    return NFT.Send({
+      classId: selectedNFTClass?.id || '',
+      id: selectedNFT?.id || '',
+      receiver: destinationAddress,
+      sender: account,
+    });
+  }, [account, destinationAddress, selectedNFT?.id, selectedNFTClass?.id]);
+
+  const txFeeValue = useCallback(async () => {
+    try {
+      if (account && destinationAddress && selectedNFTClass && selectedNFT) {
+        const newTxFee = await getTxFee([sendNFTMsg]);
+        const feeAmount = newTxFee?.fee.amount[0].amount;
+
+        setTxFee(feeAmount || '');
+      }
+    } catch (error) {
+      setTxFee('');
+    }
+  }, [account, destinationAddress, getTxFee, selectedNFT, selectedNFTClass, sendNFTMsg]);
+
+  useEffect(() => {
+    txFeeValue();
+  }, [txFeeValue]);
+
   const handleSendTokens = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
-      const sendNFTMsg = NFT.Send({
-        classId: selectedNFTClass?.id || '',
-        id: selectedNFT?.id || '',
-        receiver: destinationAddress,
-        sender: account,
-      });
-      const txFee = await getTxFee([sendNFTMsg]);
-      await signingClient?.signAndBroadcast(account, [sendNFTMsg], txFee ? txFee.fee : 'auto');
+      const calculatedTxFee = await getTxFee([sendNFTMsg]);
+      await signingClient?.signAndBroadcast(account, [sendNFTMsg], calculatedTxFee ? calculatedTxFee.fee : 'auto');
       dispatch(dispatchAlert({
         type: AlertType.Success,
         title: 'NFT Send Successful',
@@ -79,7 +101,7 @@ export const NonFungibleTokenSend = () => {
       }));
     }
     dispatch(setIsTxExecuting(false));
-  }, [account, destinationAddress, getTxFee, selectedNFTClass?.id, selectedNFT?.id, signingClient]);
+  }, [sendNFTMsg, account, destinationAddress, getTxFee, selectedNFTClass?.id, selectedNFT?.id, signingClient]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -214,7 +236,7 @@ export const NonFungibleTokenSend = () => {
           value={(
             <div className="flex items-baseline gap-1">
               ~
-              <Decimal value={convertSubunitToUnit({ amount: '8625', precision: 6 })} precision={6} />
+              <Decimal value={convertSubunitToUnit({ amount: txFee || '0', precision: 6 })} precision={6} />
               <span className="text-xs">COREUM</span>
             </div>
           )}

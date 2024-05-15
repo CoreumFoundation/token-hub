@@ -22,8 +22,6 @@ export const WhitelistNFTModal = () => {
     return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
   }, [chains]);
 
-  console.log(chains);
-
   const dispatch = useAppDispatch();
 
   const handleCloseModal = useCallback(() => {

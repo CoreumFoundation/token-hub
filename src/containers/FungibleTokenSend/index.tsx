@@ -47,6 +47,8 @@ export const FungibleTokenSend = () => {
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
+  const [txFee, setTxFee] = useState<string>('');
+
   const currenciesToDropdownItem: DropdownItem[] = useMemo(() => {
     return currencies.map((item: Token) => {
       return {
@@ -135,25 +137,63 @@ export const FungibleTokenSend = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
+  const sendFTMsg = useMemo(() => {
+    return Bank.Send({
+      fromAddress: account,
+      toAddress: destinationAddress,
+      amount: [
+        {
+          denom: currentCurrency?.denom || '',
+          amount: convertUnitToSubunit({
+            amount: amount || '0',
+            precision: currentCurrency?.precision || 0,
+          }),
+        }
+      ],
+    });
+  }, [account, amount, currentCurrency?.denom, currentCurrency?.precision, destinationAddress]);
+
+  const sendFTIBCMsg = useMemo(() => {
+    return getSendFTviaIBCMsg({
+      sourcePort: 'transfer',
+      sourceChannel: destinationChain?.coreum_channel_id || '',
+      token: {
+        denom: currentCurrency?.denom || '',
+        amount: convertUnitToSubunit({
+          amount: amount || '0',
+          precision: currentCurrency?.precision || 0,
+        }),
+      },
+      sender: account,
+      receiver: destinationAddress,
+      network,
+    });
+  }, [account, amount, currentCurrency?.denom, currentCurrency?.precision, destinationAddress, destinationChain?.coreum_channel_id, network]);
+
+  const txFeeValue = useCallback(async () => {
+    try {
+      if (account && destinationAddress && currentCurrency) {
+        const sendMsg = destinationChain?.chain_name === coreumNetworkName ? sendFTMsg : sendFTIBCMsg;
+
+        const newTxFee = await getTxFee([sendMsg]);
+        const feeAmount = newTxFee?.fee.amount[0].amount;
+
+        setTxFee(feeAmount || '');
+      }
+    } catch (error) {
+      setTxFee('');
+    }
+  }, [account, coreumNetworkName, currentCurrency, destinationAddress, destinationChain?.chain_name, getTxFee, sendFTIBCMsg, sendFTMsg]);
+
+  useEffect(() => {
+    txFeeValue();
+  }, [txFeeValue]);
+
   const handleSendTokens = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
-      const sendFTMsg = Bank.Send({
-        fromAddress: account,
-        toAddress: destinationAddress,
-        amount: [
-          {
-            denom: currentCurrency?.denom || '',
-            amount: convertUnitToSubunit({
-              amount,
-              precision: currentCurrency?.precision || 0,
-            }),
-          }
-        ],
-      });
-
-      const txFee = await getTxFee([sendFTMsg]);
-      await signingClient?.signAndBroadcast(account, [sendFTMsg], txFee ? txFee.fee : 'auto');
+      const calculatedTxFee = await getTxFee([sendFTMsg]);
+      await signingClient?.signAndBroadcast(account, [sendFTMsg], calculatedTxFee ? calculatedTxFee.fee : 'auto');
       dispatch(dispatchAlert({
         type: AlertType.Success,
         title: 'Token was sent successfully',
@@ -176,28 +216,14 @@ export const FungibleTokenSend = () => {
     destinationAddress,
     getTxFee,
     signingClient,
+    sendFTMsg,
   ]);
 
   const handleSendTokensIBC = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
-      const sendFTIBCMsg: MsgTransferEncodeObject = getSendFTviaIBCMsg({
-        sourcePort: 'transfer',
-        sourceChannel: destinationChain?.coreum_channel_id || '',
-        token: {
-          denom: currentCurrency?.denom || '',
-          amount: convertUnitToSubunit({
-            amount,
-            precision: currentCurrency?.precision || 0,
-          }),
-        },
-        sender: account,
-        receiver: destinationAddress,
-        network,
-      });
-
-      const txFee = await getTxFee([sendFTIBCMsg]);
-      await signingClient?.signAndBroadcast(account, [sendFTIBCMsg], txFee ? txFee.fee : 'auto');
+      const calculatedTxFee = await getTxFee([sendFTIBCMsg]);
+      await signingClient?.signAndBroadcast(account, [sendFTIBCMsg], calculatedTxFee ? calculatedTxFee.fee : 'auto');
       dispatch(dispatchAlert({
         type: AlertType.Success,
         title: 'Token was sent via IBC successfully',
@@ -224,6 +250,7 @@ export const FungibleTokenSend = () => {
     getTxFee,
     network,
     signingClient,
+    sendFTIBCMsg,
   ]);
 
   const handleSend = useCallback(() => {
@@ -310,7 +337,7 @@ export const FungibleTokenSend = () => {
           value={(
             <div className="flex items-baseline gap-1">
               ~
-              <Decimal value={convertSubunitToUnit({ amount: '8625', precision: 6 })} precision={6} />
+              <Decimal value={convertSubunitToUnit({ amount: txFee || '0', precision: 6 })} precision={6} />
               <span className="text-xs">COREUM</span>
             </div>
           )}

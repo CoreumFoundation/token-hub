@@ -1,6 +1,6 @@
 {
   "name": "token-hub",
-  "version": "0.57.4",
+  "version": "0.58.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

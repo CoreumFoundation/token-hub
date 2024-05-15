@@ -113,14 +113,14 @@ export const ConfirmNFTMintModal = () => {
                   value={shortenAddress(nftRecipient)}
                 />
               )}
-              {formatData(nftData).length && (
+              {formatData(nftData).length ? (
                 <ModalInfoRow
                   label="Data"
                   value={formatData(nftData)}
                   className="flex-col !items-start !gap-1"
                   valueClassName="!text-left"
                 />
-              )}
+              ) : ''}
             </div>
           </div>
           <div className="flex items-center w-full">
@@ -160,14 +160,14 @@ export const ConfirmNFTMintModal = () => {
                 value={shortenAddress(nftRecipient)}
               />
             )}
-            {nftData.length && (
+            {formatData(nftData).length ? (
               <ModalInfoRow
                 label="Data"
-                value={btoa(nftData)}
+                value={formatData(nftData)}
                 className="flex-col !items-start !gap-1"
                 valueClassName="!text-left"
               />
-            )}
+            ) : ''}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">

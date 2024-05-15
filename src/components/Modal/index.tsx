@@ -31,7 +31,7 @@ export const Modal: FC<ModalProps> = ({
       scrollContainerRef.current.scrollTop = 0;
     }
     window.scrollTo({ top: 0 });
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (isOpen) {

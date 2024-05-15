@@ -279,7 +279,6 @@ export const FungibleTokenCreate = () => {
     if (
       symbol.length
       && subunit.length
-      && url.length
       && description.length
       && +burnRate <= 100
       && +sendCommissionRate <= 100
@@ -296,7 +295,6 @@ export const FungibleTokenCreate = () => {
   }, [
     symbol.length,
     subunit.length,
-    url.length,
     description.length,
     burnRate,
     sendCommissionRate,

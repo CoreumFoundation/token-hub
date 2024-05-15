@@ -1,4 +1,4 @@
-import { setIsConfirmNFTWhitelistModalOpen, setIsNFTCollectionViewModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmNFTDeWhitelistModalOpen, setIsDeWhitelistNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
@@ -8,21 +8,19 @@ import { NFTItem } from "../NFTItem";
 import { Input } from "../Input";
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
-import { setWhitelistAccount } from "@/features/nft/nftSlice";
+import { setDeWhitelistAccount, setWhitelistAccount } from "@/features/nft/nftSlice";
 
-export const WhitelistNFTModal = () => {
-  const isWhitelistNFTModalOpen = useAppSelector(state => state.general.isWhitelistNFTModalOpen);
+export const DeWhitelistNFTModal = () => {
+  const isDeWhitelistNFTModalOpen = useAppSelector(state => state.general.isDeWhitelistNFTModalOpen);
   const selectedNFTSend = useAppSelector(state => state.nfts.selectedNFTSend);
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
   const chains = useAppSelector(state => state.chains.list);
 
-  const [whitelistAccountAddress, setWhitelistAccountAddress] = useState<string>('');
+  const [deWhitelistAccountAddress, setDeWhitelistAccountAddress] = useState<string>('');
 
   const coreumChain = useMemo(() => {
     return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
   }, [chains]);
-
-  console.log(chains);
 
   const dispatch = useAppDispatch();
 
@@ -36,17 +34,17 @@ export const WhitelistNFTModal = () => {
   }, []);
 
   const handleWhitelistNFTToken = useCallback(() => {
-    dispatch(setIsConfirmNFTWhitelistModalOpen(true));
-    dispatch(setIsWhitelistNFTModalOpen(false));
-    dispatch(setWhitelistAccount(whitelistAccountAddress));
-  }, [whitelistAccountAddress]);
+    dispatch(setIsConfirmNFTDeWhitelistModalOpen(true));
+    dispatch(setIsDeWhitelistNFTModalOpen(false));
+    dispatch(setDeWhitelistAccount(deWhitelistAccountAddress));
+  }, [deWhitelistAccountAddress]);
 
-  const whitelistAddressValidationError = useMemo(() => {
-    if (!whitelistAccountAddress.length) {
+  const deWhitelistAddressValidationError = useMemo(() => {
+    if (!deWhitelistAccountAddress.length) {
       return '';
     }
 
-    const validatedWalletAddress = validateAddress(whitelistAccountAddress);
+    const validatedWalletAddress = validateAddress(deWhitelistAccountAddress);
 
     if (!validatedWalletAddress.result) {
       return 'Wallet address is invalid. Please double check entered value!';
@@ -57,20 +55,20 @@ export const WhitelistNFTModal = () => {
     }
 
     return '';
-  }, [coreumChain?.bech32_prefix, whitelistAccountAddress]);
+  }, [coreumChain?.bech32_prefix, deWhitelistAccountAddress]);
 
   const isFormValid = useMemo(() => {
-    if (selectedNFTSend && !whitelistAddressValidationError.length && whitelistAccountAddress.length) {
+    if (selectedNFTSend && !deWhitelistAddressValidationError.length && deWhitelistAccountAddress.length) {
       return true;
     }
 
     return false;
-  }, [selectedNFTSend, whitelistAccountAddress.length, whitelistAddressValidationError.length]);
+  }, [selectedNFTSend, deWhitelistAccountAddress.length, deWhitelistAddressValidationError.length]);
 
   return (
     <Modal
-      isOpen={isWhitelistNFTModalOpen}
-      title="Whitelist NFT"
+      isOpen={isDeWhitelistNFTModalOpen}
+      title="De-Whitelist NFT"
       onClose={handleCloseModal}
       wrapperClassName="w-[640px]"
     >
@@ -93,12 +91,12 @@ export const WhitelistNFTModal = () => {
         <div className="flex flex-col w-full">
           <Input
             label="Account Address"
-            value={whitelistAccountAddress}
-            onChange={setWhitelistAccountAddress}
+            value={deWhitelistAccountAddress}
+            onChange={setDeWhitelistAccountAddress}
             placeholder="Enter wallet address"
-            buttonLabel={whitelistAccountAddress.length ? '' : 'Paste'}
-            error={whitelistAddressValidationError}
-            handleOnButtonClick={() => !whitelistAccountAddress.length && pasteValueFromClipboard(setWhitelistAccountAddress)}
+            buttonLabel={deWhitelistAccountAddress.length ? '' : 'Paste'}
+            error={deWhitelistAddressValidationError}
+            handleOnButtonClick={() => !deWhitelistAccountAddress.length && pasteValueFromClipboard(setDeWhitelistAccountAddress)}
             warning="Only the targeted address can receive this NFT."
           />
         </div>

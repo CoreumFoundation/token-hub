@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIsBurnNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsBurnNFTModalOpen, setIsDeWhitelistNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { NFTItem } from "../NFTItem";
 import { ActionItem, GeneralIconType, NFT } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
@@ -71,6 +71,12 @@ export const ViewNFTCollectionModal = () => {
     dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
+  const onDeWhitelistClick = useCallback((nft: NFT) => {
+    dispatch(setSelectedNFTSend(nft));
+    dispatch(setIsDeWhitelistNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
+  }, []);
+
   return (
     <Modal
       isOpen={isNFTCollectionViewModalOpen}
@@ -129,6 +135,12 @@ export const ViewNFTCollectionModal = () => {
                 label: 'Whitelist',
                 icon: <GeneralIcon type={GeneralIconType.Whitelist} />,
                 onClick: () => onWhitelistClick(item),
+              });
+              items.push({
+                id: 'dewhitelist',
+                label: 'De-Whitelist',
+                icon: <GeneralIcon type={GeneralIconType.Whitelist} />,
+                onClick: () => onDeWhitelistClick(item),
               });
             }
 

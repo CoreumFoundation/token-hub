@@ -41,6 +41,8 @@ import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
 import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
 import { Tooltip } from "../Tooltip";
 import Link from "next/link";
+import { ConfirmNFTDeWhitelistModal } from "../ConfirmNFTDeWhitelistModal";
+import { DeWhitelistNFTModal } from "../DeWhitelistNFTModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -158,6 +160,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ConfirmNFTWhitelistModal />
             <SuccessIssueFTModal />
             <SuccessIssueNFTModal />
+            <DeWhitelistNFTModal />
+            <ConfirmNFTDeWhitelistModal />
           </div>
         </AppProvider>
       </ReduxProvider>

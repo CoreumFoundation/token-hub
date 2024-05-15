@@ -49,8 +49,8 @@ export const Modal: FC<ModalProps> = ({
   }
 
   return (
-    <div ref={scrollContainerRef} className={classNames('flex flex-col items-center justify-center w-full h-screen max-w-full absolute left-0 right-0 top-0 bottom-0 bg-black/75 backdrop-blur-[2px] z-50', className)}>
-      <div className={classNames('flex flex-col w-[640px] max-w-full overflow-y-auto p-8 bg-[#101216] rounded-2xl backdrop-blur-sm gap-8', wrapperClassName)}>
+    <div ref={scrollContainerRef} className={classNames('flex flex-col items-center p-1 sm:p-10 md:p-20 w-full h-screen overflow-auto max-w-full absolute left-0 right-0 top-0 bottom-0 bg-black/75 backdrop-blur-[2px] z-50', className)}>
+      <div className={classNames('flex flex-col w-[640px] max-w-full max-h-full overflow-y-auto p-8 bg-[#101216] rounded-2xl backdrop-blur-sm gap-8', wrapperClassName)}>
         <div className={classNames('flex justify-between w-full text-lg font-space-grotesk text-[#eee] font-medium', headerClassName)}>
           {title}
           <div

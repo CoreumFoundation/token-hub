@@ -152,7 +152,7 @@ export const SelectNFTModal = () => {
       isOpen={isSelectNFTModalOpen}
       title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
       onClose={handleCloseModal}
-      wrapperClassName="w-[568px] max-w-full !overflow-visible"
+      wrapperClassName="w-[568px] max-w-full overflow-auto"
     >
       <div className="flex flex-col">
         {renderContent}

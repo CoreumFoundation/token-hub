@@ -82,7 +82,7 @@ export const ViewNFTCollectionModal = () => {
       isOpen={isNFTCollectionViewModalOpen}
       title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
       onClose={handleCloseModal}
-      wrapperClassName="!w-[568px] max-w-full !overflow-visible"
+      wrapperClassName="!w-[568px] max-w-full overflow-auto"
     >
       {currentNFTItems?.length ? (
         <div className="grid grid-cols-3 w-full gap-4">

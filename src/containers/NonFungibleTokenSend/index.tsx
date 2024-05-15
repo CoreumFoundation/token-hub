@@ -164,7 +164,7 @@ export const NonFungibleTokenSend = () => {
           {selectedNFT ? (
             <div className="flex flex-col items-center gap-2">
               <NFTItem
-                label={selectedNFT.name}
+                label={selectedNFT.id}
                 imgPath={selectedNFT.image}
                 description={selectedNFTClass?.name}
                 className="text-[#eee] text-base"

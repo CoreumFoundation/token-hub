@@ -116,7 +116,7 @@ export const SelectNFTModal = () => {
                 <NFTItem
                   key={item.id}
                   imgPath={item.image}
-                  label={item.name.length ? item.name : item.id}
+                  label={item.id}
                   onClick={() => onNFTClick(item)}
                   isActive={isActive}
                 />

@@ -27,7 +27,7 @@ const getMetadata = async (requestUrl: string) => {
 
     return {
       ...data,
-      image: `${data.image.replace('ipfs://', GATEWAY_URL)}?pinataGatewayToken=${GATEWAY_ACCESS_KEY}`,
+      image: data.image?.length ? `${data.image?.replace('ipfs://', GATEWAY_URL)}?pinataGatewayToken=${GATEWAY_ACCESS_KEY}` : '',
     };
   } catch (error) {
     return {

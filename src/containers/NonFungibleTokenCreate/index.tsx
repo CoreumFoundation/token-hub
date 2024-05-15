@@ -194,7 +194,6 @@ export const NonFungibleTokenCreate = () => {
       symbol.length
       && name.length
       && uri.length
-      && uriHash.length
       && description.length
       && !isEnteredSymbolValid.length
       && !isRoyaltiesValid.length

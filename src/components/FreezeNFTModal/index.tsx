@@ -42,7 +42,7 @@ export const FreezeNFTModal = () => {
           <div className="flex flex-col w-full items-center">
             <div className="flex flex-col items-center gap-2">
               <NFTItem
-                label={selectedNFTSend?.name || selectedNFTSend?.id || ''}
+                label={selectedNFTSend?.id || ''}
                 imgPath={selectedNFTSend?.image || ''}
                 description={selectedNFTClass?.name}
                 className="text-[#eee] text-base hover:bg-[#17191E] hover"

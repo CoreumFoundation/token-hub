@@ -31,6 +31,12 @@ export const MintNFTModal = () => {
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsNFTMintModalOpen(false));
+    setNFTId('');
+    setUri('');
+    setUriHash('');
+    setData('');
+    setRecipient('');
+    setFileContent('');
   }, []);
 
   const coreumChain = useMemo(() => {

@@ -71,6 +71,21 @@ export const ConfirmNFTMintModal = () => {
     dispatch(setIsTxExecuting(false));
   }, [account, dispatch, getTxFee, nftData, nftId, nftRecipient, nftURI, nftURIHash, selectedCollection?.id, signingClient]);
 
+  const formatData = useCallback((dataToFormat: string) => {
+    try {
+      const data = btoa(dataToFormat);
+
+      return data;
+    } catch (error) {
+      dispatch(dispatchAlert({
+        type: AlertType.Error,
+        title: "Failed to parse data",
+        message: (error as { message: string}).message,
+      }))
+      return '';
+    }
+  }, []);
+
   const renderContent = useMemo(() => {
     if (isTxSuccessful) {
       return (
@@ -96,6 +111,14 @@ export const ConfirmNFTMintModal = () => {
                 <ModalInfoRow
                   label="Recipient"
                   value={shortenAddress(nftRecipient)}
+                />
+              )}
+              {formatData(nftData).length && (
+                <ModalInfoRow
+                  label="Data"
+                  value={formatData(nftData)}
+                  className="flex-col !items-start !gap-1"
+                  valueClassName="!text-left"
                 />
               )}
             </div>
@@ -135,6 +158,14 @@ export const ConfirmNFTMintModal = () => {
               <ModalInfoRow
                 label="Recipient"
                 value={shortenAddress(nftRecipient)}
+              />
+            )}
+            {nftData.length && (
+              <ModalInfoRow
+                label="Data"
+                value={btoa(nftData)}
+                className="flex-col !items-start !gap-1"
+                valueClassName="!text-left"
               />
             )}
           </div>

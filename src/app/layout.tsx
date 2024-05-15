@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: 'Create Smart Tokens on Coreum. Add features like whitelisting, minting, burning, freezing and more.',
     siteName: 'Coreum Token Hub',
     images: [{
-      url: 'https://https://tokenhub.test.coreum.dev/images/og.jpg',
+      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
     }],
   },
 };

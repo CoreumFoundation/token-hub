@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Send Coreum Tokens from one wallet to another. ',
     siteName: 'Send Tokens | Coreum',
     images: [{
-      url: 'https://https://tokenhub.test.coreum.dev/images/og.jpg',
+      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
     }],
   },
 };

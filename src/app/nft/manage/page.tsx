@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: 'View and manage created NFTs.',
     siteName: 'Manage NFTs | Coreum',
     images: [{
-      url: 'https://https://tokenhub.test.coreum.dev/images/og.jpg',
+      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
     }],
   },
 };

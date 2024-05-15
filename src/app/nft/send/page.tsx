@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Send created NFTs from one wallet to another. ',
     siteName: 'Send & Receive NFTs | Coreum',
     images: [{
-      url: 'https://https://tokenhub.test.coreum.dev/images/og.jpg',
+      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
     }],
   },
 };

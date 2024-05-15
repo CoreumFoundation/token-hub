@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Create NFT\'s with Smart Token features like soulbound, whitelisting, and burning.',
     siteName: 'Mint NFT | Coreum',
     images: [{
-      url: 'https://https://tokenhub.test.coreum.dev/images/og.jpg',
+      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
     }],
   },
 };

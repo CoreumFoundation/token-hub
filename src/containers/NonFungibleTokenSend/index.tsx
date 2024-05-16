@@ -87,7 +87,7 @@ export const NonFungibleTokenSend = () => {
       await signingClient?.signAndBroadcast(account, [sendNFTMsg], calculatedTxFee ? calculatedTxFee.fee : 'auto');
       dispatch(dispatchAlert({
         type: AlertType.Success,
-        title: 'NFT Send Successful',
+        title: 'NFT Sent Successfully',
       }));
       dispatch(setShouldRefetchNFTItems(true));
       dispatch(setSelectedNFTClass(null));
@@ -96,7 +96,7 @@ export const NonFungibleTokenSend = () => {
     } catch (error) {
       dispatch(dispatchAlert({
         type: AlertType.Error,
-        title: 'NFT Send Failed',
+        title: 'Sending of NFT is Failed',
         message: (error as { message: string}).message,
       }));
     }

@@ -89,7 +89,6 @@ export const ViewNFTCollectionModal = () => {
           {currentNFTItems?.map((item: NFT) => {
             const isActive = item.id === selectedNFT?.id;
             let items: ActionItem[] = [];
-            const isSendingDisabled = selectedNFTClass?.features.find((feature: string) => feature === 'disable_sending');
             const isBurnable = selectedNFTClass?.features.find((feature: string) => feature === 'burning');
             const isFreezing = selectedNFTClass?.features.find((feature: string) => feature === 'freezing');
             const isWhitelistingEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'whitelisting');
@@ -97,7 +96,7 @@ export const ViewNFTCollectionModal = () => {
 
             const isNFTOwnedByUser = ownedNFTItems[selectedNFTClass?.id || ''].find((nft: NFT) => nft.id === item.id);
 
-            if (!isSendingDisabled && isNFTOwnedByUser) {
+            if (isNFTOwnedByUser) {
               items.push({
                 id: 'send',
                 label: 'Send',

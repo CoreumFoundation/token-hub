@@ -1,33 +1,7 @@
-import { useRef, useCallback, useEffect, useMemo } from "react";
-import { BurnNFTModal } from "../BurnNFTModal";
-import { BurnTokensModal } from "../BurnTokensModal";
-import { ConfirmBurnModal } from "../ConfirmBurnModal";
-import { ConfirmFreezeModal } from "../ConfirmFreezeModal";
-import { ConfirmGlobalFreezeModal } from "../ConfirmGlobalFreezeModal";
-import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
-import { ConfirmMintModal } from "../ConfirmMintModal";
-import { ConfirmNFTBurnModal } from "../ConfirmNFTBurnModal";
-import { ConfirmNFTDeWhitelistModal } from "../ConfirmNFTDeWhitelistModal";
-import { ConfirmNFTFreezeModal } from "../ConfirmNFTFreezeModal";
-import { ConfirmNFTMintModal } from "../ConfirmNFTMintModal";
-import { ConfirmNFTUnfreezeModal } from "../ConfirmNFTUnfreezeModal";
-import { ConfirmNFTWhitelistModal } from "../ConfirmNFTWhitelistModal";
-import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
-import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
-import { ConnectWalletModal } from "../ConnectWalletModal";
-import { DeWhitelistNFTModal } from "../DeWhitelistNFTModal";
-import { FreezeNFTModal } from "../FreezeNFTModal";
-import { ManageTokensModal } from "../ManageTokensModal";
-import { MintNFTModal } from "../MintNFTModal";
-import { SelectNFTModal } from "../SelectNFTModal";
-import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
-import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
-import { UnfreezeNFTModal } from "../UnfreezeNFTModal";
-import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
-import { WhitelistNFTModal } from "../WhitelistNFTModal";
+import { useEffect, useMemo } from "react";
 import { useAppSelector } from "@/store/hooks";
 
-export const ModalsWrapper = () => {
+export const ModalsHandler = () => {
   const isConnectModalOpen = useAppSelector(state => state.general.isConnectModalOpen);
   const isManageCurrencyModalOpen = useAppSelector(state => state.general.isManageCurrencyModalOpen);
   const isBurnCurrencyModalOpen = useAppSelector(state => state.general.isBurnCurrencyModalOpen);
@@ -82,6 +56,7 @@ export const ModalsWrapper = () => {
       || isSuccessIssueNFTModalOpen
       || isDeWhitelistNFTModalOpen
       || isConfirmNFTDeWhitelistModalOpen
+      || isFreezeNFTModalOpen
   }, [
     isBurnCurrencyModalOpen,
     isBurnNFTModalOpen,
@@ -108,6 +83,7 @@ export const ModalsWrapper = () => {
     isSuccessIssueNFTModalOpen,
     isUnfreezeNFTModalOpen,
     isWhitelistNFTModalOpen,
+    isFreezeNFTModalOpen
   ]);
 
   useEffect(() => {
@@ -120,34 +96,5 @@ export const ModalsWrapper = () => {
     };
   }, [isOpen]);
 
-  return (
-    <>
-      <ConnectWalletModal />
-      <BurnTokensModal />
-      <ManageTokensModal />
-      <ConfirmMintModal />
-      <ConfirmBurnModal />
-      <ConfirmFreezeModal />
-      <ConfirmGlobalFreezeModal />
-      <ConfirmUnfreezeModal />
-      <ConfirmGlobalUnfreezeModal />
-      <ConfirmWhitelistModal />
-      <MintNFTModal />
-      <ConfirmNFTMintModal />
-      <ViewNFTCollectionModal />
-      <SelectNFTModal />
-      <BurnNFTModal />
-      <FreezeNFTModal />
-      <UnfreezeNFTModal />
-      <WhitelistNFTModal />
-      <ConfirmNFTBurnModal />
-      <ConfirmNFTFreezeModal />
-      <ConfirmNFTUnfreezeModal />
-      <ConfirmNFTWhitelistModal />
-      <SuccessIssueFTModal />
-      <SuccessIssueNFTModal />
-      <DeWhitelistNFTModal />
-      <ConfirmNFTDeWhitelistModal />
-    </>
-  );
+  return null;
 };

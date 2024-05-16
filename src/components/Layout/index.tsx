@@ -1,7 +1,7 @@
 'use client';
 
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { GeneralIconType, TabItem, TabSwitchItem } from "@/shared/types";
+import { GeneralIconType, TabItem, TabItemType, TabSwitchItem, TabSwitchItemType } from "@/shared/types";
 import { Footer } from "../Footer";
 import { Navbar } from "../Navbar";
 import Image from 'next/image';
@@ -17,8 +17,34 @@ import { WalletProvider } from "@/providers/WalletProvider";
 import { Alerts } from "../Alerts";
 import { Tooltip } from "../Tooltip";
 import Link from "next/link";
-import { ModalsWrapper } from "../ModalsWrapper";
+import { ModalsHandler } from "../ModalsWrapper";
 import classNames from "classnames";
+import { BurnNFTModal } from "../BurnNFTModal";
+import { BurnTokensModal } from "../BurnTokensModal";
+import { ConfirmBurnModal } from "../ConfirmBurnModal";
+import { ConfirmFreezeModal } from "../ConfirmFreezeModal";
+import { ConfirmGlobalFreezeModal } from "../ConfirmGlobalFreezeModal";
+import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
+import { ConfirmMintModal } from "../ConfirmMintModal";
+import { ConfirmNFTBurnModal } from "../ConfirmNFTBurnModal";
+import { ConfirmNFTDeWhitelistModal } from "../ConfirmNFTDeWhitelistModal";
+import { ConfirmNFTFreezeModal } from "../ConfirmNFTFreezeModal";
+import { ConfirmNFTMintModal } from "../ConfirmNFTMintModal";
+import { ConfirmNFTUnfreezeModal } from "../ConfirmNFTUnfreezeModal";
+import { ConfirmNFTWhitelistModal } from "../ConfirmNFTWhitelistModal";
+import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
+import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
+import { ConnectWalletModal } from "../ConnectWalletModal";
+import { DeWhitelistNFTModal } from "../DeWhitelistNFTModal";
+import { FreezeNFTModal } from "../FreezeNFTModal";
+import { ManageTokensModal } from "../ManageTokensModal";
+import { MintNFTModal } from "../MintNFTModal";
+import { SelectNFTModal } from "../SelectNFTModal";
+import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
+import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
+import { UnfreezeNFTModal } from "../UnfreezeNFTModal";
+import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
+import { WhitelistNFTModal } from "../WhitelistNFTModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -70,6 +96,83 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const modalsToRender = useMemo(() => {
+    switch (selectedTabSwitch.id) {
+      case TabSwitchItemType.FungibleToken:
+        switch (selectedTab.id) {
+          case TabItemType.Create:
+            return (
+              <>
+                <ConnectWalletModal />
+                <SuccessIssueFTModal />
+              </>
+            );
+          case TabItemType.Send:
+            return (
+              <>
+                <ConnectWalletModal />
+              </>
+            );
+          case TabItemType.Manage:
+            return (
+              <>
+                <ConnectWalletModal />
+                <BurnTokensModal />
+                <ManageTokensModal />
+                <ConfirmMintModal />
+                <ConfirmBurnModal />
+                <ConfirmFreezeModal />
+                <ConfirmGlobalFreezeModal />
+                <ConfirmUnfreezeModal />
+                <ConfirmGlobalUnfreezeModal />
+                <ConfirmWhitelistModal />
+              </>
+            );
+          default:
+            return null;
+        }
+      case TabSwitchItemType.NonFungibleToken:
+        switch (selectedTab.id) {
+          case TabItemType.Create:
+            return (
+              <>
+                <ConnectWalletModal />
+                <SuccessIssueNFTModal />
+              </>
+            );
+          case TabItemType.Send:
+            return (
+              <>
+                <ConnectWalletModal />
+                <SelectNFTModal />
+              </>
+            );
+          case TabItemType.Manage:
+            return (
+              <>
+                <MintNFTModal />
+                <ConfirmNFTMintModal />
+                <ViewNFTCollectionModal />
+                <BurnNFTModal />
+                <FreezeNFTModal />
+                <UnfreezeNFTModal />
+                <WhitelistNFTModal />
+                <ConfirmNFTBurnModal />
+                <ConfirmNFTFreezeModal />
+                <ConfirmNFTUnfreezeModal />
+                <ConfirmNFTWhitelistModal />
+                <DeWhitelistNFTModal />
+                <ConfirmNFTDeWhitelistModal />
+              </>
+            );
+          default:
+            return null;
+        }
+      default:
+        return null
+    }
+  }, [selectedTab.id, selectedTabSwitch.id]);
 
   return (
     <WalletProvider>
@@ -124,7 +227,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </main>
             </div>
             <Footer />
-            <ModalsWrapper />
+            <ModalsHandler />
+            {modalsToRender}
           </div>
         </AppProvider>
       </ReduxProvider>

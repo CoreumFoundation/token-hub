@@ -11,39 +11,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Tabs } from "../Tabs";
 import { usePathname, useRouter } from "next/navigation";
 
-import { ConnectWalletModal } from "../ConnectWalletModal";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 import { AppProvider } from "@/providers/AppProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
-import { BurnTokensModal } from "../BurnTokensModal";
-import { ManageTokensModal } from "../ManageTokensModal";
-import { ConfirmMintModal } from "../ConfirmMintModal";
-import { ConfirmBurnModal } from "../ConfirmBurnModal";
-import { ConfirmFreezeModal } from "../ConfirmFreezeModal";
-import { ConfirmGlobalFreezeModal } from "../ConfirmGlobalFreezeModal";
-import { ConfirmGlobalUnfreezeModal } from "../ConfirmGlobalUnfreezeModal";
-import { ConfirmUnfreezeModal } from "../ConfirmUnfreezeModal";
-import { ConfirmWhitelistModal } from "../ConfirmWhitelistModal";
 import { Alerts } from "../Alerts";
-import { MintNFTModal } from "../MintNFTModal";
-import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
-import { ConfirmNFTMintModal } from "../ConfirmNFTMintModal";
-import { SelectNFTModal } from "../SelectNFTModal";
-import { BurnNFTModal } from "../BurnNFTModal";
-import { FreezeNFTModal } from "../FreezeNFTModal";
-import { UnfreezeNFTModal } from "../UnfreezeNFTModal";
-import { WhitelistNFTModal } from "../WhitelistNFTModal";
-import { ConfirmNFTBurnModal } from "../ConfirmNFTBurnModal";
-import { ConfirmNFTFreezeModal } from "../ConfirmNFTFreezeModal";
-import { ConfirmNFTUnfreezeModal } from "../ConfirmNFTUnfreezeModal";
-import { ConfirmNFTWhitelistModal } from "../ConfirmNFTWhitelistModal";
-import { SuccessIssueFTModal } from "../SuccessIssueFTModal";
-import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
 import { Tooltip } from "../Tooltip";
 import Link from "next/link";
-import { ConfirmNFTDeWhitelistModal } from "../ConfirmNFTDeWhitelistModal";
-import { DeWhitelistNFTModal } from "../DeWhitelistNFTModal";
 import { ModalsWrapper } from "../ModalsWrapper";
+import classNames from "classnames";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -53,6 +28,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [, switchTab, tab] = pathname.split('/');
+
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const defaultTabItem = useMemo(() => TABS_ITEMS.find((value: TabItem) => value.id === tab), [tab]);
   const defaultTabSwitchItem = useMemo(() => TABS_SWITCH_ITEMS.find((value: TabSwitchItem) => value.id === switchTab), [switchTab]);
@@ -90,6 +67,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     router.push(`/${value.id}/${selectedTab.id}`);
   }, [router, selectedTab.id]);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <WalletProvider>
       <ReduxProvider>
@@ -97,7 +78,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
             <Alerts />
             <Navbar />
-            <div className="flex flex-1 flex-col h-full w-full pb-28 relative items-center overflow-hidden">
+            <div className={classNames('flex flex-1 flex-col h-full min-h-full w-full pb-28 relative items-center overflow-hidden', {
+              'min-h-[700px]': !isMounted,
+            })}>
               <main className="flex min-h-screen flex-col items-center w-full z-10 p-4">
                 <div className="flex flex-col items-center w-[800px] max-w-full gap-10 my-6">
                   <div className="flex items-center gap-2 font-space-grotesk w-full">
@@ -133,9 +116,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     {children}
                   </div>
                 </div>
-                <div className="absolute bottom-0 z-0">
-                  <Image src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
-                </div>
+                {isMounted && (
+                  <div className="absolute bottom-0 z-0">
+                    <Image loading="eager" src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
+                  </div>
+                )}
               </main>
             </div>
             <Footer />

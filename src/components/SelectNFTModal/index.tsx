@@ -66,7 +66,7 @@ export const SelectNFTModal = () => {
       return (
         <div className="flex flex-col w-full gap-8">
           {nftClasses?.length ? (
-            <div className="grid grid-cols-3 w-full gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-4">
               {nftClasses.map((collection: NFTClass) => {
                 const isActive = collection.id === draftSelectedNFTClass?.id;
 
@@ -108,7 +108,7 @@ export const SelectNFTModal = () => {
     return (
       <div className="flex flex-col w-full gap-8">
         {currentNFTItems?.length ? (
-          <div className="grid grid-cols-3 w-full gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-4">
             {currentNFTItems?.map((item: NFT) => {
               const isActive = item.id === draftSelectedNFT?.id;
 

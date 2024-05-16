@@ -52,17 +52,15 @@ export const useEstimateTxGasFee = () => {
       return "";
     }
 
-    const gasPriceMultiplier = 1.1;
+    const feeModelParams = await feeModel.Params({});
     const minGasPriceRes = await feeModel.MinGasPrice({});
 
-    const minGasPrice = decodeCosmosSdkDecFromProto(
-      minGasPriceRes.minGasPrice?.amount || ""
-    );
-
-    let gasPrice = minGasPrice.toFloatApproximation() * gasPriceMultiplier;
+    const initialGasPrice = decodeCosmosSdkDecFromProto(
+      feeModelParams.params?.model?.initialGasPrice || ""
+    ).toFloatApproximation();
 
     return GasPrice.fromString(
-      `${gasPrice}${minGasPriceRes.minGasPrice?.denom || ""}`
+      `${initialGasPrice}${minGasPriceRes.minGasPrice?.denom || ""}`
     );
   };
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { NETWORK_SELECTOR_ITEMS } from "@/constants";
 import { setIsConnectModalOpen, setNetwork } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -40,6 +40,10 @@ export const Navbar = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
+  const isMultinetworkEnabled = useMemo(() => {
+    return process.env.NEXT_PUBLIC_MULTINETWORK === 'true';
+  }, []);
+
   return (
     <div className="flex items-baseline sm:items-center justify-between w-full p-6 z-20">
       <Image
@@ -50,15 +54,17 @@ export const Navbar = () => {
         height={24}
       />
       <div className="flex flex-col-reverse sm:flex-row items-end gap-2">
-        <Dropdown
-          selected={selected}
-          onSelect={handleSelectCurrentNetwork}
-          items={NETWORK_SELECTOR_ITEMS}
-          type={DropdownType.Primary}
-          icon={<GeneralIcon type={GeneralIconType.Network} />}
-          selectedClassName="text-xs sm:!w-[140px]"
-          selectedLabelClassName="text-grey-gradient"
-        />
+        {isMultinetworkEnabled && (
+          <Dropdown
+            selected={selected}
+            onSelect={handleSelectCurrentNetwork}
+            items={NETWORK_SELECTOR_ITEMS}
+            type={DropdownType.Primary}
+            icon={<GeneralIcon type={GeneralIconType.Network} />}
+            selectedClassName="text-xs sm:!w-[140px]"
+            selectedLabelClassName="text-grey-gradient"
+          />
+        )}
         {isConnected ? (
           <AccountActions />
         ) : (

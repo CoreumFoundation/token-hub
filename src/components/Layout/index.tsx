@@ -7,9 +7,9 @@ import { Navbar } from "../Navbar";
 import Image from 'next/image';
 import { TabsSwitch } from "../TabsSwitch";
 import { TABS_ITEMS, TABS_SWITCH_ITEMS } from "@/constants";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs } from "../Tabs";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { ReduxProvider } from "@/providers/ReduxProvider";
 import { AppProvider } from "@/providers/AppProvider";
@@ -51,7 +51,6 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const [, switchTab, tab] = pathname.split('/');
 
@@ -82,16 +81,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     }
   }, [pathname, selectedTab.id, selectedTabSwitch.id]);
-
-  const handleSetTab = useCallback((value: TabItem) => {
-    router.prefetch(`/${selectedTabSwitch.id}/${value.id}`);
-    router.push(`/${selectedTabSwitch.id}/${value.id}`);
-  }, [router, selectedTabSwitch.id]);
-
-  const handleSetSwitchTab = useCallback((value: TabSwitchItem) => {
-    router.prefetch(`/${value.id}/${selectedTab.id}`);
-    router.push(`/${value.id}/${selectedTab.id}`);
-  }, [router, selectedTab.id]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -174,6 +163,24 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     }
   }, [selectedTab.id, selectedTabSwitch.id]);
 
+  const tabItems = useMemo(() => {
+    return TABS_ITEMS.map((tabItem: TabItem) => {
+      return {
+        ...tabItem,
+        href: `/${selectedTabSwitch.id}/${tabItem.id}`
+      };
+    });
+  }, [selectedTabSwitch.id]);
+
+  const tabSwitchItems = useMemo(() => {
+    return TABS_SWITCH_ITEMS.map((tabSwitchItem: TabSwitchItem) => {
+      return {
+        ...tabSwitchItem,
+        href: `/${tabSwitchItem.id}/${selectedTab.id}`
+      };
+    });
+  }, [selectedTab.id]);
+
   return (
     <WalletProvider>
       <ReduxProvider>
@@ -205,14 +212,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <div className="flex flex-col-reverse md:flex-row items-center md:justify-between gap-4 w-full">
                       <Tabs
                         selectedTab={selectedTab}
-                        items={TABS_ITEMS}
-                        handleSelectTab={handleSetTab}
+                        items={tabItems}
+                        isLink={true}
                       />
                       <div className="flex">
                         <TabsSwitch
                           selectedTabSwitch={selectedTabSwitch}
-                          items={TABS_SWITCH_ITEMS}
-                          handleSelectTab={handleSetSwitchTab}
+                          items={tabSwitchItems}
+                          isLink={true}
                         />
                       </div>
                     </div>

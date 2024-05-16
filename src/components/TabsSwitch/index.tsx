@@ -1,17 +1,20 @@
 import { TabSwitchItem } from "@/shared/types";
 import classNames from "classnames";
+import Link from "next/link";
 import { FC } from "react";
 
 interface TabSwitchProps {
   selectedTabSwitch: TabSwitchItem;
   items: TabSwitchItem[];
-  handleSelectTab: (item: TabSwitchItem) => void;
+  handleSelectTab?: (item: TabSwitchItem) => void;
+  isLink?: boolean;
 }
 
 export const TabsSwitch: FC<TabSwitchProps> = ({
   selectedTabSwitch,
   items,
   handleSelectTab,
+  isLink,
 }) => {
   return (
     <div className="flex p-1 bg-[#17191E] rounded-xl backdrop-blur-sm">
@@ -21,11 +24,24 @@ export const TabsSwitch: FC<TabSwitchProps> = ({
           'text-[#5E6773] rounded-md hover:bg-[#21262E]': item.id !== selectedTabSwitch.id,
         });
 
+        if (isLink) {
+          return (
+            <Link
+              href={item?.href || ''}
+              prefetch={false}
+              key={item.id}
+              className={cx}
+            >
+              {item.label}
+            </Link>
+          );
+        }
+
         return (
           <div
             key={item.id}
             className={cx}
-            onClick={() => handleSelectTab(item)}
+            onClick={() => handleSelectTab?.(item)}
           >
             {item.label}
           </div>

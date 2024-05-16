@@ -90,11 +90,13 @@ export interface DropdownItem {
 export interface TabItem {
   id: TabItemType;
   label: string;
+  href?: string;
 }
 
 export interface TabSwitchItem {
   id: TabSwitchItemType;
   label: string;
+  href?: string;
 }
 
 export enum TokenCapabilityType {

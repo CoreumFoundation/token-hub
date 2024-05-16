@@ -53,7 +53,6 @@ export const useEstimateTxGasFee = () => {
     }
 
     const gasPriceMultiplier = 1.1;
-    const feeModelParams = await feeModel.Params({});
     const minGasPriceRes = await feeModel.MinGasPrice({});
 
     const minGasPrice = decodeCosmosSdkDecFromProto(
@@ -61,13 +60,6 @@ export const useEstimateTxGasFee = () => {
     );
 
     let gasPrice = minGasPrice.toFloatApproximation() * gasPriceMultiplier;
-    const initialGasPrice = decodeCosmosSdkDecFromProto(
-      feeModelParams.params?.model?.initialGasPrice || ""
-    ).toFloatApproximation();
-
-    if (gasPrice > initialGasPrice) {
-      gasPrice = initialGasPrice;
-    }
 
     return GasPrice.fromString(
       `${gasPrice}${minGasPriceRes.minGasPrice?.denom || ""}`

@@ -1,6 +1,6 @@
 # Smart Tokens on Coreum
 
-![smart](./public/smart.png)
+![Smart](./public/images/smart.png)
 
 
 Smart tokens on the Coreum network enable enterprises to set predetermined behaviours and deterministic gas fees for certain tokens, facilitating the execution of contract-like functions directly on the blockchain's storage.

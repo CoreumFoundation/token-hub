@@ -118,7 +118,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
                 {isMounted && (
                   <div className="absolute bottom-0 z-0">
-                    <Image loading="eager" src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
+                    <Image priority={false} src="/images/bg-image-bottom.png" width={1440} height={900} alt="bg image bottom" />
                   </div>
                 )}
               </main>

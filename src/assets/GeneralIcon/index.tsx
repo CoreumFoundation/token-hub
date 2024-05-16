@@ -57,6 +57,7 @@ export const GeneralIcon: FC<GeneralIconProps> = ({
     case GeneralIconType.Error:
       return (
         <Image
+          priority={false}
           className={className}
           src="/images/error.png"
           width={18}

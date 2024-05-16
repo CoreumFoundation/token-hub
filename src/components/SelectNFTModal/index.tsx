@@ -83,7 +83,7 @@ export const SelectNFTModal = () => {
             </div>
           ) : (
             <div className="flex flex-col w-full items-center p-10">
-              <Image src="/images/coins.svg" width="200" height="200" alt="coins" />
+              <Image priority={false} src="/images/coins.svg" width="200" height="200" alt="coins" />
               <div className="flex items-center gap-2">
                 <GeneralIcon type={GeneralIconType.Error} />
                 You don&apos;t have any NFT Collection yet!
@@ -125,7 +125,7 @@ export const SelectNFTModal = () => {
           </div>
         ) : (
           <div className="flex flex-col w-full items-center p-10">
-            <Image src="/images/coins.svg" width="200" height="200" alt="coins" />
+            <Image priority={false} src="/images/coins.svg" width="200" height="200" alt="coins" />
             <div className="flex items-center gap-2">
               <GeneralIcon type={GeneralIconType.Error} />
               You don&apos;t have any NFT in this collection yet!

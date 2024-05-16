@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { ChainInfo, TabItem, TabItemType } from "@/shared/types";
-import { MANAGE_FT_TOKENS_TABS } from "@/constants";
 import { Tabs } from "../Tabs";
 import { MintTokens } from "../MintTokens";
 import { FreezeTokens } from "../FreezeTokens";

@@ -57,7 +57,7 @@ export const FungibleTokenRow: FC<FungibleTokenRowProps> = ({
 
   return (
     <ActionRow actionItems={items}>
-      <div className="flex-1 grid grid-cols-2 items-center w-full">
+      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center w-full">
         <div className="grid-cols-2 flex items-center gap-3">
           <GeneralIcon
             type={GeneralIconType.DefaultToken}

@@ -22,7 +22,7 @@ export const ActionRow: FC<ActionRowProps> = ({
       {({ open }) => (
         <>
           <Menu.Button
-            className={classNames('flex items-center w-full gap-10 p-4 bg-secondary-gradient group hover:bg-[#1B1D23] backdrop-blur-sm rounded-[10px] cursor-pointer border border-transparent', {
+            className={classNames('flex items-center w-full gap-4 sm:gap-10 p-2 sm:p-4 bg-secondary-gradient group hover:bg-[#1B1D23] backdrop-blur-sm rounded-[10px] cursor-pointer border border-transparent', {
               '!border-[#25D695]': open,
             }, className)}
           >

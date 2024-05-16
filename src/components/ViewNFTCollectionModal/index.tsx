@@ -85,7 +85,7 @@ export const ViewNFTCollectionModal = () => {
       wrapperClassName="!w-[568px] max-w-full overflow-auto"
     >
       {currentNFTItems?.length ? (
-        <div className="grid grid-cols-3 w-full gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-4">
           {currentNFTItems?.map((item: NFT) => {
             const isActive = item.id === selectedNFT?.id;
             let items: ActionItem[] = [];

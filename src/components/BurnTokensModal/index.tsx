@@ -45,6 +45,8 @@ export const BurnTokensModal = () => {
     dispatch(setIsConfirmBurnModalOpen(true));
   }, [amount]);
 
+  console.log({isBurnCurrencyModalOpen});
+
   return (
     <Modal
       isOpen={isBurnCurrencyModalOpen}

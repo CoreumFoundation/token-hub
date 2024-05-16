@@ -137,7 +137,7 @@ export const Input: FC<InputProps> = ({
         </div>
       )}
       {error && (
-        <div className={classNames('absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]', errorClassName)}>
+        <div className={classNames(errorClassName, 'absolute bottom-0 flex -mb-7 text-xs items-center gap-2 text-[#DE0F3E]')}>
           <GeneralIcon type={GeneralIconType.Error} /> {error}
         </div>
       )}

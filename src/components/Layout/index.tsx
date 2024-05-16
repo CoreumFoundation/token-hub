@@ -43,6 +43,7 @@ import { Tooltip } from "../Tooltip";
 import Link from "next/link";
 import { ConfirmNFTDeWhitelistModal } from "../ConfirmNFTDeWhitelistModal";
 import { DeWhitelistNFTModal } from "../DeWhitelistNFTModal";
+import { ModalsWrapper } from "../ModalsWrapper";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -114,18 +115,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                       <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
                     </Tooltip>
                   </div>
-                  <div className="flex flex-col w-full bg-[#0d1012] py-6 px-10 gap-5 rounded-3xl font-noto-sans z-10">
-                    <div className="flex justify-between gap-4 w-full">
+                  <div className="flex flex-col w-full bg-[#0d1012] p-4 md:py-6 md:px-10 gap-5 rounded-3xl font-noto-sans z-10">
+                    <div className="flex flex-col-reverse md:flex-row items-center md:justify-between gap-4 w-full">
                       <Tabs
                         selectedTab={selectedTab}
                         items={TABS_ITEMS}
                         handleSelectTab={handleSetTab}
                       />
-                      <TabsSwitch
-                        selectedTabSwitch={selectedTabSwitch}
-                        items={TABS_SWITCH_ITEMS}
-                        handleSelectTab={handleSetSwitchTab}
-                      />
+                      <div className="flex">
+                        <TabsSwitch
+                          selectedTabSwitch={selectedTabSwitch}
+                          items={TABS_SWITCH_ITEMS}
+                          handleSelectTab={handleSetSwitchTab}
+                        />
+                      </div>
                     </div>
                     {children}
                   </div>
@@ -136,32 +139,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </main>
             </div>
             <Footer />
-            <ConnectWalletModal />
-            <BurnTokensModal />
-            <ManageTokensModal />
-            <ConfirmMintModal />
-            <ConfirmBurnModal />
-            <ConfirmFreezeModal />
-            <ConfirmGlobalFreezeModal />
-            <ConfirmUnfreezeModal />
-            <ConfirmGlobalUnfreezeModal />
-            <ConfirmWhitelistModal />
-            <MintNFTModal />
-            <ConfirmNFTMintModal />
-            <ViewNFTCollectionModal />
-            <SelectNFTModal />
-            <BurnNFTModal />
-            <FreezeNFTModal />
-            <UnfreezeNFTModal />
-            <WhitelistNFTModal />
-            <ConfirmNFTBurnModal />
-            <ConfirmNFTFreezeModal />
-            <ConfirmNFTUnfreezeModal />
-            <ConfirmNFTWhitelistModal />
-            <SuccessIssueFTModal />
-            <SuccessIssueNFTModal />
-            <DeWhitelistNFTModal />
-            <ConfirmNFTDeWhitelistModal />
+            <ModalsWrapper />
           </div>
         </AppProvider>
       </ReduxProvider>

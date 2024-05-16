@@ -27,7 +27,7 @@ export const NFTItem: FC<NFTItemProps> = ({
 }) => {
   return (
     <div
-      className={classNames('flex flex-col items-center w-40 max-w-full rounded-lg bg-[#17191E] text-[#9FA2AC] group hover:bg-[#2B3138] hover:text-[#eee] shadow-lg cursor-pointer box-content font-noto-sans', {
+      className={classNames('flex flex-col items-center w-40 max-w-full rounded-lg bg-[#17191E] text-[#9FA2AC] group hover:bg-[#2B3138] hover:text-[#eee] shadow-lg cursor-pointer box-content font-noto-sans justify-self-center', {
         ' border-[1.5px] border-[#25D695]': isActive,
       }, className)}
       onClick={onClick}
@@ -36,7 +36,7 @@ export const NFTItem: FC<NFTItemProps> = ({
       {isActionRow ? (
         <ActionRow
           actionItems={actionItems || []}
-          className="rounded-b-lg p-3 gap-2 w-full hover:bg-[#2B3138] hover:text-[#eee] !border-transparent"
+          className="rounded-b-lg p-1 sm:p-3 gap-2 w-full hover:bg-[#2B3138] hover:text-[#eee] text-left break-all !border-transparent"
         >
           <div className="flex flex-col w-full gap-1">
             <div className="flex items-center w-full gap-1 text-sm tracking-[-0.21px] overflow-scroll scroll">

@@ -31,14 +31,14 @@ export const NonFungibleTokenRow: FC<NonFungibleTokenRowProps> = ({
 
   return (
     <ActionRow actionItems={items}>
-      <div className="flex-1 grid grid-cols-2 items-center w-full">
-        <div className="grid-cols-2 flex items-center gap-3">
+      <div className="flex-1 items-center w-full">
+        <div className="flex items-center gap-2">
           <GeneralIcon
             type={GeneralIconType.DefaultToken}
             className="w-10 h-10 min-w-10 min-h-10"
           />
           <div className="flex flex-col items-start gap-1">
-            <div className="text-left text-base text-[#EEE] font-noto-sans font-medium break-all max-w-full pr-4">
+            <div className="text-left text-base text-[#EEE] font-noto-sans font-medium break-words max-w-full pr-4">
               {name}
             </div>
           </div>

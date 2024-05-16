@@ -331,21 +331,21 @@ export const FungibleTokenCreate = () => {
   }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
 
   return (
-    <div className="flex flex-col gap-10 scroll-smooth">
+    <div className="flex flex-col gap-9 sm:gap-10 scroll-smooth">
       <MessageBox>
         <ul className="list-disc text-[#868991] text-sm font-normal ml-5">
           <li>Smart tokens on the Coreum network enable enterprises to set predetermined behaviours and <Link className="text-[#25D695] underline" href="https://docs.coreum.dev/docs/modules/coreum-deterministic-gas" target="_blank">deterministic gas fee</Link> for certain tokens, facilitating the execution of contract-like functions directly on the blockchain&apos;s storage.</li>
           <li>Your <span className="text-[#9FA2AC] font-semibold">Fungible Tokens (FTs)</span> will inherit a set of <Link className="text-[#25D695]" href="#features-ft">features</Link> that determine their behaviour.</li>
         </ul>
       </MessageBox>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-3">
         <Input
           label="Symbol"
           value={symbol}
           onChange={setSymbol}
           placeholder="Example: TOKEN"
           error={isEnteredSymbolValid}
-          errorClassName="!-mb-9"
+          errorClassName="-mb-12 md:!-mb-9"
         />
         <Input
           label="Subunit"
@@ -353,10 +353,10 @@ export const FungibleTokenCreate = () => {
           onChange={setSubunit}
           placeholder="Example: utoken"
           error={isEnteredSubunitsValid}
-          errorClassName="!-mb-9"
+          errorClassName="-mb-12 md:-mb-9"
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-3">
         <Input
           label="Precision"
           value={precision}
@@ -381,6 +381,7 @@ export const FungibleTokenCreate = () => {
           onChange={setUrl}
           placeholder="http://example.com"
           error={isURLValid}
+          errorClassName="-mb-12 md:-mb-9"
         />
       </div>
       <div className="grid grid-cols-1">
@@ -393,7 +394,7 @@ export const FungibleTokenCreate = () => {
           error={isDescriptionValid}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-9 sm:gap-3">
         <Input
           label="Burn Rate"
           value={burnRate}
@@ -404,6 +405,7 @@ export const FungibleTokenCreate = () => {
           decimals={2}
           error={+burnRate > 100 ? 'Max burn rate value is 100%' : ''}
           tooltipContent="The percentage of each token transaction that is permanently removed from circulation; this reduction is applied on top of the sending amount."
+          errorClassName="!-mb-12 md:!-mb-9"
         />
         <Input
           label="Send Commission Rate"
@@ -415,6 +417,7 @@ export const FungibleTokenCreate = () => {
           decimals={2}
           error={+sendCommissionRate > 100 ? 'Max send commission rate value is 100%' : ''}
           tooltipContent="Percentage of each token transaction paid to the token's creator; the commission is applied on top of the sending amount."
+          errorClassName="!-mb-12 md:!-mb-9"
         />
       </div>
       <div className="flex w-full" id="features-ft">

@@ -55,9 +55,9 @@ export const Amount: FC<AmountProps> = ({
 
   return (
     <div className="flex flex-col w-full items-center gap-2">
-      <div className="flex items-center justify-between w-full gap-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4 sm:gap-6">
         <input
-          className="flex-1 w-full bg-transparent text-2xl font-medium placeholder:text-[#5E6773] text-[#EEE] outline-none"
+          className="flex-1 w-full bg-transparent text-2xl font-medium placeholder:text-[#5E6773] text-[#EEE] outline-none text-center sm:text-left"
           placeholder="0.00"
           value={renderFormattedValue}
           onChange={handleChangeAmount}

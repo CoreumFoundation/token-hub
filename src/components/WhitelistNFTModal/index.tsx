@@ -26,17 +26,20 @@ export const WhitelistNFTModal = () => {
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsWhitelistNFTModalOpen(false));
+    setWhitelistAccountAddress('');
   }, []);
 
   const handleOnClickBackButton = useCallback(() => {
     dispatch(setIsWhitelistNFTModalOpen(false));
     dispatch(setIsNFTCollectionViewModalOpen(true));
+    setWhitelistAccountAddress('');
   }, []);
 
   const handleWhitelistNFTToken = useCallback(() => {
     dispatch(setIsConfirmNFTWhitelistModalOpen(true));
     dispatch(setIsWhitelistNFTModalOpen(false));
     dispatch(setWhitelistAccount(whitelistAccountAddress));
+    setWhitelistAccountAddress('');
   }, [whitelistAccountAddress]);
 
   const whitelistAddressValidationError = useMemo(() => {

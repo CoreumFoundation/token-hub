@@ -1,4 +1,4 @@
-import { setIsConfirmNFTDeWhitelistModalOpen, setIsDeWhitelistNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmNFTDeWhitelistModalOpen, setIsDeWhitelistNFTModalOpen, setIsNFTCollectionViewModalOpen } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
@@ -25,18 +25,21 @@ export const DeWhitelistNFTModal = () => {
   const dispatch = useAppDispatch();
 
   const handleCloseModal = useCallback(() => {
-    dispatch(setIsWhitelistNFTModalOpen(false));
+    dispatch(setIsDeWhitelistNFTModalOpen(false));
+    setDeWhitelistAccountAddress('');
   }, []);
 
   const handleOnClickBackButton = useCallback(() => {
-    dispatch(setIsWhitelistNFTModalOpen(false));
+    dispatch(setIsDeWhitelistNFTModalOpen(false));
     dispatch(setIsNFTCollectionViewModalOpen(true));
+    setDeWhitelistAccountAddress('');
   }, []);
 
   const handleWhitelistNFTToken = useCallback(() => {
     dispatch(setIsConfirmNFTDeWhitelistModalOpen(true));
     dispatch(setIsDeWhitelistNFTModalOpen(false));
     dispatch(setDeWhitelistAccount(deWhitelistAccountAddress));
+    setDeWhitelistAccountAddress('');
   }, [deWhitelistAccountAddress]);
 
   const deWhitelistAddressValidationError = useMemo(() => {

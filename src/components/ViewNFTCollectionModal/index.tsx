@@ -92,7 +92,6 @@ export const ViewNFTCollectionModal = () => {
             const isBurnable = selectedNFTClass?.features.find((feature: string) => feature === 'burning');
             const isFreezing = selectedNFTClass?.features.find((feature: string) => feature === 'freezing');
             const isWhitelistingEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'whitelisting');
-            const isSoulboundEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'soulbound');
 
             const isNFTOwnedByUser = ownedNFTItems[selectedNFTClass?.id || ''].find((nft: NFT) => nft.id === item.id);
 
@@ -105,7 +104,7 @@ export const ViewNFTCollectionModal = () => {
               });
             }
 
-            if (isFreezing && (!isSoulboundEnabled || isSoulboundEnabled && isNFTOwnedByUser)) {
+            if (isFreezing) {
               items.push({
                 id: 'freeze',
                 label: 'Freeze',
@@ -129,7 +128,7 @@ export const ViewNFTCollectionModal = () => {
               });
             }
 
-            if (isWhitelistingEnabled && (!isSoulboundEnabled || isSoulboundEnabled && isNFTOwnedByUser)) {
+            if (isWhitelistingEnabled) {
               items.push({
                 id: 'whitelist',
                 label: 'Whitelist',

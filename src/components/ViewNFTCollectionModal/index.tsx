@@ -180,6 +180,7 @@ export const ViewNFTCollectionModal = () => {
     selectedNFT?.id,
     selectedNFTClass?.features,
     selectedNFTClass?.id,
+    isNFTItemsLoading,
   ]);
 
   return (

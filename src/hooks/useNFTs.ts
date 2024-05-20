@@ -1,5 +1,10 @@
-import { shouldRefetchCurrencies } from '@/features/currencies/currenciesSlice';
-import { fetchIssuedNFTCollectionsByAccount, fetchNFTsByOwnerAndClass, setShouldFetchNFTCollections, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import {
+  fetchIssuedNFTCollectionsByAccount,
+  fetchNFTsByOwnerAndClass,
+  setNFTItems,
+  setShouldFetchNFTCollections,
+  setShouldRefetchNFTItems,
+} from "@/features/nft/nftSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 
@@ -9,22 +14,16 @@ export const useNFTs = () => {
   const isConnected = useAppSelector(state => state.general.isConnected);
   const nftCollections = useAppSelector(state => state.nfts.collections);
   const isFetched = useAppSelector(state => state.nfts.isFetched);
-  const isNFTItemsFetched = useAppSelector(state => state.nfts.isNFTItemsFetched);
+
+  const isLoading = useAppSelector(state => state.nfts.isLoading);
 
   const shouldRefetchCollections = useAppSelector(state => state.nfts.shouldRefetchCollections);
   const shouldRefetchNFTItems = useAppSelector(state => state.nfts.shouldRefetchNFTItems);
 
+  const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
+  const nftItems = useAppSelector(state => state.nfts.nftItems);
+
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (account && (!isFetched || shouldRefetchCollections)) {
-      dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
-
-      if (shouldRefetchCollections) {
-        dispatch(setShouldFetchNFTCollections(false));
-      }
-    }
-  }, [account, nftCollections, isConnected, isFetched, network, shouldRefetchCollections]);
 
   useEffect(() => {
     if (account) {
@@ -33,18 +32,31 @@ export const useNFTs = () => {
   }, [network, account]);
 
   useEffect(() => {
-    if (account && nftCollections.length && (!isNFTItemsFetched || shouldRefetchNFTItems)) {
-      for (const collection of nftCollections) {
-        dispatch(fetchNFTsByOwnerAndClass({
-          account,
-          network,
-          classId: collection.id,
-        }));
-      }
+    if (account && !isLoading && (!isFetched || shouldRefetchCollections)) {
+      dispatch(fetchIssuedNFTCollectionsByAccount({ account, network }));
 
-      if (shouldRefetchNFTItems) {
-        dispatch(setShouldRefetchNFTItems(false));
+      if (shouldRefetchCollections) {
+        dispatch(setShouldFetchNFTCollections(false));
       }
     }
-  }, [account, isNFTItemsFetched, network, nftCollections, shouldRefetchNFTItems]);
+  }, [account, nftCollections, isConnected, isFetched, network, shouldRefetchCollections, isLoading]);
+
+  useEffect(() => {
+    if (selectedNFTClass) {
+      dispatch(fetchNFTsByOwnerAndClass({
+        account,
+        network,
+        classId: selectedNFTClass.id,
+      }));
+    }
+  }, [account, network, selectedNFTClass]);
+
+  useEffect(() => {
+    if (shouldRefetchNFTItems) {
+      if (Object.keys(nftItems).length) {
+        dispatch(setNFTItems({}));
+      }
+      dispatch(setShouldRefetchNFTItems(false));
+    }
+  }, [shouldRefetchNFTItems, nftItems]);
 };

@@ -324,6 +324,7 @@ const nftsSlice = createSlice({
     },
     setOwnedNFTItems(state, action: PayloadAction<{ [key: string]: NFT[] }>) {
       state.ownedNftItems = action.payload;
+      state.isNFTItemsLoading = false;
     },
     setIsNFTItemsFetched(state, action: PayloadAction<boolean>) {
       state.isNFTItemsFetched = action.payload;

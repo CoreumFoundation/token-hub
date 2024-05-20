@@ -10,6 +10,7 @@ import { Button } from "../Button";
 import { setSelectedNFTSend, setSelectedNFTClass as setSelectedNFTCollection } from "@/features/nft/nftSlice";
 import Image from 'next/image';
 import { GeneralIcon } from "@/assets/GeneralIcon";
+import { Spinner } from "../Spinner";
 
 export const SelectNFTModal = () => {
   const [selectedNFTClass, setSelectedNFTClass] = useState<NFTClass | null>(null);
@@ -20,6 +21,8 @@ export const SelectNFTModal = () => {
 
   const nftClasses = useAppSelector(state => state.nfts.collections);
   const nftItems = useAppSelector(state => state.nfts.ownedNftItems);
+
+  const isNFTItemsLoading = useAppSelector(state => state.nfts.isNFTItemsLoading);
 
   const dispatch = useAppDispatch();
 
@@ -49,6 +52,7 @@ export const SelectNFTModal = () => {
 
   const onNFTClassConfirmClick = useCallback(() => {
     setSelectedNFTClass(draftSelectedNFTClass);
+    dispatch(setSelectedNFTCollection(draftSelectedNFTClass));
   }, [draftSelectedNFTClass]);
 
   const currentNFTItems = useMemo(() => {
@@ -62,6 +66,14 @@ export const SelectNFTModal = () => {
   }, [nftItems, selectedNFTClass]);
 
   const renderContent = useMemo(() => {
+    if (isNFTItemsLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center w-full py-20">
+          <Spinner className="w-12 h-12" />
+        </div>
+      );
+    }
+
     if (!selectedNFTClass) {
       return (
         <div className="flex flex-col w-full gap-8">
@@ -145,7 +157,18 @@ export const SelectNFTModal = () => {
           </div>
       </div>
     );
-  }, [currentNFTItems, draftSelectedNFT, draftSelectedNFTClass, nftClasses, onNFTClassClick, onNFTClassConfirmClick, onNFTClick, onNFTConfirmClick, selectedNFTClass]);
+  }, [
+    currentNFTItems,
+    draftSelectedNFT,
+    draftSelectedNFTClass,
+    isNFTItemsLoading,
+    nftClasses,
+    onNFTClassClick,
+    onNFTClassConfirmClick,
+    onNFTClick,
+    onNFTConfirmClick,
+    selectedNFTClass,
+  ]);
 
   return (
     <Modal

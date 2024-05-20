@@ -10,6 +10,7 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { setSelectedNFTSend } from "@/features/nft/nftSlice";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
+import { Spinner } from "../Spinner";
 
 export const ViewNFTCollectionModal = () => {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
@@ -20,6 +21,7 @@ export const ViewNFTCollectionModal = () => {
 
   const nftItems = useAppSelector(state => state.nfts.nftItems);
   const ownedNFTItems = useAppSelector(state => state.nfts.ownedNftItems);
+  const isNFTItemsLoading = useAppSelector(state => state.nfts.isNFTItemsLoading);
 
   const dispatch = useAppDispatch();
 
@@ -77,14 +79,17 @@ export const ViewNFTCollectionModal = () => {
     dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
-  return (
-    <Modal
-      isOpen={isNFTCollectionViewModalOpen}
-      title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
-      onClose={handleCloseModal}
-      wrapperClassName="!w-[568px] max-w-full overflow-auto"
-    >
-      {currentNFTItems?.length ? (
+  const renderContent = useMemo(() => {
+    if (isNFTItemsLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center w-full py-20">
+          <Spinner className="w-12 h-12" />
+        </div>
+      );
+    }
+
+    if (currentNFTItems?.length) {
+      return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-4">
           {currentNFTItems?.map((item: NFT) => {
             const isActive = item.id === selectedNFT?.id;
@@ -156,15 +161,35 @@ export const ViewNFTCollectionModal = () => {
             );
           })}
         </div>
-      ) : (
-        <div className="flex flex-col w-full items-center p-10">
-          <Image priority={false} src="/images/coins.png" width="200" height="200" alt="coins" />
-          <div className="flex items-center gap-2">
-            <GeneralIcon type={GeneralIconType.Error} />
-            You don&apos;t have any NFT in this collection yet!
-          </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col w-full items-center p-10">
+        <Image priority={false} src="/images/coins.png" width="200" height="200" alt="coins" />
+        <div className="flex items-center gap-2">
+          <GeneralIcon type={GeneralIconType.Error} />
+          You don&apos;t have any NFT in this collection yet!
         </div>
-      )}
+      </div>
+    );
+  }, [
+    currentNFTItems,
+    isNFTItemsLoading,
+    ownedNFTItems,
+    selectedNFT?.id,
+    selectedNFTClass?.features,
+    selectedNFTClass?.id,
+  ]);
+
+  return (
+    <Modal
+      isOpen={isNFTCollectionViewModalOpen}
+      title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
+      onClose={handleCloseModal}
+      wrapperClassName="!w-[568px] max-w-full overflow-auto"
+    >
+      {renderContent}
     </Modal>
   );
 };

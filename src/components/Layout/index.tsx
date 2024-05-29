@@ -140,6 +140,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           case TabItemType.Manage:
             return (
               <>
+                <ConnectWalletModal />
                 <MintNFTModal />
                 <ConfirmNFTMintModal />
                 <BurnNFTModal />

@@ -1,6 +1,6 @@
 import { setBalances, shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { setCurrencies, setIsFetched, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
-import { setAccount, setIsConnected } from "@/features/general/generalSlice";
+import { setAccount, setIsConnected, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 
@@ -16,6 +16,7 @@ export const useCurrentNetwork = () => {
       dispatch(setBalances([]));
       dispatch(setCurrencies([]));
       dispatch(setIsFetched(false));
+      dispatch(setIsTxExecuting(false));
     }
   }, [network]);
 };

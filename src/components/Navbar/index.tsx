@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { useCallback, useMemo, useState } from "react";
-import { NETWORK_SELECTOR_ITEMS } from "@/constants";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { NETWORK_SELECTOR_ITEMS, STORAGE_SELECTED_NETWORK } from "@/constants";
 import { setIsConnectModalOpen, setNetwork } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { AccountActions } from "../AccountActions";
@@ -34,14 +34,26 @@ export const Navbar = () => {
     dispatch(shouldRefetchCurrencies(true));
     dispatch(setShouldRefetchNFTItems(true));
     dispatch(setShouldFetchNFTCollections(true));
+
+    localStorage.setItem(STORAGE_SELECTED_NETWORK, value.id);
   }, [selected]);
+
+  useEffect(() => {
+    const networkInStorage = localStorage.getItem(STORAGE_SELECTED_NETWORK);
+
+    if (!networkInStorage) {
+      localStorage.setItem(STORAGE_SELECTED_NETWORK, selected.id);
+    } else {
+      const itemToSelect = NETWORK_SELECTOR_ITEMS.find((item: DropdownItem) => item.id === networkInStorage);
+
+      if (itemToSelect) {
+        handleSelectCurrentNetwork(itemToSelect);
+      }
+    }
+  }, []);
 
   const handleConnectButtonClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
-  }, []);
-
-  const isMultinetworkEnabled = useMemo(() => {
-    return process.env.NEXT_PUBLIC_MULTINETWORK === 'true';
   }, []);
 
   return (
@@ -54,17 +66,15 @@ export const Navbar = () => {
         height={24}
       />
       <div className="flex flex-col-reverse sm:flex-row items-end gap-2">
-        {isMultinetworkEnabled && (
-          <Dropdown
-            selected={selected}
-            onSelect={handleSelectCurrentNetwork}
-            items={NETWORK_SELECTOR_ITEMS}
-            type={DropdownType.Primary}
-            icon={<GeneralIcon type={GeneralIconType.Network} />}
-            selectedClassName="text-xs sm:!w-[140px]"
-            selectedLabelClassName="text-grey-gradient"
-          />
-        )}
+        <Dropdown
+          selected={selected}
+          onSelect={handleSelectCurrentNetwork}
+          items={NETWORK_SELECTOR_ITEMS}
+          type={DropdownType.Primary}
+          icon={<GeneralIcon type={GeneralIconType.Network} />}
+          selectedClassName="text-xs sm:!w-[140px]"
+          selectedLabelClassName="text-grey-gradient"
+        />
         {isConnected ? (
           <AccountActions />
         ) : (

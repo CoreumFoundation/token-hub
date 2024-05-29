@@ -7,7 +7,6 @@ import { useEffect } from "react";
 export const useCurrentNetwork = () => {
   const network = useAppSelector(state => state.general.network);
   const isConnected = useAppSelector(state => state.general.isConnected);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {

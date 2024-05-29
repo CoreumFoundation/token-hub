@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { coreum, coreumtestnet } from 'graz/chains';
 import { ChainInfo as KeplrChainInfo } from '@keplr-wallet/types';
 import { ChainInfo } from '@/shared/types';
+import { STORAGE_SELECTED_NETWORK } from '@/constants';
 
 export interface GeneralState {
   network: Network;

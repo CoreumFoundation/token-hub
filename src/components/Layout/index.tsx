@@ -142,7 +142,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <>
                 <MintNFTModal />
                 <ConfirmNFTMintModal />
-                <ViewNFTCollectionModal />
                 <BurnNFTModal />
                 <FreezeNFTModal />
                 <UnfreezeNFTModal />
@@ -153,6 +152,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <ConfirmNFTWhitelistModal />
                 <DeWhitelistNFTModal />
                 <ConfirmNFTDeWhitelistModal />
+                <ViewNFTCollectionModal />
               </>
             );
           default:

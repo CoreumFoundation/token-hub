@@ -25,9 +25,9 @@ export const ViewNFTCollectionModal = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseModal = useCallback(async () => {
     dispatch(setIsNFTCollectionViewModalOpen(false));
-  }, []);
+  }, [dispatch]);
 
   const currentNFTItems = useMemo(() => {
     if (!selectedNFTClass) {
@@ -82,9 +82,7 @@ export const ViewNFTCollectionModal = () => {
   const renderContent = useMemo(() => {
     if (isNFTItemsLoading) {
       return (
-        <div className="flex flex-col items-center justify-center w-full py-20">
-          <Spinner className="w-12 h-12" />
-        </div>
+        <Spinner className="w-12 h-12" />
       );
     }
 
@@ -173,15 +171,7 @@ export const ViewNFTCollectionModal = () => {
         </div>
       </div>
     );
-  }, [
-    currentNFTItems,
-    isNFTItemsLoading,
-    ownedNFTItems,
-    selectedNFT?.id,
-    selectedNFTClass?.features,
-    selectedNFTClass?.id,
-    isNFTItemsLoading,
-  ]);
+  }, [isNFTItemsLoading, currentNFTItems, selectedNFT?.id, selectedNFTClass?.features, selectedNFTClass?.id, ownedNFTItems, onSendClick, onFreezeClick, onUnfreezeClick, onBurnClick, onWhitelistClick, onDeWhitelistClick, onNFTClick]);
 
   return (
     <Modal
@@ -189,6 +179,7 @@ export const ViewNFTCollectionModal = () => {
       title={selectedNFTClass ? selectedNFTClass.name : 'View NFT Class'}
       onClose={handleCloseModal}
       wrapperClassName="!w-[568px] max-w-full overflow-auto"
+      bodyClassName={isNFTItemsLoading ? 'justify-center items-center p-10' : ''}
     >
       {renderContent}
     </Modal>

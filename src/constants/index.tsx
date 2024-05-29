@@ -165,26 +165,26 @@ export const CONNECT_WALLET_OPTIONS: WalletOption[] = [
     type: WalletType.Cosmostation,
     label: 'Cosmostation',
   },
-  {
-    type: WalletType.CosmostationMobile,
-    label: 'Cosmostation Mobile',
-  },
+  // {
+  //   type: WalletType.CosmostationMobile,
+  //   label: 'Cosmostation Mobile',
+  // },
   {
     type: WalletType.Keplr,
     label: 'Keplr',
   },
-  {
-    type: WalletType.KeplrMobile,
-    label: 'Keplr Mobile',
-  },
+  // {
+  //   type: WalletType.KeplrMobile,
+  //   label: 'Keplr Mobile',
+  // },
   {
     type: WalletType.Leap,
     label: 'Leap',
   },
-  {
-    type: WalletType.LeapMobile,
-    label: 'Leap Mobile',
-  },
+  // {
+  //   type: WalletType.LeapMobile,
+  //   label: 'Leap Mobile',
+  // },
 ];
 
 export const ACTION_ITEMS_OPTIONS: DropdownItem[] = [
@@ -284,3 +284,5 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
     ],
   },
 ];
+
+export const STORAGE_SELECTED_NETWORK = 'local_selected_network';

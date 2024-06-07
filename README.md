@@ -153,6 +153,16 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 4. Make your changes
 5. Connect to [Netlify](https://url.netlify.com/Bk4UicocL) manually (the `netlify.toml` file is the one you'll need to make sure stays intact to make sure the export is done and pointed to the right stuff)
 
+**Option three:** One-click deploy
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FCoreumFoundation%2Ftoken-hub)
+
+**Option four:** Manual clone
+1. Clone this repo: `git clone https://github.com/CoreumFoundation/token-hub.git`
+2. Navigate to the directory and run `npm install`
+3. Run `npm run dev`
+4. Make your changes
+5. Connect to [Vercel](https://vercel.com/) manually (the `netlify.toml` file is the one you'll need to make sure stays intact to make sure the export is done and pointed to the right stuff)
+
 ## Testing
 
 ### Included Default Testing

@@ -10,6 +10,20 @@ This project is a very minimal starter that includes 2 sample components, a glob
 (If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify)
 
 
+# Next + Vercel Started
+
+# Next + Vercel Starter
+
+[![Vercel Status](https://thereisnobadgeforthis.svghost.io)](https://vercel.com/dashboard)
+
+This is a [Next.js](https://nextjs.org/) v14 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up for instant deployment to [Vercel](https://vercel.com)!
+
+This project offers a minimalistic starter kit that includes a couple of sample components, a global stylesheet, and configurations for absolute imports and aliases. By deploying on Vercel, you gain access to features like edge functions, incremental static regeneration, automatic scaling, and more, enhancing your project's performance and scalability.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FCoreumFoundation%2Ftoken-hub)
+
+
+
 # Smart Tokens on Coreum
 
 ![Smart](./public/images/smart.png)

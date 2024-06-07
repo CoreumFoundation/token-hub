@@ -7,7 +7,7 @@ This is a [Next.js](https://nextjs.org/) v14 project bootstrapped with [`create-
 This project is a very minimal starter that includes 2 sample components, a global stylesheet, a `netlify.toml` for deployment, and a `jsconfig.json` for setting up absolute imports and aliases. With Netlify, you'll have access to features like Preview Mode, server-side rendering/incremental static regeneration via Netlify Functions, and internationalized routing on deploy automatically.
 
 [![Deploy CoreumFoundation/token-hub to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/CoreumFoundation/token-hub)
-(If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify)
+(If you click this button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Vercel)
 
 # Next + Vercel Starter
 This is a [Next.js](https://nextjs.org/) v14 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up for instant deployment to [Vercel](https://vercel.com)!

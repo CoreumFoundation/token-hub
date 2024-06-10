@@ -9,8 +9,8 @@ Smart tokens on the Coreum network empower enterprises to establish predefined b
 
 ## Table of Contents
 1. [Create](#create)
-   - [Fungible Tokens](#FungibleTokens (FTs))
-   - [Non-Fungible Tokens](#non-fungible-tokens)
+   - [Fungible Tokens](#fungible-tokens-fts)
+   - [Non-Fungible Tokens](#non-fungible-tokens-nfts)
 2. [Send](#send)
    - [Fungible Tokens](#sending-fungible-tokens)
    - [Non-Fungible Tokens](#sending-non-fungible-tokens)

@@ -9,7 +9,7 @@ Smart tokens on the Coreum network empower enterprises to establish predefined b
 
 ## Table of Contents
 1. [Create](#create)
-   - [Fungible Tokens](###FungibleTokens (FTs))
+   - [Fungible Tokens](#FungibleTokens (FTs))
    - [Non-Fungible Tokens](#non-fungible-tokens)
 2. [Send](#send)
    - [Fungible Tokens](#sending-fungible-tokens)
@@ -19,7 +19,7 @@ Smart tokens on the Coreum network empower enterprises to establish predefined b
 
 ## Create
 
-### Fungible Tokens (FTs)
+### Fungible Tokens 
 Your Fungible Tokens will inherit features that dictate their behavior:
 - **Symbol:** TOKEN
 - **Subunit:** utoken

@@ -1,4 +1,4 @@
-# Smart Tokens on Coreum
+# 🧠 Smart Tokens on Coreum 🌐🔗
 
 ![Smart](./public/images/smart.png)
 

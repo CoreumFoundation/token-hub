@@ -5,7 +5,7 @@
 
 # 🌐 Smart Tokens on the Coreum Network
 
-Smart tokens on the Coreum network empower enterprises to establish predefined behaviors and deterministic gas fees for specific tokens. This streamlines the execution of contract-like functions directly on the blockchain's storage layer.
+The Coreum TokenHub empowers enterprises and users alike to create and manage Smart Tokens. With predefined behaviors and deterministic gas fees, tokens issued on Coreum are able to execute advanced, contract-like functions directly on the blockchain. The platform provides a robust framework for token management, offering flexibility and control to meet diverse business, user, and community needs.
 
 ## 📑 Table of Contents
 1. [Create](#create)

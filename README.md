@@ -3,11 +3,11 @@
 ![Smart](./public/images/smart.png)
 
 
-# Smart Tokens on the Coreum Network
+# 🌐 Smart Tokens on the Coreum Network
 
 Smart tokens on the Coreum network empower enterprises to establish predefined behaviors and deterministic gas fees for specific tokens. This streamlines the execution of contract-like functions directly on the blockchain's storage layer.
 
-## Table of Contents
+## 📑 Table of Contents
 1. [Create](#create)
    - [Fungible Tokens](#fungible-tokens-fts)
    - [Non-Fungible Tokens](#non-fungible-tokens-nfts)
@@ -18,7 +18,7 @@ Smart tokens on the Coreum network empower enterprises to establish predefined b
 4. [Manage](#manage)
 
 
-## Create
+## 🛠️ Create
 
 ### Fungible Tokens (FTs)
 Your Fungible Tokens will inherit features that dictate their behavior:
@@ -31,7 +31,7 @@ Your Fungible Tokens will inherit features that dictate their behavior:
 - **Burn Rate:** 0
 - **Send Commission Rate:** 0
 
-### Non-Fungible Tokens (NFTs)
+### 🎨 Non-Fungible Tokens (NFTs)
 Your Non-Fungible Tokens will be part of a collection that defines their behavior. Post creation, you can mint NFTs and transfer them:
 - **Name:** Collection Name
 - **Symbol:** TOKEN
@@ -40,18 +40,18 @@ Your Non-Fungible Tokens will be part of a collection that defines their behavio
 - **Description:** Enter token description
 - **Royalties:** 0
 
-## Token Features
+## 🌟 Token Features
 
-- **Minting (FTs):** Allows the issuer to mint additional tokens.
-- **Burning:** Enables token holders to destroy their tokens. For NFTs, the issuer has the exclusive right to burn.
-- **Freezing:** Allows the issuer to freeze transactions up to a specified amount for FTs, or any NFT within a class.
-- **Whitelisting:** Requires accounts to be approved by the issuer to receive tokens or hold specific NFTs.
-- **IBC:** Enables token transfer across IBC-enabled chains; if disabled, the token remains within the Coreum blockchain.
-- **Block Smart Contract:** Restricts tokens to be sent only to regular user addresses, not to smart contracts.
-- **Disable Sending (NFTs):** Prevents direct transfers of NFTs between users, encouraging the use of a DEX to ensure royalty payments to creators.
-- **Soulbound (NFTs):** NFTs cannot be transferred except by the issuer, ideal for user-specific tokens.
+- **Minting (FTs):** 🪙 Allows the issuer to mint additional tokens.
+- **Burning:** 🔥 Enables token holders to destroy their tokens. For NFTs, the issuer has the exclusive right to burn.
+- **Freezing:** ❄️ Allows the issuer to freeze transactions up to a specified amount for FTs, or any NFT within a class.
+- **Whitelisting:** 📋 Requires accounts to be approved by the issuer to receive tokens or hold specific NFTs.
+- **IBC:** 🌉 Enables token transfer across IBC-enabled chains; if disabled, the token remains within the Coreum blockchain.
+- **Block Smart Contract:** 🚫 Restricts tokens to be sent only to regular user addresses, not to smart contracts.
+- **Disable Sending (NFTs):** 🛑 Prevents direct transfers of NFTs between users, encouraging the use of a DEX to ensure royalty payments to creators.
+- **Soulbound (NFTs):** 🧬 NFTs cannot be transferred except by the issuer, ideal for user-specific tokens.
 
-## Send
+## 📤 Send
 
 Send your tokens to a wallet. Note that once sent, tokens cannot be reclaimed unless returned by the receiver:
 - **Amount:** 0.00
@@ -61,15 +61,14 @@ Send your tokens to a wallet. Note that once sent, tokens cannot be reclaimed un
 - **Fee:** ~0.000000 COREUM
 - **Estimated Time:** 1 - 3 minutes
 
-### Sending Non-Fungible Tokens
+### 🔄 Sending Non-Fungible Tokens
 - **NFT:** Select the NFT
 - **Destination Chain:** Coreum
 - **Destination Address:** Enter Destination Address
 
-## Manage
+## 📊 Manage
 
 View and manage the Smart Tokens you own. Connect your wallet to access and administer your assets through a public REST server that provides various endpoints for querying blockchain data.
-
 
 ## Next + Netlify Starter
 

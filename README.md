@@ -127,6 +127,14 @@ We’ve included some tooling that helps us maintain these templates. This templ
 
 If your team is not interested in this tooling, you can remove them with ease!
 
-## Conclusion
+### Disclaimer
 
-This document offers a comprehensive overview of the creation, sending, and management of Smart Tokens on the Coreum network. By leveraging the capabilities detailed above, enterprises can harness the power of blockchain technology to enforce custom behaviors and enhance their token functionalities. These advanced features allow for improved operational efficiency, precise control over token dynamics, and enhanced security measures. Additionally, the integration with Netlify facilitates a seamless development experience, enabling quick deployment and robust testing of blockchain applications. This combination empowers businesses to innovate rapidly while maintaining high standards of performance and reliability in their blockchain endeavors.
+The information provided on this platform is for general informational purposes only. Coreum TokenHub facilitates the creation, sending, and management of Smart Tokens on the Coreum network. However, Coreum does not assume any responsibility or liability for the implications, financial outcomes, legal consequences, or any other impact resulting from the use of this service, including but not limited to token generation events.
+Key Points:
+No Endorsement: Coreum does not endorse, sponsor, or validate any tokens created using the Coreum TokenHub. The creation and management of tokens are performed at the discretion and risk of the user.
+User Responsibility: Users are solely responsible for ensuring that their activities comply with all applicable laws, regulations, and guidelines. Coreum does not provide legal, financial, or professional advice.
+No Liability: Coreum shall not be held liable for any loss, damage, or harm arising from the use of the Coreum TokenHub, including but not limited to financial losses, legal actions, or regulatory penalties.
+Security and Risks: Users acknowledge the inherent risks associated with blockchain technology, including but not limited to security vulnerabilities, technological failures, and potential misuse of tokens. Users should conduct their own due diligence and take necessary precautions.
+Feature Use: The features provided by Coreum TokenHub, such as minting, burning, freezing, and whitelisting, are tools to be used at the user's discretion. Coreum does not guarantee the successful implementation or intended outcome of these features.
+By using the Coreum TokenHub, you agree to release Coreum from any and all liability related to your use of the platform. This disclaimer is subject to change without notice.
+

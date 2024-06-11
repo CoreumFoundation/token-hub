@@ -1,4 +1,4 @@
-# 🧠 Smart Tokens on Coreum TokenHub 🌐🔗
+# 🧠 Coreum TokenHub 🌐🔗
 
 ![Smart](./public/images/smart.png)
 

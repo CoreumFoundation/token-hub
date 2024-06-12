@@ -5,7 +5,7 @@ import { FC, useCallback, useEffect, useRef } from "react";
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
   title: string | React.ReactNode;
   className?: string;
@@ -40,7 +40,7 @@ export const Modal: FC<ModalProps> = ({
   }, [isOpen, scrollToTop]);
 
   const handleCloseModal = useCallback(() => {
-    onClose();
+    onClose?.();
   }, [onClose]);
 
   if (!isOpen) {
@@ -52,12 +52,14 @@ export const Modal: FC<ModalProps> = ({
       <div className={classNames('flex flex-col w-[640px] max-w-full max-h-full overflow-y-auto p-8 bg-[#101216] rounded-2xl backdrop-blur-sm gap-8', wrapperClassName)}>
         <div className={classNames('flex justify-between w-full text-lg font-space-grotesk text-[#eee] font-medium cursor-pointer', headerClassName)}>
           {title}
-          <div
-            className="flex flex-col items-center justify-center !cursor-pointer"
-            onClick={handleCloseModal}
-          >
-            <GeneralIcon type={GeneralIconType.Close} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
-          </div>
+          {onClose && (
+            <div
+              className="flex flex-col items-center justify-center !cursor-pointer"
+              onClick={handleCloseModal}
+            >
+              <GeneralIcon type={GeneralIconType.Close} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+            </div>
+          )}
         </div>
         <div className={classNames('flex flex-col w-full', bodyClassName)}>
           {children}

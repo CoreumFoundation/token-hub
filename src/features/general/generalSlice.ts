@@ -38,6 +38,7 @@ export interface GeneralState {
   isSuccessIssueNFTModalOpen: boolean;
   isDeWhitelistNFTModalOpen: boolean;
   isConfirmNFTDeWhitelistModalOpen: boolean;
+  isDisclaimerModalOpen: boolean;
 }
 
 export const initialGeneralState: GeneralState = {
@@ -73,6 +74,7 @@ export const initialGeneralState: GeneralState = {
   isSuccessIssueNFTModalOpen: false,
   isDeWhitelistNFTModalOpen: false,
   isConfirmNFTDeWhitelistModalOpen: false,
+  isDisclaimerModalOpen: true,
 };
 
 const generalSlice = createSlice({
@@ -178,6 +180,9 @@ const generalSlice = createSlice({
     setIsConfirmNFTDeWhitelistModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmNFTDeWhitelistModalOpen = action.payload;
     },
+    setIsDisclaimerModalOpen(state, action: PayloadAction<boolean>) {
+      state.isDisclaimerModalOpen = action.payload;
+    },
   },
 });
 
@@ -213,6 +218,7 @@ export const {
   setIsSuccessIssueNFTModalOpen,
   setIsDeWhitelistNFTModalOpen,
   setIsConfirmNFTDeWhitelistModalOpen,
+  setIsDisclaimerModalOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

@@ -8,7 +8,7 @@ import { NFTItem } from "../NFTItem";
 import { Input } from "../Input";
 import { pasteValueFromClipboard } from "@/helpers/pasteValueFromClipboard";
 import { validateAddress } from "@/helpers/validateAddress";
-import { setDeWhitelistAccount, setWhitelistAccount } from "@/features/nft/nftSlice";
+import { setDeWhitelistAccount } from "@/features/nft/nftSlice";
 
 export const DeWhitelistNFTModal = () => {
   const isDeWhitelistNFTModalOpen = useAppSelector(state => state.general.isDeWhitelistNFTModalOpen);

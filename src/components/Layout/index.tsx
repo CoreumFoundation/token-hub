@@ -6,7 +6,7 @@ import { Footer } from "../Footer";
 import { Navbar } from "../Navbar";
 import Image from 'next/image';
 import { TabsSwitch } from "../TabsSwitch";
-import { TABS_ITEMS, TABS_SWITCH_ITEMS } from "@/constants";
+import { STORAGE_DISCLAIMER_CONFIRMED, TABS_ITEMS, TABS_SWITCH_ITEMS } from "@/constants";
 import { useEffect, useMemo, useState } from "react";
 import { Tabs } from "../Tabs";
 import { usePathname } from "next/navigation";
@@ -45,6 +45,7 @@ import { SuccessIssueNFTModal } from "../SuccessIssueNFTModal";
 import { UnfreezeNFTModal } from "../UnfreezeNFTModal";
 import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
 import { WhitelistNFTModal } from "../WhitelistNFTModal";
+import { DisclaimerModal } from "../DisclaimerModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -61,6 +62,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const [selectedTab, setSelectedTab] = useState<TabItem>(defaultTabItem || TABS_ITEMS[0]);
   const [selectedTabSwitch, setSelectedTabSwitch] = useState<TabSwitchItem>(defaultTabSwitchItem || TABS_SWITCH_ITEMS[0]);
+
+  const disclaimerConfirmed = localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
 
   useEffect(() => {
     const [, switchTab, tab] = pathname.split('/');
@@ -87,6 +90,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
 
   const modalsToRender = useMemo(() => {
+    if (!disclaimerConfirmed) {
+      return (
+        <DisclaimerModal />
+      );
+    }
+
     switch (selectedTabSwitch.id) {
       case TabSwitchItemType.FungibleToken:
         switch (selectedTab.id) {
@@ -162,7 +171,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       default:
         return null
     }
-  }, [selectedTab.id, selectedTabSwitch.id]);
+  }, [disclaimerConfirmed, selectedTab.id, selectedTabSwitch.id]);
 
   const tabItems = useMemo(() => {
     return TABS_ITEMS.map((tabItem: TabItem) => {

@@ -28,6 +28,7 @@ export const ModalsHandler = () => {
   const isSuccessIssueNFTModalOpen = useAppSelector(state => state.general.isSuccessIssueNFTModalOpen);
   const isDeWhitelistNFTModalOpen = useAppSelector(state => state.general.isDeWhitelistNFTModalOpen);
   const isConfirmNFTDeWhitelistModalOpen = useAppSelector(state => state.general.isConfirmNFTDeWhitelistModalOpen);
+  const isDisclaimerModalOpen = useAppSelector(state => state.general.isDisclaimerModalOpen);
 
 
   const isOpen = useMemo(() => {
@@ -57,6 +58,7 @@ export const ModalsHandler = () => {
       || isDeWhitelistNFTModalOpen
       || isConfirmNFTDeWhitelistModalOpen
       || isFreezeNFTModalOpen
+      || isDisclaimerModalOpen
   }, [
     isBurnCurrencyModalOpen,
     isBurnNFTModalOpen,
@@ -83,7 +85,8 @@ export const ModalsHandler = () => {
     isSuccessIssueNFTModalOpen,
     isUnfreezeNFTModalOpen,
     isWhitelistNFTModalOpen,
-    isFreezeNFTModalOpen
+    isFreezeNFTModalOpen,
+    isDisclaimerModalOpen
   ]);
 
   useEffect(() => {

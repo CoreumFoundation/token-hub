@@ -46,6 +46,7 @@ import { UnfreezeNFTModal } from "../UnfreezeNFTModal";
 import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
 import { WhitelistNFTModal } from "../WhitelistNFTModal";
 import { DisclaimerModal } from "../DisclaimerModal";
+import { isBrowser } from "@/helpers/isBrowser";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -63,7 +64,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(defaultTabItem || TABS_ITEMS[0]);
   const [selectedTabSwitch, setSelectedTabSwitch] = useState<TabSwitchItem>(defaultTabSwitchItem || TABS_SWITCH_ITEMS[0]);
 
-  const disclaimerConfirmed = localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
+  const disclaimerConfirmed = isBrowser() && window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
 
   useEffect(() => {
     const [, switchTab, tab] = pathname.split('/');

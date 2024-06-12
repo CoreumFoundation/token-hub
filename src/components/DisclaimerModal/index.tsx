@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Modal } from "../Modal";
 import { useCallback, useMemo, useState } from "react";
@@ -6,6 +8,7 @@ import { ButtonIconType, ButtonType } from "@/shared/types";
 import { Button } from "../Button";
 import classNames from "classnames";
 import { STORAGE_DISCLAIMER_CONFIRMED } from "@/constants";
+import { isBrowser } from "@/helpers/isBrowser";
 
 export const DisclaimerModal = () => {
   const [checkboxChecked, setCheckboxChecked] = useState<boolean>(false);
@@ -18,7 +21,7 @@ export const DisclaimerModal = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
-    localStorage.setItem(STORAGE_DISCLAIMER_CONFIRMED, 'confirmed');
+    isBrowser() && window.localStorage.setItem(STORAGE_DISCLAIMER_CONFIRMED, 'confirmed');
     handleCloseModal();
   }, []);
 

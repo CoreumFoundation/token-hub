@@ -47,7 +47,7 @@ export const DisclaimerModal = () => {
             <div className="flex items-center gap-3">
               <div className={checkboxCx} onClick={() => setCheckboxChecked(!checkboxChecked)}>
                 {checkboxChecked && (
-                  <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M3.99927 10.8046L5.21165 9.59223L8.53466 12.9152L15.7869 5.66302L16.9993 6.87541L8.53466 15.34L3.99927 10.8046Z" fill="#25D695"/>
                   </svg>
                 )}

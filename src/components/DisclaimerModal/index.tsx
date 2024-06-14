@@ -26,7 +26,7 @@ export const DisclaimerModal = () => {
   }, []);
 
   const checkboxCx = useMemo(() => {
-    return classNames('h-[22px] w-[22px] overflow-hidden border rounded-md cursor-pointer', {
+    return classNames('flex-none h-[22px] w-[22px] overflow-hidden border rounded-md cursor-pointer', {
       'border-[#1B1D23]': !checkboxChecked,
       'bg-gradient-green border-transparent': checkboxChecked,
     });
@@ -53,7 +53,7 @@ export const DisclaimerModal = () => {
                 )}
               </div>
               <label
-                className="text-[#eee] font-noto-sans text-sm font-medium tracking-[-0.21px]"
+                className="flex-1 text-[#eee] font-noto-sans text-sm font-medium tracking-[-0.21px]"
                 htmlFor="checkboxDefault"
               >
                 I have read and acknowledged the Provision of Services.

@@ -40,7 +40,7 @@ export const DisclaimerModal = () => {
     >
       <div className="flex flex-col w-full items-center gap-8">
         <p className="text-[#9FA2AC] font-noto-sans font-normal tracking-[-0.21px] text-sm">
-          Your interaction with Coreum Services is subject to various inherent risks. The Services are provided as &quot;is&quot; and &quot;as available&quot;, without any warranties, express or implied. Your engagement with the Services is solely at your own discretion and risk. Coreum is not responsible for any loss or mismanagement of user funds. If you do not agree to abide by these terms, you are not authorized to access or use the Coreum Services.
+          Your interaction with Coreum Services is subject to various inherent risks. The Services are provided &quot;as is&quot; and &quot;as available&quot;, without any warranties, express or implied. Your engagement with the Services is solely at your own discretion and risk. Coreum is not responsible for any loss or mismanagement of user funds. If you do not agree to abide by these terms, you are not authorized to access or use the Coreum Services.
         </p>
         <div className="flex flex-col w-full gap-4">
           <div className="relative flex items-center gap-3">
@@ -56,7 +56,7 @@ export const DisclaimerModal = () => {
                 className="text-[#eee] font-noto-sans text-sm font-medium tracking-[-0.21px]"
                 htmlFor="checkboxDefault"
               >
-                I have read and acknowledged the Provision of Service.
+                I have read and acknowledged the Provision of Services.
               </label>
             </div>
           </div>

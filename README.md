@@ -1,38 +1,14 @@
-# Coreum TokenHub [🌐🔗](https://token-hub.coreum.dev/ft/create)
+# Smart Tokens on the Coreum Network[🌐🔗](https://token-hub.coreum.dev/ft/create)
 
-![Smart](./public/images/smart.png)
+![Smart](./public/images/token-hub-readme.jpeg)
 
-# 🌐 Smart Tokens on the Coreum Network
+The Coreum TokenHub empowers enterprises and users alike to create and manage [Smart Tokens](https://www.coreum.com/smart-tokens). With predefined behaviors and deterministic gas fees, tokens issued on Coreum are able to execute advanced, contract-like functions directly on the blockchain. The platform provides a robust framework for token management, offering flexibility and control to meet diverse business, user, and community needs.
 
-The Coreum TokenHub empowers enterprises and users alike to create and manage Smart Tokens. With predefined behaviors and deterministic gas fees, tokens issued on Coreum are able to execute advanced, contract-like functions directly on the blockchain. The platform provides a robust framework for token management, offering flexibility and control to meet diverse business, user, and community needs.
+#### Access WebApp: https://token-hub.coreum.dev/
 
-#### https://token-hub.coreum.dev/
+## 🛠️ Documentation
 
-## 🛠️ Create
-
-### Fungible Tokens (FTs)
-
-Your Fungible Tokens will inherit features that dictate their behavior:
-
-- **Symbol:** TOKEN
-- **Subunit:** utoken
-- **Precision:** 0
-- **Initial Amount:** 0
-- **URL:** [http://example.com](http://example.com)
-- **Description:** Enter Token Description
-- **Burn Rate:** 0
-- **Send Commission Rate:** 0
-
-### 🎨 Non-Fungible Tokens (NFTs)
-
-Your Non-Fungible Tokens will be part of a collection that defines their behavior. Post creation, you can mint NFTs and transfer them:
-
-- **Name:** Collection Name
-- **Symbol:** TOKEN
-- **URI:** ipfs://
-- **URI Hash:** Enter CID
-- **Description:** Enter token description
-- **Royalties:** 0
+For detailed technical information on Smart Tokens, refer to the [documentation](https://docs.coreum.dev/docs/overview/smart-tokens).
 
 ## 🌟 Token Features
 
@@ -44,16 +20,20 @@ Your Non-Fungible Tokens will be part of a collection that defines their behavio
 - **Block Smart Contract:** 🚫 Restricts tokens to be sent only to regular user addresses, not to smart contracts.
 - **Disable Sending (NFTs):** 🛑 Prevents direct transfers of NFTs between users, encouraging the use of a DEX to ensure royalty payments to creators.
 - **Soulbound (NFTs):** 🧬 NFTs cannot be transferred except by the issuer, ideal for user-specific tokens.
+- **Clawback:** If the clawback feature is enabled on a token, then the admin of the token can confiscate up to the amount an account holds. The clawback amount cannot be more than what the user currently holds.
+- **Access Control List:** The ACL(Access Control List) provides a flexible way for asset administration and is the relationships of the chain accounts and allowed features set on the asset issuance.
 
 ## 📊 Manage
 
 View and manage the Smart Tokens you own. Connect your wallet to access and administer your assets through a public REST server that provides various endpoints for querying blockchain data.
 
+![Smart](./public/images/smart.png)
+
 ## TokenHub + Netlify
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/46648482-644c-4c80-bafb-872057e51b6b/deploy-status)](https://app.netlify.com/sites/next-dev-starter/deploys)
 
-### Getting Started
+### Getting Started (locally)
 
 First, run the development server:
 
@@ -102,6 +82,5 @@ The information provided on this platform is for general informational purposes 
 - **User Responsibility**: Users are solely responsible for ensuring that their activities comply with all applicable laws, regulations, and guidelines. Coreum does not provide legal, financial, or professional advice.
 - **No Liability**: Coreum shall not be held liable for any loss, damage, or harm arising from the use of the Coreum TokenHub, including but not limited to financial losses, legal actions, or regulatory penalties.
 - **Security and Risks**: Users acknowledge the inherent risks associated with blockchain technology, including but not limited to security vulnerabilities, technological failures, and potential misuse of tokens. Users should conduct their own due diligence and take necessary precautions.
-- **Feature Use**: The features provided by Coreum TokenHub, such as minting, burning, freezing, and whitelisting, are tools to be used at the user's discretion. Coreum does not guarantee the successful implementation or intended outcome of these features.
 
 By using the Coreum TokenHub, you agree to release Coreum from any and all liability related to your use of the platform. This disclaimer is subject to change without notice.

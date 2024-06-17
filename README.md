@@ -8,17 +8,6 @@ The Coreum TokenHub empowers enterprises and users alike to create and manage Sm
 
 #### https://token-hub.coreum.dev/
 
-## 📑 Table of Contents
-
-1. [Create](#create)
-   - [Fungible Tokens](#fungible-tokens-fts)
-   - [Non-Fungible Tokens](#non-fungible-tokens-nfts)
-2. [Send](#send)
-   - [Fungible Tokens](#sending-fungible-tokens)
-   - [Non-Fungible Tokens](#sending-non-fungible-tokens)
-3. [Token Features](#token-features)
-4. [Manage](#manage)
-
 ## 🛠️ Create
 
 ### Fungible Tokens (FTs)

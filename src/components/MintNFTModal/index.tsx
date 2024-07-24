@@ -132,6 +132,7 @@ export const MintNFTModal = () => {
     setUriHash('');
     setData('');
     setRecipient('');
+    setFileContent('');
   }, [data, nftId, recipient, uri, uriHash, fileContent]);
 
   return (

@@ -1,5 +1,8 @@
 import { useEffect, useMemo } from "react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { isBrowser } from "@/helpers/isBrowser";
+import { STORAGE_DISCLAIMER_CONFIRMED } from "@/constants";
+import { setIsDisclaimerModalOpen } from "@/features/general/generalSlice";
 
 export const ModalsHandler = () => {
   const isConnectModalOpen = useAppSelector(state => state.general.isConnectModalOpen);
@@ -30,6 +33,14 @@ export const ModalsHandler = () => {
   const isConfirmNFTDeWhitelistModalOpen = useAppSelector(state => state.general.isConfirmNFTDeWhitelistModalOpen);
   const isDisclaimerModalOpen = useAppSelector(state => state.general.isDisclaimerModalOpen);
 
+  const disclaimerConfirmed = isBrowser() && window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (disclaimerConfirmed) {
+      dispatch(setIsDisclaimerModalOpen(false));
+    }
+  }, [disclaimerConfirmed]);
 
   const isOpen = useMemo(() => {
     return isConnectModalOpen

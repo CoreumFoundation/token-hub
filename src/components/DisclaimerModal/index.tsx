@@ -32,7 +32,7 @@ export const DisclaimerModal: FC<DisclaimerModalProps> = ({ handleConfirmModal }
 
   const checkboxCx = useMemo(() => {
     return classNames('flex-none h-[22px] w-[22px] overflow-hidden border rounded-md cursor-pointer', {
-      'border-[#1B1D23]': !checkboxChecked,
+      'border-[#868991]': !checkboxChecked,
       'bg-gradient-green border-transparent': checkboxChecked,
     });
   }, [checkboxChecked]);

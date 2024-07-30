@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Modal } from "../Modal";
-import { useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { setIsDisclaimerModalOpen } from "@/features/general/generalSlice";
 import { ButtonIconType, ButtonType } from "@/shared/types";
 import { Button } from "../Button";
@@ -10,7 +10,11 @@ import classNames from "classnames";
 import { STORAGE_DISCLAIMER_CONFIRMED } from "@/constants";
 import { isBrowser } from "@/helpers/isBrowser";
 
-export const DisclaimerModal = () => {
+interface DisclaimerModalProps {
+  handleConfirmModal: () => void;
+}
+
+export const DisclaimerModal: FC<DisclaimerModalProps> = ({ handleConfirmModal }) => {
   const [checkboxChecked, setCheckboxChecked] = useState<boolean>(false);
   const isDisclaimerModalOpen = useAppSelector(state => state.general.isDisclaimerModalOpen);
 
@@ -23,6 +27,7 @@ export const DisclaimerModal = () => {
   const handleConfirm = useCallback(() => {
     isBrowser() && window.localStorage.setItem(STORAGE_DISCLAIMER_CONFIRMED, 'confirmed');
     handleCloseModal();
+    handleConfirmModal();
   }, []);
 
   const checkboxCx = useMemo(() => {
@@ -59,9 +64,6 @@ export const DisclaimerModal = () => {
                 I have read and acknowledged the Provision of Services.
               </label>
             </div>
-          </div>
-          <div>
-
           </div>
           <Button
             iconType={ButtonIconType.Check}

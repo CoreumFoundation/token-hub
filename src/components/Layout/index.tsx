@@ -7,7 +7,7 @@ import { Navbar } from "../Navbar";
 import Image from 'next/image';
 import { TabsSwitch } from "../TabsSwitch";
 import { STORAGE_DISCLAIMER_CONFIRMED, TABS_ITEMS, TABS_SWITCH_ITEMS } from "@/constants";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Tabs } from "../Tabs";
 import { usePathname } from "next/navigation";
 
@@ -64,7 +64,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [selectedTab, setSelectedTab] = useState<TabItem>(defaultTabItem || TABS_ITEMS[0]);
   const [selectedTabSwitch, setSelectedTabSwitch] = useState<TabSwitchItem>(defaultTabSwitchItem || TABS_SWITCH_ITEMS[0]);
 
-  const disclaimerConfirmed = isBrowser() && window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
+  const localDisclaimerConfirmed = isBrowser() && !!window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
+
+  const [disclaimerModalConfirmed, setDisclaimerModalConfirmed] = useState<boolean>(localDisclaimerConfirmed);
 
   useEffect(() => {
     const [, switchTab, tab] = pathname.split('/');
@@ -90,10 +92,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsMounted(true);
   }, []);
 
+  const confirmDisclaimerModal = useCallback(() => {
+    setDisclaimerModalConfirmed(true);
+  }, []);
+
   const modalsToRender = useMemo(() => {
-    if (!disclaimerConfirmed) {
+    if (!disclaimerModalConfirmed) {
       return (
-        <DisclaimerModal />
+        <DisclaimerModal handleConfirmModal={confirmDisclaimerModal} />
       );
     }
 
@@ -172,7 +178,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       default:
         return null
     }
-  }, [disclaimerConfirmed, selectedTab.id, selectedTabSwitch.id]);
+  }, [disclaimerModalConfirmed, selectedTab.id, selectedTabSwitch.id]);
 
   const tabItems = useMemo(() => {
     return TABS_ITEMS.map((tabItem: TabItem) => {

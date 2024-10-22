@@ -256,22 +256,22 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
   {
     chain_1: {
       chain_name: "coreumtestnet",
-      client_id: "07-tendermint-103",
-      connection_id: "connection-50",
+      client_id: "07-tendermint-183",
+      connection_id: "connection-90",
     },
     chain_2: {
       chain_name: "osmosistestnet",
-      client_id: "07-tendermint-3503",
-      connection_id: "connection-2018",
+      client_id: "07-tendermint-4092",
+      connection_id: "connection-3539",
     },
     channels: [
       {
         chain_1: {
-          channel_id: "channel-46",
+          channel_id: "channel-65",
           port_id: "transfer",
         },
         chain_2: {
-          channel_id: "channel-7846",
+          channel_id: "channel-9151",
           port_id: "transfer",
         },
         ordering: "unordered",

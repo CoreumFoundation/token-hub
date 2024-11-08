@@ -39,6 +39,7 @@ export const FungibleTokenCreate = () => {
   const [whitelistingEnabled, setWhitelistingEnabled] = useState<boolean>(false);
   const [ibcEnabled, setIBCEnabled] = useState<boolean>(false);
   const [blockEnabled, setBlockEnabled] = useState<boolean>(false);
+  const [clawbackEnabled, setClawbackEnabled] = useState<boolean>(false);
 
   const isConnected = useAppSelector(state => state.general.isConnected);
   const account = useAppSelector(state => state.general.account);
@@ -63,6 +64,7 @@ export const FungibleTokenCreate = () => {
     setWhitelistingEnabled(false);
     setIBCEnabled(false);
     setBlockEnabled(false);
+    setClawbackEnabled(false);
   }, []);
 
   useEffect(() => {
@@ -98,8 +100,20 @@ export const FungibleTokenCreate = () => {
       featuresArray.push(Feature.block_smart_contracts);
     }
 
+    if (clawbackEnabled){
+      featuresArray.push(Feature.clawback);
+    }
+
     return featuresArray;
-  }, [blockEnabled, burningEnabled, freezingEnabled, ibcEnabled, mintingEnabled, whitelistingEnabled]);
+  }, [
+    blockEnabled,
+    burningEnabled,
+    freezingEnabled,
+    ibcEnabled,
+    mintingEnabled,
+    whitelistingEnabled,
+    clawbackEnabled,
+  ]);
 
   const handleConnectWalletClick = useCallback(() => {
     dispatch(setIsConnectModalOpen(true));
@@ -179,10 +193,20 @@ export const FungibleTokenCreate = () => {
         return [ibcEnabled, setIBCEnabled];
       case TokenCapabilityType.Block:
         return [blockEnabled, setBlockEnabled];
+      case TokenCapabilityType.Clawback:
+        return [clawbackEnabled, setClawbackEnabled];
       default:
         return [];
     }
-  }, [blockEnabled, burningEnabled, freezingEnabled, ibcEnabled, mintingEnabled, whitelistingEnabled]);
+  }, [
+    blockEnabled,
+    burningEnabled,
+    clawbackEnabled,
+    freezingEnabled,
+    ibcEnabled,
+    mintingEnabled,
+    whitelistingEnabled,
+  ]);
 
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {

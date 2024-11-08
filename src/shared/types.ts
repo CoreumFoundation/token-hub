@@ -108,6 +108,7 @@ export enum TokenCapabilityType {
   Block = 'block_smart_contract',
   DisableSend = 'disable_send',
   Soulbound = 'soulbound',
+  Clawback = 'clawback',
 }
 
 export interface ExpandedListElem {

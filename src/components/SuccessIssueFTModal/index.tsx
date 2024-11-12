@@ -42,6 +42,8 @@ export const SuccessIssueFTModal = () => {
         return 'ibc';
       case Feature.block_smart_contracts:
         return 'block_smart_contracts';
+      case Feature.clawback:
+        return 'clawback';
       default:
         return feature;
     }

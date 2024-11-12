@@ -130,6 +130,11 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     label: 'Block Smart Contract',
     content: 'If the block smart contract feature is enabled, then the token can only be sent to regular user addresses and not smart contracts. It\'s important to point out that this doesn\'t mean that the token cannot be issued from a smart contract.',
   },
+  {
+    type: TokenCapabilityType.Clawback,
+    label: 'Clawback',
+    content: 'If the clawback feature is enabled, then the owner can reverse or “claw back” a transaction or action, typically under specific circumstances, such as if it was unauthorized, fraudulent, or mistaken.',
+  },
 ];
 
 export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [

@@ -14,6 +14,7 @@ export const ModalsHandler = () => {
   const isConfirmUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmUnfreezeModalOpen);
   const isConfirmGlobalUnfreezeModalOpen = useAppSelector(state => state.general.isConfirmGlobalUnfreezeModalOpen);
   const isConfirmWhitelistModalOpen = useAppSelector(state => state.general.isConfirmWhitelistModalOpen);
+  const isConfirmClawbackModalOpen = useAppSelector(state => state.general.isConfirmClawbackModalOpen);
   const isConfirmBurnModalOpen = useAppSelector(state => state.general.isConfirmBurnModalOpen);
   const isSelectNFTModalOpen = useAppSelector(state => state.general.isSelectNFTModalOpen);
   const isNFTCollectionViewModalOpen = useAppSelector(state => state.general.isNFTCollectionViewModalOpen);
@@ -52,6 +53,7 @@ export const ModalsHandler = () => {
       || isConfirmUnfreezeModalOpen
       || isConfirmGlobalUnfreezeModalOpen
       || isConfirmWhitelistModalOpen
+      || isConfirmClawbackModalOpen
       || isConfirmBurnModalOpen
       || isSelectNFTModalOpen
       || isNFTCollectionViewModalOpen
@@ -80,6 +82,7 @@ export const ModalsHandler = () => {
     isConfirmMintModalOpen,
     isConfirmNFTBurnModalOpen,
     isConfirmNFTDeWhitelistModalOpen,
+    isConfirmClawbackModalOpen,
     isConfirmNFTFreezeModalOpen,
     isConfirmNFTMintModalOpen,
     isConfirmNFTUnfreezeModalOpen,

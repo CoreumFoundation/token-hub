@@ -21,6 +21,7 @@ export interface GeneralState {
   isConfirmUnfreezeModalOpen: boolean;
   isConfirmGlobalUnfreezeModalOpen: boolean;
   isConfirmWhitelistModalOpen: boolean;
+  isConfirmClawbackModalOpen: boolean;
   isConfirmBurnModalOpen: boolean;
   isSelectNFTModalOpen: boolean;
   isNFTCollectionViewModalOpen: boolean;
@@ -57,6 +58,7 @@ export const initialGeneralState: GeneralState = {
   isConfirmUnfreezeModalOpen: false,
   isConfirmGlobalUnfreezeModalOpen: false,
   isConfirmWhitelistModalOpen: false,
+  isConfirmClawbackModalOpen: false,
   isConfirmBurnModalOpen: false,
   isSelectNFTModalOpen: false,
   isNFTCollectionViewModalOpen: false,
@@ -128,6 +130,9 @@ const generalSlice = createSlice({
     },
     setIsConfirmWhitelistModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmWhitelistModalOpen = action.payload;
+    },
+    setIsConfirmClawbackModalOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmClawbackModalOpen = action.payload;
     },
     setIsConfirmBurnModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmBurnModalOpen = action.payload;
@@ -201,6 +206,7 @@ export const {
   setIsConfirmUnfreezeModalOpen,
   setIsConfirmGlobalUnfreezeModalOpen,
   setIsConfirmWhitelistModalOpen,
+  setIsConfirmClawbackModalOpen,
   setIsConfirmBurnModalOpen,
   setIsSelectNFTModalOpen,
   setIsNFTCollectionViewModalOpen,

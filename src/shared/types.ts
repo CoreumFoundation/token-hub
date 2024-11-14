@@ -74,6 +74,7 @@ export enum TabItemType {
   Freeze = 'freeze',
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
+  Clawback = 'clawback',
 };
 
 export enum TabSwitchItemType {
@@ -210,6 +211,7 @@ export enum ConfirmationModalImageType {
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
   Burn = 'burn',
+  Clawback = 'clawback',
 }
 
 export enum AlertType {

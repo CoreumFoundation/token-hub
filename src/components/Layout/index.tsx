@@ -47,6 +47,7 @@ import { ViewNFTCollectionModal } from "../ViewNFTCollectionModal";
 import { WhitelistNFTModal } from "../WhitelistNFTModal";
 import { DisclaimerModal } from "../DisclaimerModal";
 import { isBrowser } from "@/helpers/isBrowser";
+import { ConfirmClawbackModal } from "../ConfirmClawbackModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -132,6 +133,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <ConfirmUnfreezeModal />
                 <ConfirmGlobalUnfreezeModal />
                 <ConfirmWhitelistModal />
+                <ConfirmClawbackModal />
               </>
             );
           default:

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
-import { setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmClawbackModalOpen, setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { ChainInfo, TabItem, TabItemType } from "@/shared/types";
 import { Tabs } from "../Tabs";
 import { MintTokens } from "../MintTokens";
@@ -17,6 +17,8 @@ import { setUnfreezeAmount, setUnfreezeWalletAddress } from "@/features/unfreeze
 import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitelist/whitelistSlice";
 import { getManageFTTabs } from "@/helpers/getManageFtTabs";
 import { validateAddress } from "@/helpers/validateAddress";
+import { ClawbackTokens } from "../ClawbackTokens";
+import { setClawbackAmount, setClawbackWalletAddress } from "@/features/clawback/clawbackSlice";
 
 export const ManageTokensModal = () => {
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
@@ -104,6 +106,14 @@ export const ManageTokensModal = () => {
     handleClearState();
   }, [amount, walletAddress]);
 
+  const handleClawbackTokens = useCallback(() => {
+    dispatch(setClawbackAmount(amount));
+    dispatch(setClawbackWalletAddress(walletAddress));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmClawbackModalOpen(true));
+    handleClearState();
+  }, [amount, walletAddress]);
+
   const renderTitle = useMemo(() => {
     if (!manageFtTokensTabs.length) {
       return null;
@@ -182,6 +192,18 @@ export const ManageTokensModal = () => {
             walletAddress={walletAddress}
             setWalletAddress={setWalletAddress}
             handleWhitelistTokens={handleWhitelistTokens}
+            walletAddressValidationError={walletAddressValidationError}
+          />
+        );
+      case TabItemType.Clawback:
+        return (
+          <ClawbackTokens
+            selectedCurrency={selectedCurrency}
+            clawbackAmount={amount}
+            setClawbackAmount={setAmount}
+            walletAddress={walletAddress}
+            setWalletAddress={setWalletAddress}
+            handleClawbackTokens={handleClawbackTokens}
             walletAddressValidationError={walletAddressValidationError}
           />
         );

@@ -244,6 +244,10 @@ export const MANAGE_FT_TOKENS_TABS = {
   'whitelisting': {
     id: TabItemType.Whitelist,
     label: 'Whitelist',
+  },
+  'clawback': {
+    id: TabItemType.Clawback,
+    label: 'Clawback',
   }
 };
 

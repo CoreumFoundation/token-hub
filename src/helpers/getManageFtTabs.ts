@@ -13,6 +13,7 @@ export const getManageFTTabs = (currency: Token | null) => {
     switch (feature) {
       case 'minting':
       case 'whitelisting':
+      case 'clawback':
         resultTabs.push(MANAGE_FT_TOKENS_TABS[feature]);
         break;
       case 'freezing':
@@ -44,6 +45,7 @@ export const getFTCurrencyOptions = (currency: Token) => {
       case 'minting':
       case 'freezing':
       case 'whitelisting':
+      case 'clawback':
         isTokenManageable = true;
       case 'burning':
         isBurnEnabled = true;

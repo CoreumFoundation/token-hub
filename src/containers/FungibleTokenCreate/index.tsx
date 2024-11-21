@@ -13,13 +13,15 @@ import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconTyp
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
-import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
+import { FT, Feature, convertStringToAny, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";
 import { setIssuedToken, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { ExtensionFungibleTokenSettings } from "@/components/ExtensionFungibleTokenSettings";
+import { clearExtensionState } from "@/features/extension/extensionSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -40,6 +42,12 @@ export const FungibleTokenCreate = () => {
   const [ibcEnabled, setIBCEnabled] = useState<boolean>(false);
   const [blockEnabled, setBlockEnabled] = useState<boolean>(false);
   const [clawbackEnabled, setClawbackEnabled] = useState<boolean>(false);
+  const [extensionEnabled, setExtensionEnabled] = useState<boolean>(false);
+
+  const extensionCodeId = useAppSelector(state => state.extension.codeId);
+  const extensionLabel = useAppSelector(state => state.extension.label);
+  const extensionFunds = useAppSelector(state => state.extension.funds);
+  const extensionIssuanceMsg = useAppSelector(state => state.extension.issuanceMsg);
 
   const isConnected = useAppSelector(state => state.general.isConnected);
   const account = useAppSelector(state => state.general.account);
@@ -65,12 +73,17 @@ export const FungibleTokenCreate = () => {
     setIBCEnabled(false);
     setBlockEnabled(false);
     setClawbackEnabled(false);
+    dispatch(clearExtensionState());
   }, []);
 
   useEffect(() => {
     if (!isConnected) {
       handleClearState();
     }
+
+    return () => {
+      handleClearState();
+    };
   }, [isConnected]);
 
   const featuresToApply = useMemo(() => {
@@ -104,6 +117,10 @@ export const FungibleTokenCreate = () => {
       featuresArray.push(Feature.clawback);
     }
 
+    if (extensionEnabled) {
+      featuresArray.push(Feature.extension);
+    }
+
     return featuresArray;
   }, [
     blockEnabled,
@@ -113,6 +130,7 @@ export const FungibleTokenCreate = () => {
     mintingEnabled,
     whitelistingEnabled,
     clawbackEnabled,
+    extensionEnabled,
   ]);
 
   const handleConnectWalletClick = useCallback(() => {
@@ -122,6 +140,15 @@ export const FungibleTokenCreate = () => {
   const handleIssueFTToken = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
+      const extensionSettings = {
+        codeId: extensionCodeId,
+        label: extensionLabel,
+        funds: extensionFunds,
+        issuanceMsg: new TextEncoder().encode(extensionIssuanceMsg),
+      };
+
+      console.log({ extensionSettings });
+
       const issueFTMsg = FT.Issue({
         issuer: account,
         symbol,
@@ -133,6 +160,9 @@ export const FungibleTokenCreate = () => {
         burnRate: parseFloatToRoyaltyRate(burnRate),
         sendCommissionRate: parseFloatToRoyaltyRate(sendCommissionRate),
         uri: url,
+        ...(extensionEnabled && {
+          extensionSettings,
+        })
       });
 
       const txFee = await getTxFee([issueFTMsg]);
@@ -165,18 +195,24 @@ export const FungibleTokenCreate = () => {
     }
     dispatch(setIsTxExecuting(false));
   }, [
-    account,
-    description,
     featuresToApply,
-    getTxFee,
-    initialAmount,
-    precision,
-    signingClient,
-    subunit,
+    account,
     symbol,
+    subunit,
+    precision,
+    initialAmount,
+    description,
     burnRate,
     sendCommissionRate,
     url,
+    extensionEnabled,
+    extensionCodeId,
+    extensionLabel,
+    extensionFunds,
+    extensionIssuanceMsg,
+    getTxFee,
+    signingClient,
+    handleClearState,
   ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
@@ -195,6 +231,8 @@ export const FungibleTokenCreate = () => {
         return [blockEnabled, setBlockEnabled];
       case TokenCapabilityType.Clawback:
         return [clawbackEnabled, setClawbackEnabled];
+      case TokenCapabilityType.Extension:
+        return [extensionEnabled, setExtensionEnabled];
       default:
         return [];
     }
@@ -206,24 +244,8 @@ export const FungibleTokenCreate = () => {
     ibcEnabled,
     mintingEnabled,
     whitelistingEnabled,
+    extensionEnabled,
   ]);
-
-  const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
-    return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
-      const [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
-
-      return {
-        id: tokenCapability.type,
-        content: (
-          <TokenCapability
-            {...tokenCapability}
-            enabled={enabled || false}
-            setEnabled={setEnabled ? setEnabled : () => {}}
-          />
-        ),
-      };
-    });
-  }, [getTokenStateItem]);
 
   const isEnteredSymbolValid = useMemo(() => {
     if (!symbol.length) {
@@ -328,6 +350,30 @@ export const FungibleTokenCreate = () => {
     isPrecisionValid?.length,
     isDescriptionValid.length,
   ]);
+
+  const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
+    return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
+      const [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
+
+      const tokenCapabilityProps = {
+        ...tokenCapability,
+        enabled: enabled || false,
+        setEnabled: setEnabled ? setEnabled : () => {},
+        ...(tokenCapability.type === TokenCapabilityType.Extension && {
+          extensionSettings: <ExtensionFungibleTokenSettings />,
+        }),
+      };
+
+      return {
+        id: tokenCapability.type,
+        content: (
+          <TokenCapability
+            {...tokenCapabilityProps}
+          />
+        ),
+      };
+    });
+  }, [getTokenStateItem]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {

@@ -110,6 +110,7 @@ export enum TokenCapabilityType {
   DisableSend = 'disable_send',
   Soulbound = 'soulbound',
   Clawback = 'clawback',
+  Extension = 'extension',
 }
 
 export interface ExpandedListElem {
@@ -189,12 +190,12 @@ export interface Token {
   precision: number;
   description?: string;
   globally_frozen?: boolean;
-  // TODO: update type to have strict usage of FEATURES from FT
   features?: string[];
   burn_rate?: string;
   send_commission_rate?: string;
   uri?: string;
   uri_hash?: string;
+  amount?: string;
 }
 
 export interface ActionItem {

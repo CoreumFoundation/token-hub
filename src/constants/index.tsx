@@ -135,6 +135,11 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     label: 'Clawback',
     content: 'If the clawback feature is enabled, then the owner can reverse or “claw back” a transaction or action, typically under specific circumstances, such as if it was unauthorized, fraudulent, or mistaken.',
   },
+  {
+    type: TokenCapabilityType.Extension,
+    label: 'Extension',
+    content: 'If the smart token extension is enabled, each token transfer will trigger a smart contract executing custom logic before the token reaches the recipient.',
+  },
 ];
 
 export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [

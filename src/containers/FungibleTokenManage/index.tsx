@@ -10,7 +10,6 @@ import { setIsBurnCurrencyModalOpen, setIsConnectModalOpen, setIsManageCurrencyM
 import { ButtonType, ButtonIconType, Token, GeneralIconType } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { FungibleTokenRow } from "@/components/FungibleTokenRow";
-import { Coin } from "@cosmjs/amino";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { Spinner } from "@/components/Spinner";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
@@ -66,7 +65,7 @@ export const FungibleTokenManage = () => {
         return (
           <div className="flex flex-col w-full gap-3">
             {currencies.map((currency: Token) => {
-              const currentTokenBalance = balances.find((item: Coin) => item.denom === currency.denom);
+              const currentTokenBalance = balances.find((item: Token) => item.denom === currency.denom);
               const [isBurnable, isManageable] = getFTCurrencyOptions(currency);
 
               return (

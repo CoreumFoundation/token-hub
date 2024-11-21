@@ -1,5 +1,6 @@
 import { COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
 import { Network, Token } from '@/shared/types';
+import { Coin } from '@cosmjs/proto-signing';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { Feature } from 'coreum-js';
@@ -44,6 +45,46 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
   },
 );
 
+interface FetchSecondaryCurrenciesInfo {
+  network: Network;
+  currencies: Coin[];
+}
+
+export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
+  'currencies/fetchSecondaryCurrenciesInfo',
+  async ({ network, currencies }: FetchSecondaryCurrenciesInfo) => {
+    if (!currencies.length) {
+      return [];
+    }
+
+    const tokenInfoRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`;
+
+    const resultAssets: Token[] = [];
+    for (const asset of currencies) {
+      if (asset.denom.includes('ibc/')) {
+        continue;
+      }
+
+      try {
+        const {
+          data: {
+            token,
+          },
+        }: AxiosResponse<{ token: Token; }> = await axios.get(`${tokenInfoRequestUrl}/${asset.denom}`);
+
+        resultAssets.push({
+          ...token,
+          amount: asset.amount,
+        })
+      } catch (error) {
+        console.log({ error });
+      }
+    }
+
+    return resultAssets;
+  },
+);
+
 interface IssuedTokenType {
   symbol: string;
   subunit: string;
@@ -60,6 +101,7 @@ interface IssuedTokenType {
 export interface CurrenciesState {
   isLoading: boolean;
   list: Token[];
+  secondaryList: Token[];
   issuedList: Token[];
   isFetched: boolean;
   selectedCurrency: Token | null;
@@ -70,6 +112,7 @@ export interface CurrenciesState {
 export const initialCurrenciesState: CurrenciesState = {
   isLoading: false,
   list: [COREUM_TOKEN_TESTNET],
+  secondaryList: [],
   issuedList: [],
   isFetched: false,
   selectedCurrency: null,
@@ -112,6 +155,19 @@ const currenciesSlice = createSlice({
       state.list = action.payload;
       state.isLoading = false;
       state.issuedList = action.payload.length === 1 ? [] : action.payload.slice(1);
+    })
+
+    builder.addCase(fetchSecondaryCurrenciesInfo.pending, (state) => {
+      state.isLoading = true;
+    })
+    builder.addCase(fetchSecondaryCurrenciesInfo.rejected, (state, action) => {
+      state.list = action.payload as Token[];
+      state.isLoading = false;
+      state.issuedList = [];
+    })
+    builder.addCase(fetchSecondaryCurrenciesInfo.fulfilled, (state, action) => {
+      state.secondaryList = action.payload;
+      state.isLoading = false;
     })
   },
 });

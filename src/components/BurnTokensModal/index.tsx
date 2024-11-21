@@ -7,11 +7,10 @@ import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
 import { setIsBurnCurrencyModalOpen, setIsConfirmBurnModalOpen } from "@/features/general/generalSlice";
 import { Input } from "../Input";
 import { GeneralIcon } from "@/assets/GeneralIcon";
-import { ButtonType, GeneralIconType } from "@/shared/types";
+import { ButtonType, GeneralIconType, Token } from "@/shared/types";
 import { Button } from "../Button";
 import { setBurnAmount } from "@/features/burn/burnSlice";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
-import { Coin } from "@cosmjs/proto-signing";
 import Big from "big.js";
 
 export const BurnTokensModal = () => {
@@ -22,7 +21,7 @@ export const BurnTokensModal = () => {
   const balances = useAppSelector(state => state.balances.list);
 
   const currentCurrencyBalance = useMemo(() => {
-    return balances.find((balanceItem: Coin) => balanceItem.denom === selectedCurrency?.denom);
+    return balances.find((balanceItem: Token) => balanceItem.denom === selectedCurrency?.denom);
   }, [balances, selectedCurrency]);
 
   const availableBalance = useMemo(() => {

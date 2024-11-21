@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Coin } from "@cosmjs/amino";
+import { Token } from '@/shared/types';
 
 export interface BalancesState {
-  list: Coin[];
+  list: Token[];
   shouldRefetch: boolean;
 }
 
@@ -15,7 +16,7 @@ const balancesSlice = createSlice({
   name: 'balances',
   initialState: initialBalancesState,
   reducers: {
-    setBalances(state, action: PayloadAction<Coin[]>) {
+    setBalances(state, action: PayloadAction<Token[]>) {
       state.list = action.payload;
     },
     shouldRefetchBalances(state, action: PayloadAction<boolean>) {

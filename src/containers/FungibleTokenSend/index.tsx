@@ -17,14 +17,11 @@ import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { AlertType, ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Network, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Coin } from "@cosmjs/amino";
 import Big from "big.js";
 import { Bank, FT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { setSelectedCurrency as setSelectedFTCurrency } from "@/features/currencies/currenciesSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
-import { MsgTransfer } from "cosmjs-types/ibc/applications/transfer/v1/tx";
-import { MsgTransferEncodeObject } from "@cosmjs/stargate";
 import { getSendFTviaIBCMsg } from "@/helpers/getSendFTviaIBCMsg";
 
 export const FungibleTokenSend = () => {
@@ -93,7 +90,7 @@ export const FungibleTokenSend = () => {
   }, [currencies, selectedCurrency]);
 
   const currentCurrencyBalance = useMemo(() => {
-    return balances.find((balanceItem: Coin) => balanceItem.denom === selectedCurrency?.id);
+    return balances.find((balanceItem: Token) => balanceItem.denom === selectedCurrency?.id);
   }, [balances, selectedCurrency]);
 
   const availableBalance = useMemo(() => {

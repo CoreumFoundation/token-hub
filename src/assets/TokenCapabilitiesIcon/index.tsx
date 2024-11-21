@@ -228,6 +228,36 @@ export const TokenCapabilitiesIcon: FC<TokenCapabilitiesIconProps> = ({
           </defs>
         </svg>
       );
+      case TokenCapabilityType.Extension:
+        return (
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_di_130_5197)">
+              <path fillRule="evenodd" clipRule="evenodd" d="M17.2038 20.6789L14.2948 23.5878C14.1124 23.7588 13.8645 23.7466 13.709 23.5911L10.4938 20.3759C10.291 20.1731 10.356 19.8226 10.6202 19.7077C11.7373 19.2284 11.9786 17.6947 11.1397 16.8559C10.3017 16.0179 8.7541 16.2874 8.28756 17.376C8.17634 17.6412 7.82106 17.7032 7.6197 17.5018L4.40451 14.2866C4.24517 14.1273 4.24547 13.8703 4.40482 13.711L7.3251 10.7827C5.89297 9.8713 5.24183 7.94593 6.59636 6.5914C7.9347 5.25305 9.83566 5.87723 10.7939 7.31461L13.709 4.39958L13.7119 4.39655C13.8545 4.25015 14.1309 4.2461 14.2846 4.39986L17.2129 7.32015C17.3751 7.06538 17.5292 6.81369 17.7443 6.59866C18.7538 5.58912 20.3967 5.58393 21.4042 6.5914C22.3553 7.54255 22.3893 9.06122 21.4211 10.2217C21.2164 10.4674 20.957 10.6283 20.6927 10.8006L23.5926 13.7006C23.7552 13.8748 23.7431 14.1395 23.596 14.2866L20.675 17.2077C20.9299 17.3699 21.1818 17.5242 21.3969 17.7393C22.3956 18.738 22.4054 20.398 21.4042 21.3992C20.4029 22.4006 18.7433 22.391 17.7443 21.392C17.532 21.1797 17.372 20.9257 17.2038 20.6789Z" fill="url(#paint0_linear_130_5197)"/>
+            </g>
+            <defs>
+              <filter id="filter0_di_130_5197" x="0.285156" y="0.285645" width="27.4258" height="27.4263" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset/>
+                <feGaussianBlur stdDeviation="2"/>
+                <feComposite in2="hardAlpha" operator="out"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.24 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_130_5197"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_130_5197" result="shape"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dy="0.5"/>
+                <feGaussianBlur stdDeviation="2"/>
+                <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.56 0"/>
+                <feBlend mode="normal" in2="shape" result="effect2_innerShadow_130_5197"/>
+              </filter>
+              <linearGradient id="paint0_linear_130_5197" x1="13.9978" y1="4.28564" x2="13.9978" y2="23.7119" gradientUnits="userSpaceOnUse">
+                <stop stopColor="white"/>
+                <stop offset="1" stopColor="#5E6773"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        );
     default:
       return null;
   }

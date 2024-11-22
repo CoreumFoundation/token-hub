@@ -321,6 +321,52 @@ export const FungibleTokenCreate = () => {
     return '';
   }, [description]);
 
+  const isEnteredCodeIdValid = useMemo(() => {
+    if (!extensionEnabled) {
+      return '';
+    }
+
+    if (!extensionCodeId.length) {
+      return 'Extension\'s code id cannot be empty';
+    }
+
+    if (!Number.isInteger(Number(extensionCodeId))) {
+      return 'Extension\'s code id must be an integer';
+    }
+
+    return '';
+  }, [extensionCodeId, extensionEnabled]);
+
+  const isEnteredLabelValid = useMemo(() => {
+    if (!extensionLabel.length) {
+      return 'Extension\'s label cannot be empty';
+    }
+
+    return '';
+  }, [extensionLabel.length]);
+
+  const isIssuanceMsgValid = useMemo(() => {
+    if (!extensionIssuanceMsg.length) {
+      return '';
+    }
+
+    try {
+      JSON.parse(extensionIssuanceMsg);
+    } catch (error) {
+      return 'Extension\'s issuance message must be a valid JSON';
+    }
+
+    return '';
+  }, [extensionIssuanceMsg]);
+
+  const isExtenstionSettingsValid = useMemo(() => {
+    if (extensionEnabled) {
+      return !isIssuanceMsgValid.length && !isEnteredLabelValid.length && !isEnteredCodeIdValid.length;
+    }
+
+    return true;
+  }, [extensionEnabled, isEnteredCodeIdValid.length, isEnteredLabelValid.length, isIssuanceMsgValid.length]);
+
   const isFormValid = useMemo(() => {
     if (
       symbol.length
@@ -333,6 +379,7 @@ export const FungibleTokenCreate = () => {
       && !isURLValid.length
       && !isPrecisionValid?.length
       && !isDescriptionValid.length
+      && isExtenstionSettingsValid
     ) {
       return true;
     }
@@ -349,6 +396,7 @@ export const FungibleTokenCreate = () => {
     isURLValid.length,
     isPrecisionValid?.length,
     isDescriptionValid.length,
+    isExtenstionSettingsValid,
   ]);
 
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
@@ -399,6 +447,7 @@ export const FungibleTokenCreate = () => {
       />
     );
   }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
+
 
   return (
     <div className="flex flex-col gap-9 sm:gap-10 scroll-smooth">

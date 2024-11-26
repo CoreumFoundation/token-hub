@@ -399,14 +399,38 @@ export const FungibleTokenCreate = () => {
     isExtenstionSettingsValid,
   ]);
 
+  const handleSetBlockEnabled = useCallback((value: boolean) => {
+    if (value) {
+      setBlockEnabled(value);
+      setExtensionEnabled(false);
+    } else {
+      setBlockEnabled(false);
+    }
+  }, []);
+
+  const handleSetExtensionEnabled = useCallback((value: boolean) => {
+    if (value) {
+      setExtensionEnabled(value);
+      setBlockEnabled(false);
+    } else {
+      setExtensionEnabled(false);
+    }
+  }, []);
+
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
-      const [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
+      let [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
 
       const tokenCapabilityProps = {
         ...tokenCapability,
         enabled: enabled || false,
-        setEnabled: setEnabled ? setEnabled : () => {},
+        setEnabled: tokenCapability.type === TokenCapabilityType.Block
+          ? handleSetBlockEnabled
+          : (
+            tokenCapability.type === TokenCapabilityType.Extension
+              ? handleSetExtensionEnabled
+              : setEnabled ? setEnabled : () => {}
+          ),
         ...(tokenCapability.type === TokenCapabilityType.Extension && {
           extensionSettings: <ExtensionFungibleTokenSettings />,
         }),

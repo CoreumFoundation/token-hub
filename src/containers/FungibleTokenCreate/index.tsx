@@ -157,8 +157,8 @@ export const FungibleTokenCreate = () => {
         initialAmount: convertUnitToSubunit({ amount: initialAmount, precision: Number(precision)}),
         description,
         features: featuresToApply,
-        burnRate: parseFloatToRoyaltyRate(burnRate),
-        sendCommissionRate: parseFloatToRoyaltyRate(sendCommissionRate),
+        burnRate: parseFloatToRoyaltyRate(burnRate.length ? burnRate : '0'),
+        sendCommissionRate: parseFloatToRoyaltyRate(sendCommissionRate.length ? sendCommissionRate : '0'),
         uri: url,
         ...(extensionEnabled && {
           extensionSettings,

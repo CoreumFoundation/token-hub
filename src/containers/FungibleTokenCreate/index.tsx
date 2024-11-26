@@ -21,7 +21,7 @@ import { setIssuedToken, shouldRefetchCurrencies } from "@/features/currencies/c
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { ExtensionFungibleTokenSettings } from "@/components/ExtensionFungibleTokenSettings";
-import { clearExtensionState } from "@/features/extension/extensionSlice";
+import { clearExtensionState, ExtensionToken } from "@/features/extension/extensionSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -137,17 +137,19 @@ export const FungibleTokenCreate = () => {
     dispatch(setIsConnectModalOpen(true));
   }, []);
 
+  const extensionFundsToApply = useMemo(() => {
+    return extensionFunds.filter((item: ExtensionToken) => item.amount?.length && +item.amount > 0);
+  }, [extensionFunds]);
+
   const handleIssueFTToken = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
       const extensionSettings = {
         codeId: extensionCodeId,
         label: extensionLabel,
-        funds: extensionFunds,
+        funds: extensionFundsToApply,
         issuanceMsg: new TextEncoder().encode(extensionIssuanceMsg),
       };
-
-      console.log({ extensionSettings });
 
       const issueFTMsg = FT.Issue({
         issuer: account,

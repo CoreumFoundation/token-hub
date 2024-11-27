@@ -7,6 +7,7 @@ import { addFundToExtensionFunds, ExtensionToken, setExtensionCodeId, setExtensi
 import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
+import { getNumberRegex } from "@/helpers/getNumberRegex";
 
 export const ExtensionFungibleTokenSettings = () => {
   const balances = useAppSelector(state => state.balances.list);
@@ -74,7 +75,13 @@ export const ExtensionFungibleTokenSettings = () => {
   }, [assetsBalances, funds]);
 
   const handleUpdateTokenAmount = useCallback((token: ExtensionToken, updatedAmount: string) => {
-    dispatch(updateFundInExtensionFunds({ ...token, amount: updatedAmount }));
+    const currentValue = updatedAmount.replaceAll(',', '');
+
+    if (!updatedAmount.length) {
+      dispatch(updateFundInExtensionFunds({ ...token, amount: '' }));
+    } else if (getNumberRegex(token.precision).test(currentValue)) {
+      dispatch(updateFundInExtensionFunds({ ...token, amount: updatedAmount }));
+    }
   }, []);
 
   const assetsBalancesToDropdownItems: DropdownItem[] = useMemo(() => {
@@ -147,12 +154,26 @@ export const ExtensionFungibleTokenSettings = () => {
               : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
           };
 
+          const renderFormattedValue = () => {
+            if (token.amount?.length) {
+              const [integerPart, decimalPart] = token.amount.split('.');
+              const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              const formattedValue = decimalPart !== undefined
+                ? `${formattedIntegerPart}.${decimalPart.slice(0, token.precision)}`
+                : formattedIntegerPart;
+
+              return formattedValue;
+            }
+
+            return token.amount;
+          };
+
           if (index === 0) {
             return (
               <div className="flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]" key={`${token.denom}-${index}`}>
                 <input
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
-                  value={token.amount}
+                  value={renderFormattedValue()}
                   onChange={(e) => handleUpdateTokenAmount(token, e.target.value)}
                 />
                 <div className="flex-none">

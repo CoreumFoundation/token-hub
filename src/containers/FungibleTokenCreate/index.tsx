@@ -138,7 +138,14 @@ export const FungibleTokenCreate = () => {
   }, []);
 
   const extensionFundsToApply = useMemo(() => {
-    return extensionFunds.filter((item: ExtensionToken) => item.amount?.length && +item.amount > 0);
+    return extensionFunds
+      .filter((item: ExtensionToken) => item.amount?.length && +item.amount > 0)
+      .map((item: ExtensionToken) => {
+        return {
+          ...item,
+          amount: convertUnitToSubunit({ amount: item.amount!, precision: item.precision }),
+        };
+      });
   }, [extensionFunds]);
 
   const handleIssueFTToken = useCallback(async () => {
@@ -215,6 +222,7 @@ export const FungibleTokenCreate = () => {
     getTxFee,
     signingClient,
     handleClearState,
+    extensionFundsToApply,
   ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {

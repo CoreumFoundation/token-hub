@@ -76,15 +76,16 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
 
     const resultAssets: Token[] = [];
     for (const asset of currencies) {
-      if (asset.denom.includes('ibc/')) {
-        const assetInRegistry = assets.find((item: AssetRegistry) => item.denom.toLowerCase() === asset.denom.toLowerCase());
+      const assetInRegistry = assets.find((item: AssetRegistry) => item.denom.toLowerCase() === asset.denom.toLowerCase());
 
+      if (asset.denom.includes('ibc/')) {
         if (assetInRegistry) {
           resultAssets.push({
             ...asset,
             symbol: assetInRegistry.extra.ibc_info?.display_name || asset.denom,
             precision: assetInRegistry.extra.ibc_info?.precision || 0,
             subunit: asset.denom,
+            iconSvg: assetInRegistry.logo_URIs.svg,
           });
           continue;
         }
@@ -108,6 +109,7 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
         resultAssets.push({
           ...token,
           amount: asset.amount,
+          ...(assetInRegistry && { iconSvg: assetInRegistry.logo_URIs.svg }),
         })
       } catch (error) {
         console.log({ error });

@@ -16,6 +16,7 @@
     "@cosmjs/stargate": "^0.32.3",
     "@headlessui/react": "^1.7.19",
     "@reduxjs/toolkit": "^2.2.3",
+    "@svgr/webpack": "^8.1.0",
     "@types/axios": "^0.14.0",
     "@types/big.js": "^6.2.2",
     "axios": "^1.6.8",

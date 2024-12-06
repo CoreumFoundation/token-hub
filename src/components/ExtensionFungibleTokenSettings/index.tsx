@@ -8,6 +8,7 @@ import { Dropdown } from "../Dropdown";
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { getNumberRegex } from "@/helpers/getNumberRegex";
+import Image from "next/image";
 
 interface ExtensionFungibleTokenSettingsProps {
   tokenToBeIssued: ExtensionToken | null;
@@ -110,7 +111,10 @@ export const ExtensionFungibleTokenSettings: FC<ExtensionFungibleTokenSettingsPr
         label: token.symbol,
         icon: (token.denom === 'utestcore' || token.denom === 'ucore')
           ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
-          : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
+          : (token.iconSvg
+            ? <Image src={token.iconSvg} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
+            : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
+          )
       };
     });
   }, [completedAssetsBalances]);
@@ -170,7 +174,10 @@ export const ExtensionFungibleTokenSettings: FC<ExtensionFungibleTokenSettingsPr
             label: token.symbol,
             icon: (token.denom === 'utestcore' || token.denom === 'ucore')
               ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
-              : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
+              : (token.iconSvg
+                ? <Image src={token.iconSvg} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
+                : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
+              )
           };
 
           const renderFormattedValue = () => {

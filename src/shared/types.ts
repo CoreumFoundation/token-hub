@@ -193,6 +193,7 @@ export interface Token {
   uri?: string;
   uri_hash?: string;
   amount?: string;
+  iconSvg?: string;
 }
 
 export interface ActionItem {

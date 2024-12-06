@@ -80,7 +80,6 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
         const assetInRegistry = assets.find((item: AssetRegistry) => item.denom.toLowerCase() === asset.denom.toLowerCase());
 
         if (assetInRegistry) {
-          console.log({ assetInRegistry });
           resultAssets.push({
             ...asset,
             symbol: assetInRegistry.extra.ibc_info?.display_name || asset.denom,

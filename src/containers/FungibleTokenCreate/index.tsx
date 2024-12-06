@@ -427,6 +427,21 @@ export const FungibleTokenCreate = () => {
     }
   }, []);
 
+  const tokenToBeIssued = useMemo(() => {
+    if (!(subunit.length && symbol.length && initialAmount.length && precision.length)) {
+      return null;
+    }
+
+    return {
+      denom: subunit,
+      symbol,
+      amount: '',
+      balance: initialAmount,
+      precision: +precision,
+      subunit,
+    };
+  }, [initialAmount, precision, subunit, symbol]);
+
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
       let [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
@@ -442,7 +457,7 @@ export const FungibleTokenCreate = () => {
               : setEnabled ? setEnabled : () => {}
           ),
         ...(tokenCapability.type === TokenCapabilityType.Extension && {
-          extensionSettings: <ExtensionFungibleTokenSettings />,
+          extensionSettings: <ExtensionFungibleTokenSettings tokenToBeIssued={tokenToBeIssued} />,
         }),
       };
 
@@ -455,7 +470,7 @@ export const FungibleTokenCreate = () => {
         ),
       };
     });
-  }, [getTokenStateItem]);
+  }, [getTokenStateItem, tokenToBeIssued]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {

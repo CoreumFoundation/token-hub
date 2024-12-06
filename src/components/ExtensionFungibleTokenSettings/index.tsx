@@ -1,5 +1,5 @@
 import { AlertType, DropdownItem, DropdownType, GeneralIconType, Token } from "@/shared/types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { TextArea } from "../TextArea";
 import { Input } from "../Input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -9,7 +9,13 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { getNumberRegex } from "@/helpers/getNumberRegex";
 
-export const ExtensionFungibleTokenSettings = () => {
+interface ExtensionFungibleTokenSettingsProps {
+  tokenToBeIssued: ExtensionToken | null;
+}
+
+export const ExtensionFungibleTokenSettings: FC<ExtensionFungibleTokenSettingsProps> = ({
+  tokenToBeIssued,
+}) => {
   const balances = useAppSelector(state => state.balances.list);
   const secondaryCurrencyBalances = useAppSelector(state => state.currencies.secondaryList);
 
@@ -64,28 +70,41 @@ export const ExtensionFungibleTokenSettings = () => {
     });
   }, [balances, secondaryCurrencyBalances]);
 
+  const completedAssetsBalances = useMemo(() => {
+    if (tokenToBeIssued) {
+      return [tokenToBeIssued, ...assetsBalances];
+    }
+
+    return assetsBalances;
+  }, [assetsBalances, tokenToBeIssued]);
+
   useEffect(() => {
-    if (assetsBalances.length && !funds.length) {
+    if (completedAssetsBalances.length && !funds.length) {
       dispatch(setExtensionFunds([{ ...assetsBalances[0] }]));
     }
-  }, [assetsBalances, funds]);
+  }, [completedAssetsBalances, funds]);
 
   const handleAddExtensionFunds = useCallback(() => {
-    dispatch(addFundToExtensionFunds(assetsBalances[funds.length - 1]))
-  }, [assetsBalances, funds]);
+    const pendingAssets = completedAssetsBalances.filter((item: ExtensionToken) =>
+      !funds.find((fund: ExtensionToken) => fund.denom.toLowerCase() === item.denom.toLowerCase()));
+
+    if (pendingAssets.length) {
+      dispatch(addFundToExtensionFunds(pendingAssets[0]))
+    }
+  }, [completedAssetsBalances, funds]);
 
   const handleUpdateTokenAmount = useCallback((token: ExtensionToken, updatedAmount: string) => {
     const currentValue = updatedAmount.replaceAll(',', '');
 
-    if (!updatedAmount.length) {
+    if (!currentValue.length) {
       dispatch(updateFundInExtensionFunds({ ...token, amount: '' }));
     } else if (getNumberRegex(token.precision).test(currentValue)) {
-      dispatch(updateFundInExtensionFunds({ ...token, amount: updatedAmount }));
+      dispatch(updateFundInExtensionFunds({ ...token, amount: currentValue }));
     }
   }, []);
 
   const assetsBalancesToDropdownItems: DropdownItem[] = useMemo(() => {
-    return assetsBalances.map((token: ExtensionToken) => {
+    return completedAssetsBalances.map((token: ExtensionToken) => {
       return {
         id: token.denom,
         label: token.symbol,
@@ -94,10 +113,10 @@ export const ExtensionFungibleTokenSettings = () => {
           : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
       };
     });
-  }, [assetsBalances]);
+  }, [completedAssetsBalances]);
 
   const onSelectCurrencyInDropdown = useCallback((newValue: DropdownItem, prevToken: ExtensionToken, index: number) => {
-    const fundToSet = assetsBalances.find((item: ExtensionToken) => item.denom === newValue.id);
+    const fundToSet = completedAssetsBalances.find((item: ExtensionToken) => item.denom === newValue.id);
     const indexOfFundToReplace = funds.indexOf(prevToken);
 
     if (indexOfFundToReplace === -1 || !fundToSet) {
@@ -129,7 +148,7 @@ export const ExtensionFungibleTokenSettings = () => {
         ...funds.slice(indexOfFundToReplace + 1)],
       )
     );
-  }, [assetsBalances, dispatch, funds]);
+  }, [completedAssetsBalances, funds]);
 
   const handleRemoveFundFromFundsList = useCallback((token: ExtensionToken) => {
     const indexOfFundToRemove = funds.indexOf(token);
@@ -156,7 +175,9 @@ export const ExtensionFungibleTokenSettings = () => {
 
           const renderFormattedValue = () => {
             if (token.amount?.length) {
-              const [integerPart, decimalPart] = token.amount.split('.');
+              const cleanedAmount = token.amount.replace(/,/g, '');
+
+              const [integerPart, decimalPart] = cleanedAmount.split('.');
               const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
               const formattedValue = decimalPart !== undefined
                 ? `${formattedIntegerPart}.${decimalPart.slice(0, token.precision)}`
@@ -207,7 +228,7 @@ export const ExtensionFungibleTokenSettings = () => {
               <div className="flex-1 flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23] gap-2">
                 <input
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
-                  value={token.amount}
+                  value={renderFormattedValue()}
                   onChange={(e) => handleUpdateTokenAmount(token, e.target.value)}
                 />
                 <div className="flex-none">

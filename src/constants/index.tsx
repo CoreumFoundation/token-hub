@@ -300,5 +300,4 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
 ];
 
 export const STORAGE_SELECTED_NETWORK = 'local_selected_network';
-
 export const STORAGE_DISCLAIMER_CONFIRMED = 'local_disclaimer_confirmed';

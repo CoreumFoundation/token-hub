@@ -1,8 +1,5 @@
-import { ClassFeature, Feature } from 'coreum-js';
-import { Switch } from './../components/Switch/index';
 import { Chain } from '@chain-registry/types';
 import { Any } from 'coreum-js/dist/main/google/protobuf/any';
-import { Class } from 'coreum-js/dist/main/coreum/asset/nft/v1/nft';
 
 export enum FooterIconType {
   X = 'twitter',
@@ -243,4 +240,41 @@ export interface NFTClass {
   features: string[];
   royaltyRate: string;
   image: string;
+}
+
+export interface AssetRegistry {
+  denom: string;
+  description: string;
+  logo_URIs: {
+    png: string;
+    svg: string;
+  };
+  urls: {
+    website: string;
+    github: string;
+    whitepaper: string;
+  };
+  social_media: {
+    linkedin: string;
+    twitter: string;
+    instagram: string;
+    facebook: string;
+    discord: string;
+    youtube: string;
+    telegram: string;
+    tiktok: string;
+  };
+  extra: {
+    ibc_info?: {
+      display_name: string;
+      precision: number;
+      source_chain: string;
+      denom: string;
+    };
+    xrpl_info?: {
+      display_name: string;
+      precision: string;
+      issuer: string;
+    };
+  };
 }

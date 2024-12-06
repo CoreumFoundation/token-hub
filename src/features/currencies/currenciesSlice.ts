@@ -1,5 +1,5 @@
 import { COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
-import { Network, Token } from '@/shared/types';
+import { AssetRegistry, Network, Token } from '@/shared/types';
 import { Coin } from '@cosmjs/proto-signing';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
@@ -57,11 +57,45 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
       return [];
     }
 
+    const tokenRegistryRequestUrl = `https://raw.githubusercontent.com/CoreumFoundation/token-registry/master/${network}/assets.json`;
+    let assets: AssetRegistry[] = [];
+
+    try {
+      const {
+        data,
+      }: AxiosResponse<{ assets: AssetRegistry[] }> = await axios.get(
+        tokenRegistryRequestUrl
+      );
+
+      assets = data.assets;
+    } catch (error) {
+      console.log(error);
+    }
+
     const tokenInfoRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`;
 
     const resultAssets: Token[] = [];
     for (const asset of currencies) {
       if (asset.denom.includes('ibc/')) {
+        const assetInRegistry = assets.find((item: AssetRegistry) => item.denom.toLowerCase() === asset.denom.toLowerCase());
+
+        if (assetInRegistry) {
+          console.log({ assetInRegistry });
+          resultAssets.push({
+            ...asset,
+            symbol: assetInRegistry.extra.ibc_info?.display_name || asset.denom,
+            precision: assetInRegistry.extra.ibc_info?.precision || 0,
+            subunit: asset.denom,
+          });
+          continue;
+        }
+
+        resultAssets.push({
+          ...asset,
+          symbol: asset.denom,
+          subunit: asset.denom,
+          precision: 0,
+        });
         continue;
       }
 

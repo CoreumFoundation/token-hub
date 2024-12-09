@@ -58,6 +58,10 @@ export const FungibleTokenSend = () => {
     });
   }, [currencies]);
 
+  useEffect(() => {
+    dispatch(shouldRefetchBalances(true));
+  }, []);
+
   const handleClearState = useCallback(() => {
     setDestinationAddress('');
     setAmount('');

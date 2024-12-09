@@ -13,7 +13,7 @@ import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconTyp
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
-import { FT, Feature, convertStringToAny, parseFloatToRoyaltyRate } from 'coreum-js';
+import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";
@@ -73,6 +73,7 @@ export const FungibleTokenCreate = () => {
     setIBCEnabled(false);
     setBlockEnabled(false);
     setClawbackEnabled(false);
+    setExtensionEnabled(false);
     dispatch(clearExtensionState());
   }, []);
 
@@ -433,14 +434,14 @@ export const FungibleTokenCreate = () => {
     }
 
     return {
-      denom: subunit,
+      denom: `${subunit}-${account}`,
+      subunit: `${subunit}-${account}`,
       symbol,
       amount: '',
       balance: initialAmount,
       precision: +precision,
-      subunit,
     };
-  }, [initialAmount, precision, subunit, symbol]);
+  }, [initialAmount, precision, subunit, symbol, account]);
 
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {

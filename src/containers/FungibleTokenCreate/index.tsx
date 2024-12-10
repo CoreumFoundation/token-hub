@@ -193,8 +193,6 @@ export const FungibleTokenCreate = () => {
           txHash: response?.transactionHash,
         }));
         handleClearState();
-        dispatch(shouldRefetchCurrencies(true));
-        dispatch(shouldRefetchBalances(true));
       }
     } catch (error: unknown) {
       dispatch(dispatchAlert({
@@ -203,6 +201,8 @@ export const FungibleTokenCreate = () => {
         message: (error as { message: string}).message,
       }));
     }
+    dispatch(shouldRefetchCurrencies(true));
+    dispatch(shouldRefetchBalances(true));
     dispatch(setIsTxExecuting(false));
   }, [
     featuresToApply,

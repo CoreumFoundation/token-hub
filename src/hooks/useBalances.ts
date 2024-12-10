@@ -14,6 +14,7 @@ export const useAccountBalances = () => {
   const shouldRefetch = useAppSelector(state => state.balances.shouldRefetch);
   const network = useAppSelector(state => state.general.network);
   const isCurrenciesLoading = useAppSelector(state => state.currencies.isLoading);
+  const balancesRedux = useAppSelector(state => state.balances.list);
 
   const dispatch = useAppDispatch();
 
@@ -24,7 +25,7 @@ export const useAccountBalances = () => {
 
   useEffect(() => {
     if (isConnected) {
-      if (balances && !isCurrenciesLoading && !isLoading) {
+      if (balances && !isCurrenciesLoading && !balancesRedux.length) {
         const userIssuedBalances: any[] = [];
         const userOtherBalances: Coin[] = [];
         balances.forEach((token: Coin) => {
@@ -53,6 +54,7 @@ export const useAccountBalances = () => {
     network,
     isCurrenciesLoading,
     isLoading,
+    balancesRedux.length,
   ]);
 
   useEffect(() => {

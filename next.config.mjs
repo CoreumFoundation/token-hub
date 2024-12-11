@@ -9,6 +9,11 @@ const nextConfig = {
         hostname: 'raw.githubusercontent.com',
         pathname: '/CoreumFoundation/token-registry/master/files/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'coffee-giant-crane-879.mypinata.cloud',
+        pathname: '/ipfs/*',
+      }
     ],
   },
   webpack(config) {

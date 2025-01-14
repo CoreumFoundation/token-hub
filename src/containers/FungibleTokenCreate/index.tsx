@@ -22,6 +22,9 @@ import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { ExtensionFungibleTokenSettings } from "@/components/ExtensionFungibleTokenSettings";
 import { clearExtensionState, ExtensionToken } from "@/features/extension/extensionSlice";
+import { DEXUnifiedRefAmountChangeSettings } from "@/components/DEXUnifiedRefAmountChangeSettings";
+import { DEXWhitelistedDenomsSettings } from "@/components/DEXWhitelistedDenomsSettings";
+import { clearDexState } from "@/features/dex/dexSlice";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -43,11 +46,18 @@ export const FungibleTokenCreate = () => {
   const [blockEnabled, setBlockEnabled] = useState<boolean>(false);
   const [clawbackEnabled, setClawbackEnabled] = useState<boolean>(false);
   const [extensionEnabled, setExtensionEnabled] = useState<boolean>(false);
+  const [dexBlockEnabled, setDexBlockEnabled] = useState<boolean>(false);
+  const [dexWhitelistedDenomsEnabled, setDexWhitelistedDenomsEnabled] = useState<boolean>(false);
+  const [dexOrderCancellationEnabled, setDexOrderCancellationEnabled] = useState<boolean>(false);
+  const [dexUnifiedRefAmountChangeEnabled, setDexUnifiedRefAmountChangeEnabled] = useState<boolean>(false);
 
   const extensionCodeId = useAppSelector(state => state.extension.codeId);
   const extensionLabel = useAppSelector(state => state.extension.label);
   const extensionFunds = useAppSelector(state => state.extension.funds);
   const extensionIssuanceMsg = useAppSelector(state => state.extension.issuanceMsg);
+
+  const dexWhitelistedDenoms = useAppSelector(state => state.dex.whitelistDenoms);
+  const dexRefAmount = useAppSelector(state => state.dex.refAmount);
 
   const isConnected = useAppSelector(state => state.general.isConnected);
   const account = useAppSelector(state => state.general.account);
@@ -75,6 +85,7 @@ export const FungibleTokenCreate = () => {
     setClawbackEnabled(false);
     setExtensionEnabled(false);
     dispatch(clearExtensionState());
+    dispatch(clearDexState());
   }, []);
 
   useEffect(() => {
@@ -122,6 +133,22 @@ export const FungibleTokenCreate = () => {
       featuresArray.push(Feature.extension);
     }
 
+    if (dexBlockEnabled) {
+      featuresArray.push(Feature.dex_block);
+    }
+
+    if (dexWhitelistedDenomsEnabled) {
+      featuresArray.push(Feature.dex_whitelisted_denoms);
+    }
+
+    if (dexOrderCancellationEnabled) {
+      featuresArray.push(Feature.dex_order_cancellation);
+    }
+
+    if (dexUnifiedRefAmountChangeEnabled) {
+      featuresArray.push(Feature.dex_unified_ref_amount_change);
+    }
+
     return featuresArray;
   }, [
     blockEnabled,
@@ -132,6 +159,10 @@ export const FungibleTokenCreate = () => {
     whitelistingEnabled,
     clawbackEnabled,
     extensionEnabled,
+    dexBlockEnabled,
+    dexWhitelistedDenomsEnabled,
+    dexOrderCancellationEnabled,
+    dexUnifiedRefAmountChangeEnabled,
   ]);
 
   const handleConnectWalletClick = useCallback(() => {
@@ -149,6 +180,42 @@ export const FungibleTokenCreate = () => {
       });
   }, [extensionFunds]);
 
+  const dexFTSettings = useMemo(() => {
+    let settings: { refAmount: string, whitelistedDenoms: string[] } = {
+      refAmount: '',
+      whitelistedDenoms: [],
+    };
+    let settingsDexSettingsExists = false;
+
+    if (dexUnifiedRefAmountChangeEnabled || dexWhitelistedDenomsEnabled || dexOrderCancellationEnabled) {
+      settingsDexSettingsExists = true;
+      settings = {
+        refAmount: dexRefAmount,
+        whitelistedDenoms: dexWhitelistedDenoms.filter((denom: string) => !!denom.length),
+      };
+    }
+
+    if (dexBlockEnabled) {
+      settingsDexSettingsExists = false;
+      settings = {
+        refAmount: '',
+        whitelistedDenoms: [],
+      };
+    }
+
+    return {
+      settingsDexSettingsExists,
+      settings,
+    };
+  }, [
+    dexBlockEnabled,
+    dexOrderCancellationEnabled,
+    dexRefAmount,
+    dexUnifiedRefAmountChangeEnabled,
+    dexWhitelistedDenoms,
+    dexWhitelistedDenomsEnabled,
+  ]);
+
   const handleIssueFTToken = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
@@ -157,6 +224,11 @@ export const FungibleTokenCreate = () => {
         label: extensionLabel,
         funds: extensionFundsToApply,
         issuanceMsg: new TextEncoder().encode(extensionIssuanceMsg),
+      };
+
+      const dexSettings = {
+        unifiedRefAmount: dexFTSettings.settings.refAmount,
+        whitelistedDenoms: dexFTSettings.settings.whitelistedDenoms,
       };
 
       const issueFTMsg = FT.Issue({
@@ -172,7 +244,10 @@ export const FungibleTokenCreate = () => {
         uri: url,
         ...(extensionEnabled && {
           extensionSettings,
-        })
+        }),
+        ...(dexFTSettings.settingsDexSettingsExists && {
+          dexSettings,
+        }),
       });
 
       const txFee = await getTxFee([issueFTMsg]);
@@ -205,25 +280,27 @@ export const FungibleTokenCreate = () => {
     dispatch(shouldRefetchBalances(true));
     dispatch(setIsTxExecuting(false));
   }, [
-    featuresToApply,
+    extensionCodeId,
+    extensionLabel,
+    extensionFundsToApply,
+    extensionIssuanceMsg,
+    dexFTSettings.settings.refAmount,
+    dexFTSettings.settings.whitelistedDenoms,
+    dexFTSettings.settingsDexSettingsExists,
     account,
     symbol,
     subunit,
     precision,
     initialAmount,
     description,
+    featuresToApply,
     burnRate,
     sendCommissionRate,
     url,
     extensionEnabled,
-    extensionCodeId,
-    extensionLabel,
-    extensionFunds,
-    extensionIssuanceMsg,
     getTxFee,
     signingClient,
     handleClearState,
-    extensionFundsToApply,
   ]);
 
   const getTokenStateItem = useCallback((type: TokenCapabilityType): [boolean, Dispatch<SetStateAction<boolean>>] | [] => {
@@ -244,6 +321,14 @@ export const FungibleTokenCreate = () => {
         return [clawbackEnabled, setClawbackEnabled];
       case TokenCapabilityType.Extension:
         return [extensionEnabled, setExtensionEnabled];
+      case TokenCapabilityType.DEXBlock:
+        return [dexBlockEnabled, setDexBlockEnabled];
+      case TokenCapabilityType.DEXOrderCancellation:
+        return [dexOrderCancellationEnabled, setDexOrderCancellationEnabled];
+      case TokenCapabilityType.DEXUnifiedRefAmountChange:
+        return [dexUnifiedRefAmountChangeEnabled, setDexUnifiedRefAmountChangeEnabled];
+      case TokenCapabilityType.DEXWhitelistedDenoms:
+        return [dexWhitelistedDenomsEnabled, setDexWhitelistedDenomsEnabled];
       default:
         return [];
     }
@@ -256,6 +341,10 @@ export const FungibleTokenCreate = () => {
     mintingEnabled,
     whitelistingEnabled,
     extensionEnabled,
+    dexBlockEnabled,
+    dexOrderCancellationEnabled,
+    dexUnifiedRefAmountChangeEnabled,
+    dexWhitelistedDenomsEnabled,
   ]);
 
   const isEnteredSymbolValid = useMemo(() => {
@@ -428,6 +517,26 @@ export const FungibleTokenCreate = () => {
     }
   }, []);
 
+  const handleSetDexBlockEnabled = useCallback((value: boolean) => {
+    if (value) {
+      setDexBlockEnabled(value);
+      setDexOrderCancellationEnabled(false);
+      setDexUnifiedRefAmountChangeEnabled(false);
+      setDexWhitelistedDenomsEnabled(false);
+    } else {
+      setDexBlockEnabled(false);
+    }
+  }, []);
+
+  const handleSetDexFeatureEnabled = useCallback((callback: Dispatch<SetStateAction<boolean>> | undefined) => (value: boolean) => {
+    if (value) {
+      callback?.(value);
+      setDexBlockEnabled(false);
+    } else {
+      callback?.(false);
+    }
+  }, []);
+
   const tokenToBeIssued = useMemo(() => {
     if (!(subunit.length && symbol.length && initialAmount.length && precision.length)) {
       return null;
@@ -443,6 +552,30 @@ export const FungibleTokenCreate = () => {
     };
   }, [initialAmount, precision, subunit, symbol, account]);
 
+  const handleSetEnabled = useCallback((tokenCapabilityType: TokenCapabilityType, callback: Dispatch<SetStateAction<boolean>> | undefined) => {
+    if (tokenCapabilityType === TokenCapabilityType.Block) {
+      return handleSetBlockEnabled;
+    }
+
+    if (tokenCapabilityType === TokenCapabilityType.Extension) {
+      return handleSetExtensionEnabled;
+    }
+
+    if (tokenCapabilityType === TokenCapabilityType.DEXBlock) {
+      return handleSetDexBlockEnabled;
+    }
+
+    if (
+      tokenCapabilityType === TokenCapabilityType.DEXOrderCancellation
+      || tokenCapabilityType === TokenCapabilityType.DEXUnifiedRefAmountChange
+      || tokenCapabilityType === TokenCapabilityType.DEXWhitelistedDenoms
+    ) {
+      return handleSetDexFeatureEnabled(callback);
+    }
+
+    return callback ? callback : () => {};
+  }, [handleSetBlockEnabled, handleSetDexBlockEnabled, handleSetDexFeatureEnabled, handleSetExtensionEnabled]);
+
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
     return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
       let [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
@@ -450,15 +583,15 @@ export const FungibleTokenCreate = () => {
       const tokenCapabilityProps = {
         ...tokenCapability,
         enabled: enabled || false,
-        setEnabled: tokenCapability.type === TokenCapabilityType.Block
-          ? handleSetBlockEnabled
-          : (
-            tokenCapability.type === TokenCapabilityType.Extension
-              ? handleSetExtensionEnabled
-              : setEnabled ? setEnabled : () => {}
-          ),
+        setEnabled: handleSetEnabled(tokenCapability.type, setEnabled),
         ...(tokenCapability.type === TokenCapabilityType.Extension && {
           extensionSettings: <ExtensionFungibleTokenSettings tokenToBeIssued={tokenToBeIssued} />,
+        }),
+        ...(tokenCapability.type === TokenCapabilityType.DEXUnifiedRefAmountChange && {
+          extensionSettings: <DEXUnifiedRefAmountChangeSettings />,
+        }),
+        ...(tokenCapability.type === TokenCapabilityType.DEXWhitelistedDenoms && {
+          extensionSettings: <DEXWhitelistedDenomsSettings />,
         }),
       };
 
@@ -497,7 +630,6 @@ export const FungibleTokenCreate = () => {
       />
     );
   }, [isConnected, isFormValid, handleIssueFTToken, isTxExecuting]);
-
 
   return (
     <div className="flex flex-col gap-9 sm:gap-10 scroll-smooth">

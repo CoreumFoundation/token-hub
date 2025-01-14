@@ -108,6 +108,10 @@ export enum TokenCapabilityType {
   Soulbound = 'soulbound',
   Clawback = 'clawback',
   Extension = 'extension',
+  DEXBlock = 'dex_block',
+  DEXWhitelistedDenoms = 'dex_whitelisted_denoms',
+  DEXOrderCancellation = 'dex_order_cancellation',
+  DEXUnifiedRefAmountChange = 'dex_unified_ref_amount_change',
 }
 
 export interface ExpandedListElem {

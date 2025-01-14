@@ -4,6 +4,7 @@ import { burnReducer } from '@/features/burn/burnSlice';
 import { chainsReducer } from '@/features/chains/chainsSlice';
 import { clawbackReducer } from '@/features/clawback/clawbackSlice';
 import { currenciesReducer } from '@/features/currencies/currenciesSlice';
+import { dexReducer } from '@/features/dex/dexSlice';
 import { extensionReducer } from '@/features/extension/extensionSlice';
 import { freezeReducer } from '@/features/freeze/freezeSlice';
 import { generalReducer } from '@/features/general/generalSlice';
@@ -21,6 +22,7 @@ export const store = configureStore({
     chains: chainsReducer,
     clawback: clawbackReducer,
     currencies: currenciesReducer,
+    dex: dexReducer,
     extension: extensionReducer,
     freeze: freezeReducer,
     general: generalReducer,

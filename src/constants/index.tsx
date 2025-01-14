@@ -140,6 +140,26 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     label: 'Extension',
     content: 'If the smart token extension is enabled, each token transfer will trigger a smart contract executing custom logic before the token reaches the recipient.',
   },
+  {
+    type: TokenCapabilityType.DEXBlock,
+    label: 'DEX Block',
+    content: 'The asset FT token admin at time of issues can set the block_dex feature, which will block the DEX completely for the issued denom. So the DEX won\'t accept the orders with the denom.',
+  },
+  {
+    type: TokenCapabilityType.DEXWhitelistedDenoms,
+    label: 'DEX Whitelisted Denoms',
+    content: 'This feature introduces an enhancement to the asset FT (restrict_dex feature), allowing the asset FT (a specific fungible token) to be traded only against a predefined set of denoms specified in denoms_to_trade_with. This adds a layer of control over trading pairs, ensuring that denom(asset FT) can only be exchanged with certain denoms/currencies or assets, as specified by the admin.',
+  },
+  {
+    type: TokenCapabilityType.DEXOrderCancellation,
+    label: 'DEX Order Cancellation',
+    content: 'The users can cancel their orders within the DEX. Or The token admin or gov can cancel user orders within the system. It grants specific administrative or governance roles the power to manage and oversee active orders, providing a safeguard against potential issues such as erroneous trades, malicious activity, or market manipulation. For the token admin to cancel the user\'s orders, the dex_order_cancellation feature must be enabled.',
+  },
+  {
+    type: TokenCapabilityType.DEXUnifiedRefAmountChange,
+    label: 'DEX Unified Ref Amount Change',
+    content: 'The unified_ref_amount used in price tick and precision can be updated and by the gov or the token admin.',
+  },
 ];
 
 export const NFT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [

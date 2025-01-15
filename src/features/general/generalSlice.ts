@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { coreum, coreumtestnet } from 'graz/chains';
 import { ChainInfo as KeplrChainInfo } from '@keplr-wallet/types';
 import { ChainInfo } from '@/shared/types';
-import { STORAGE_SELECTED_NETWORK } from '@/constants';
+import { coreumdevnet } from '@/providers/WalletProvider';
 
 export interface GeneralState {
   network: Network;
@@ -91,8 +91,10 @@ const generalSlice = createSlice({
 
       if (action.payload === Network.Mainnet) {
         state.currentNetworkInfo = coreum;
-      } else {
+      } else if (action.payload === Network.Testnet) {
         state.currentNetworkInfo = coreumtestnet;
+      } else {
+        state.currentNetworkInfo = coreumdevnet;
       }
     },
     setAccount(state, action: PayloadAction<string>) {

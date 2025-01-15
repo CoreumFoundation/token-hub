@@ -1,4 +1,4 @@
-import { COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
+import { COREUM_TOKEN_DEVNET, COREUM_TOKEN_MAINNET, COREUM_TOKEN_TESTNET } from '@/constants';
 import { AssetRegistry, Network, Token } from '@/shared/types';
 import { Coin } from '@cosmjs/proto-signing';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -13,7 +13,9 @@ interface FetchCurrenciesByAccountArgs {
 export const fetchCurrenciesByAccount = createAsyncThunk(
   'currencies/fetchByAccount',
   async ({ account, network }: FetchCurrenciesByAccountArgs) => {
-    const responseTokens = network === Network.Mainnet ? [COREUM_TOKEN_MAINNET] : [COREUM_TOKEN_TESTNET];
+    const responseTokens = network === Network.Mainnet
+      ? [COREUM_TOKEN_MAINNET]
+      : network === Network.Testnet ? [COREUM_TOKEN_TESTNET] : [COREUM_TOKEN_DEVNET];
 
     if (!account.length) {
       return responseTokens;
@@ -176,6 +178,16 @@ const currenciesSlice = createSlice({
     setIssuedToken(state, action: PayloadAction<IssuedTokenType | null>) {
       state.issuedToken = action.payload;
     },
+    resetCurrenciesState(state) {
+      // state.isLoading = false;
+      state.list = [];
+      state.secondaryList = [];
+      state.issuedList = [];
+      // state.isFetched = false;
+      // state.selectedCurrency = null;
+      // state.shouldRefetchCurrencies = false;
+      state.issuedToken = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrenciesByAccount.pending, (state) => {
@@ -207,6 +219,13 @@ const currenciesSlice = createSlice({
   },
 });
 
-export const { setCurrencies, setSelectedCurrency, setIsFetched, shouldRefetchCurrencies, setIssuedToken } = currenciesSlice.actions;
+export const {
+  setCurrencies,
+  setSelectedCurrency,
+  setIsFetched,
+  shouldRefetchCurrencies,
+  setIssuedToken,
+  resetCurrenciesState,
+} = currenciesSlice.actions;
 export const currenciesReducer = currenciesSlice.reducer;
 export default currenciesSlice.reducer;

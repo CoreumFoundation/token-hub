@@ -88,7 +88,9 @@ export const SuccessIssueNFTModal = () => {
   const renderTxHashIcons = useMemo(() => {
     const explorerUrl = network === Network.Mainnet
       ? `https://explorer.coreum.com/coreum/transactions/${issuedNFTCollection?.txHash || ''}`
-      : `https://explorer.testnet-1.coreum.dev/coreum/transactions/${issuedNFTCollection?.txHash || ''}`;
+      : network === Network.Testnet
+        ? `https://explorer.testnet-1.coreum.dev/coreum/transactions/${issuedNFTCollection?.txHash || ''}`
+        : `https://explorer.devnet-1.coreum.dev/coreum/transactions/${issuedNFTCollection?.txHash || ''}`;
 
     return (
       <div className="flex items-center gap-1">

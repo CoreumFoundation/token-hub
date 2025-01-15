@@ -9,7 +9,11 @@ export const ExplorerLink = () => {
   const account = useAppSelector(state => state.general.account);
 
   const href = useMemo(() => {
-    return network === Network.Mainnet ? `https://explorer.coreum.com/coreum/accounts/${account}` : `https://explorer.testnet-1.coreum.dev/coreum/accounts/${account}`;
+    return network === Network.Mainnet
+      ? `https://explorer.coreum.com/coreum/accounts/${account}`
+      : network === Network.Testnet
+        ? `https://explorer.testnet-1.coreum.dev/coreum/accounts/${account}`
+        : `https://explorer.devnet-1.coreum.dev/coreum/accounts/${account}`;
   }, [account, network]);
 
   return (

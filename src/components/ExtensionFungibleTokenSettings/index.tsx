@@ -109,7 +109,7 @@ export const ExtensionFungibleTokenSettings: FC<ExtensionFungibleTokenSettingsPr
       return {
         id: token.denom,
         label: token.symbol,
-        icon: (token.denom === 'utestcore' || token.denom === 'ucore')
+        icon: (token.denom === 'udevcore' || token.denom === 'utestcore' || token.denom === 'ucore')
           ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
           : (token.iconSvg
             ? <Image src={token.iconSvg} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />
@@ -172,7 +172,7 @@ export const ExtensionFungibleTokenSettings: FC<ExtensionFungibleTokenSettingsPr
           const tokenToDropdownItem: DropdownItem = {
             id: token.denom,
             label: token.symbol,
-            icon: (token.denom === 'utestcore' || token.denom === 'ucore')
+            icon: (token.denom === 'udevcore' || token.denom === 'utestcore' || token.denom === 'ucore')
               ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
               : (token.iconSvg
                 ? <Image src={token.iconSvg} alt={token.symbol} width={20} height={20} className="w-5 h-5 rounded-full" />

@@ -71,6 +71,11 @@ export const NETWORK_SELECTOR_ITEMS = [
     label: Network.Mainnet.toUpperCase(),
     icon: <GeneralIcon type={GeneralIconType.Coreum} />
   },
+  {
+    id: Network.Devnet,
+    label: Network.Devnet.toUpperCase(),
+    icon: <GeneralIcon type={GeneralIconType.Coreum} />
+  },
 ];
 
 export const TABS_ITEMS: TabItem[] = [
@@ -238,6 +243,13 @@ export const ACTION_ITEMS_OPTIONS: DropdownItem[] = [
     icon: <GeneralIcon type={GeneralIconType.Disconnect} />,
   },
 ];
+
+export const COREUM_TOKEN_DEVNET: Token = {
+  denom: 'udevcore',
+  symbol: 'Coreum',
+  subunit: 'udevcore',
+  precision: 6,
+};
 
 export const COREUM_TOKEN_TESTNET: Token = {
   denom: 'utestcore',

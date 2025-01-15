@@ -39,7 +39,7 @@ export const FungibleTokenSend = () => {
 
   const selectedFTCurrency = useAppSelector(state => state.currencies.selectedCurrency);
 
-  const coreumNetworkName = network === Network.Mainnet ? 'coreum' : 'coreumtestnet';
+  const coreumNetworkName = network === Network.Mainnet ? 'coreum' : (network === Network.Testnet ? 'coreumtestnet' : 'coreumdevnet');
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
@@ -51,7 +51,7 @@ export const FungibleTokenSend = () => {
       return {
         id: item.denom,
         label: item.symbol,
-        icon: (item.denom === 'utestcore' || item.denom === 'ucore')
+        icon: (item.denom === 'udevcore' || item.denom === 'utestcore' || item.denom === 'ucore')
           ? <GeneralIcon type={GeneralIconType.Coreum} className="w-5 h-5"  />
           : <GeneralIcon type={GeneralIconType.DefaultToken} className="w-5 h-5" />
       };

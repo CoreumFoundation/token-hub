@@ -14,8 +14,8 @@ export const useChains = () => {
   const compareNetworkChainName = network === Network.Mainnet ? coreum.chainName.toLowerCase() : coreumtestnet.chainName.toLowerCase();
 
   useEffect(() => {
-    const ibcChainsData = network === Network.Mainnet ? ibc : COREUM_TESTNET_SUPPORTED_CHAINS;
-    const coreumChainId = network === Network.Mainnet ? 'coreum' : 'coreumtestnet';
+    const ibcChainsData = network === Network.Mainnet ? ibc : (network === Network.Testnet ? COREUM_TESTNET_SUPPORTED_CHAINS : []);
+    const coreumChainId = network === Network.Mainnet ? 'coreum' : (network === Network.Testnet ? 'coreumtestnet' : 'coreumdevnet');
 
     const filteredIBCInfos = ibcChainsData
       .filter((ibcItem: IBCInfo) => ibcItem.chain_1.chain_name === compareNetworkChainName || ibcItem.chain_2.chain_name === compareNetworkChainName);

@@ -142,6 +142,7 @@ export interface WalletOption {
 export enum Network {
   Mainnet = 'mainnet',
   Testnet = 'testnet',
+  Devnet = 'devnet',
 }
 
 export interface ChainInfo extends Chain {

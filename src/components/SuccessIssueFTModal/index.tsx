@@ -96,7 +96,9 @@ export const SuccessIssueFTModal = () => {
   const renderTxHashIcons = useMemo(() => {
     const explorerUrl = network === Network.Mainnet
       ? `https://explorer.coreum.com/coreum/transactions/${issuedFTToken?.txHash || ''}`
-      : `https://explorer.testnet-1.coreum.dev/coreum/transactions/${issuedFTToken?.txHash || ''}`;
+      : network === Network.Testnet
+        ? `https://explorer.testnet-1.coreum.dev/coreum/transactions/${issuedFTToken?.txHash || ''}`
+        : `https://explorer.devnet-1.coreum.dev/coreum/transactions/${issuedFTToken?.txHash || ''}`;
 
     return (
       <div className="flex items-center gap-1">

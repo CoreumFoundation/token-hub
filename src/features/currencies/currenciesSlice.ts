@@ -22,7 +22,9 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
     }
 
     try {
-      const tokensRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
+      const tokensRequestUrl = network === Network.Devnet
+        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`
+        : `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
       const {
         data: {
           pagination: { total: tokensTotal },
@@ -74,7 +76,10 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
       console.log(error);
     }
 
-    const tokenInfoRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`;
+    const tokenInfoRequestUrl = network === Network.Devnet
+        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`
+        : `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`;
+
 
     const resultAssets: Token[] = [];
     for (const asset of currencies) {

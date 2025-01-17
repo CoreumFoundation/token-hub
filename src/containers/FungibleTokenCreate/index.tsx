@@ -25,6 +25,7 @@ import { clearExtensionState, ExtensionToken } from "@/features/extension/extens
 import { DEXUnifiedRefAmountChangeSettings } from "@/components/DEXUnifiedRefAmountChangeSettings";
 import { DEXWhitelistedDenomsSettings } from "@/components/DEXWhitelistedDenomsSettings";
 import { clearDexState } from "@/features/dex/dexSlice";
+import { isValidTokenDenom } from "@/helpers/validateTokenDenom";
 
 export const FungibleTokenCreate = () => {
   const [symbol, setSymbol] = useState<string>('');
@@ -473,6 +474,23 @@ export const FungibleTokenCreate = () => {
     return true;
   }, [extensionEnabled, isEnteredCodeIdValid.length, isEnteredLabelValid.length, isIssuanceMsgValid.length]);
 
+  const isDexWhitelistingDenomsValid = useMemo(() => {
+    if (!dexWhitelistedDenomsEnabled) {
+      return true;
+    }
+
+    let isValid = true;
+
+    for (const denom of dexWhitelistedDenoms) {
+      if (denom.length && !isValidTokenDenom(denom)) {
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
+  }, [dexWhitelistedDenoms]);
+
   const isFormValid = useMemo(() => {
     if (
       symbol.length
@@ -486,6 +504,7 @@ export const FungibleTokenCreate = () => {
       && !isPrecisionValid?.length
       && !isDescriptionValid.length
       && isExtenstionSettingsValid
+      && isDexWhitelistingDenomsValid
     ) {
       return true;
     }
@@ -503,6 +522,7 @@ export const FungibleTokenCreate = () => {
     isPrecisionValid?.length,
     isDescriptionValid.length,
     isExtenstionSettingsValid,
+    isDexWhitelistingDenomsValid,
   ]);
 
   const handleSetBlockEnabled = useCallback((value: boolean) => {

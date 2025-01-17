@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo } from "react";
 import { addDenomToWhitelistedDenoms, setDexRefAmount, setDexWhitelistedDenoms } from "@/features/dex/dexSlice";
+import { isValidTokenDenom } from "@/helpers/validateTokenDenom";
+import classNames from "classnames";
 
 export const DEXWhitelistedDenomsSettings = () => {
   const whitelistedDenoms = useAppSelector(state => state.dex.whitelistDenoms);
@@ -24,23 +26,30 @@ export const DEXWhitelistedDenomsSettings = () => {
   }, [whitelistedDenoms]);
 
   const handleRemoveDenomFromList = useCallback((denom: string) => {
-      const indexOfDenomToRemove = whitelistedDenoms.indexOf(denom);
+    const indexOfDenomToRemove = whitelistedDenoms.indexOf(denom);
 
-      dispatch(
-        setDexWhitelistedDenoms([
-          ...whitelistedDenoms.slice(0, indexOfDenomToRemove),
-          ...whitelistedDenoms.slice(indexOfDenomToRemove + 1)],
-        )
-      );
-    }, [whitelistedDenoms]);
+    dispatch(
+      setDexWhitelistedDenoms([
+        ...whitelistedDenoms.slice(0, indexOfDenomToRemove),
+        ...whitelistedDenoms.slice(indexOfDenomToRemove + 1)],
+      )
+    );
+  }, [whitelistedDenoms]);
 
   const renderFunds = useMemo(() => {
     return (
       <>
         {whitelistedDenoms.map((denom: string, index: number) => {
+          const isValidDenom = isValidTokenDenom(denom);
+
           if (index === 0) {
             return (
-              <div className="flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]" key={`whitelisting-denom-${index}`}>
+              <div
+                key={`whitelisting-denom-${index}`}
+                className={classNames('flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]', {
+                  'border-[#DE0F3E]': denom.length && !isValidDenom,
+                })}
+              >
                 <input
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
                   value={denom}
@@ -62,7 +71,11 @@ export const DEXWhitelistedDenomsSettings = () => {
                   />
                 </svg>
               </div>
-              <div className="flex-1 flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23] gap-2">
+              <div
+                className={classNames('flex-1 flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]', {
+                  'border-[#DE0F3E]': denom.length && !isValidDenom,
+                })}
+              >
                 <input
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
                   value={denom}

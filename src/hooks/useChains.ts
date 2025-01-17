@@ -6,7 +6,7 @@ import { setIBCChains } from "@/features/chains/chainsSlice";
 import { ChainInfo, Network } from "@/shared/types";
 import { coreum, coreumtestnet } from "graz/chains";
 import { setDestinationChain } from "@/features/general/generalSlice";
-import { COREUM_TESTNET_SUPPORTED_CHAINS } from "@/constants";
+import { COREUM_TESTNET_SUPPORTED_CHAINS, COREUM_DEVNET_CHAIN_DATA } from "@/constants";
 
 export const useChains = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +50,7 @@ export const useChains = () => {
 
     const coreumChainData: Chain | undefined = chains.find((chain: Chain) => chain.chain_name === compareNetworkChainName);
     const coreumChainInfoData: ChainInfo = {
-      ...coreumChainData!,
+      ...(network === Network.Devnet ? COREUM_DEVNET_CHAIN_DATA! : coreumChainData!),
       connection_id: '',
       client_id: '',
       channel_id: '',
@@ -58,6 +58,10 @@ export const useChains = () => {
       coreum_channel_id: '',
       coreum_client_id: '',
     }
+
+    console.log({
+      coreumChainInfoData,
+    });
 
     supportedIBCChains.unshift(coreumChainInfoData);
 

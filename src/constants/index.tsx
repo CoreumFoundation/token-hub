@@ -17,7 +17,7 @@ import {
   WalletOption,
   WalletType,
 } from "@/shared/types";
-import { IBCInfo } from '@chain-registry/types';
+import { Chain, IBCInfo } from '@chain-registry/types';
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -336,3 +336,28 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
 
 export const STORAGE_SELECTED_NETWORK = 'local_selected_network';
 export const STORAGE_DISCLAIMER_CONFIRMED = 'local_disclaimer_confirmed';
+
+export const COREUM_DEVNET_CHAIN_DATA: Chain = {
+  apis: {
+    grpc: [],
+    rest: [],
+    rpc: [],
+  },
+  bech32_prefix: 'devcore',
+  chain_id: 'coreum-devnet-1',
+  chain_name: 'coreumdevnet',
+  fees: {
+    fee_tokens: [{
+      average_gas_price: 0.0625,
+      denom: 'udevcore',
+      fixed_min_gas_price: 0.03125,
+      high_gas_price: 62.5,
+      low_gas_price: 0.0625,
+    }],
+  },
+  key_algos: ['secp256k1'],
+  network_type: 'devnet',
+  pretty_name: 'Coreum',
+  slip44: 990,
+  status: 'live',
+};

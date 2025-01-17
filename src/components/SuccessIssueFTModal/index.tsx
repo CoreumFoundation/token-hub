@@ -46,6 +46,14 @@ export const SuccessIssueFTModal = () => {
         return 'clawback';
       case Feature.extension:
         return 'extension';
+      case Feature.dex_block:
+        return 'dex_block';
+      case Feature.dex_order_cancellation:
+        return 'dex_order_cancellation';
+      case Feature.dex_unified_ref_amount_change:
+        return 'dex_unified_ref_amount_change';
+      case Feature.dex_whitelisted_denoms:
+        return 'dex_whitelisted_denoms';
       default:
         return feature;
     }

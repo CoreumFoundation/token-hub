@@ -7,9 +7,9 @@ import { Input } from "@/components/Input";
 import { MessageBox } from "@/components/MessageBox";
 import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
-import { FT_TOKEN_CAPABILITIES, IPFS_REGEX, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
+import { FT_DEX_TOKEN_CAPABILITIES, FT_TOKEN_CAPABILITIES, IPFS_REGEX, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
 import { setIsConnectModalOpen, setIsSuccessIssueFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Network, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
@@ -64,6 +64,8 @@ export const FungibleTokenCreate = () => {
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
   const currencies = useAppSelector(state => state.currencies.issuedList);
 
+  const network = useAppSelector(state => state.general.network);
+
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
@@ -97,6 +99,10 @@ export const FungibleTokenCreate = () => {
       handleClearState();
     };
   }, [isConnected]);
+
+  useEffect(() => {
+    handleClearState();
+  }, [network]);
 
   const featuresToApply = useMemo(() => {
     let featuresArray: number[] = [];
@@ -576,8 +582,16 @@ export const FungibleTokenCreate = () => {
     return callback ? callback : () => {};
   }, [handleSetBlockEnabled, handleSetDexBlockEnabled, handleSetDexFeatureEnabled, handleSetExtensionEnabled]);
 
+  const supportedFTTokenCapabilitiesInCurrentNetwork = useMemo(() => {
+    if (network === Network.Devnet) {
+      return [...FT_TOKEN_CAPABILITIES, ...FT_DEX_TOKEN_CAPABILITIES];
+    }
+
+    return FT_TOKEN_CAPABILITIES;
+  }, [network]);
+
   const tokenCapabilities: ExpandedListElem[] = useMemo(() => {
-    return FT_TOKEN_CAPABILITIES.map((tokenCapability: TokenCapabilityItem) => {
+    return supportedFTTokenCapabilitiesInCurrentNetwork.map((tokenCapability: TokenCapabilityItem) => {
       let [enabled, setEnabled] = getTokenStateItem(tokenCapability.type);
 
       const tokenCapabilityProps = {
@@ -604,7 +618,7 @@ export const FungibleTokenCreate = () => {
         ),
       };
     });
-  }, [getTokenStateItem, tokenToBeIssued]);
+  }, [getTokenStateItem, tokenToBeIssued, supportedFTTokenCapabilitiesInCurrentNetwork]);
 
   const renderButton = useMemo(() => {
     if (isConnected) {

@@ -145,6 +145,9 @@ export const FT_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
     label: 'Extension',
     content: 'If the smart token extension is enabled, each token transfer will trigger a smart contract executing custom logic before the token reaches the recipient.',
   },
+];
+
+export const FT_DEX_TOKEN_CAPABILITIES: TokenCapabilityItem[] = [
   {
     type: TokenCapabilityType.DEXBlock,
     label: 'DEX Block',

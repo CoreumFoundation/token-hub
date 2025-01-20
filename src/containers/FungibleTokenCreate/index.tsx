@@ -9,7 +9,7 @@ import { TextArea } from "@/components/TextArea";
 import { TokenCapability } from "@/components/TokenCapability";
 import { FT_DEX_TOKEN_CAPABILITIES, FT_TOKEN_CAPABILITIES, IPFS_REGEX, SUBUNITS_REGEX, SYMBOL_REGEX, URL_REGEX } from "@/constants";
 import { setIsConnectModalOpen, setIsSuccessIssueFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, Network, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
+import { AlertType, ButtonIconType, ButtonType, ChainInfo, ExpandedListElem, GeneralIconType, Network, Token, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
@@ -66,9 +66,14 @@ export const FungibleTokenCreate = () => {
   const currencies = useAppSelector(state => state.currencies.issuedList);
 
   const network = useAppSelector(state => state.general.network);
+  const chains = useAppSelector(state => state.chains.list);
 
   const dispatch = useAppDispatch();
   const { signingClient, getTxFee } = useEstimateTxGasFee();
+
+  const coreumChain = useMemo(() => {
+    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+  }, [chains]);
 
   const handleClearState = useCallback(() => {
     setSymbol('');
@@ -482,7 +487,7 @@ export const FungibleTokenCreate = () => {
     let isValid = true;
 
     for (const denom of dexWhitelistedDenoms) {
-      if (denom.length && !isValidTokenDenom(denom)) {
+      if (denom.length && !isValidTokenDenom(denom, coreumChain)) {
         isValid = false;
         break;
       }

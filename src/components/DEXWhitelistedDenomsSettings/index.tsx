@@ -3,11 +3,17 @@ import { useCallback, useMemo } from "react";
 import { addDenomToWhitelistedDenoms, setDexRefAmount, setDexWhitelistedDenoms } from "@/features/dex/dexSlice";
 import { isValidTokenDenom } from "@/helpers/validateTokenDenom";
 import classNames from "classnames";
+import { ChainInfo } from "@/shared/types";
 
 export const DEXWhitelistedDenomsSettings = () => {
   const whitelistedDenoms = useAppSelector(state => state.dex.whitelistDenoms);
+  const chains = useAppSelector(state => state.chains.list);
 
   const dispatch = useAppDispatch();
+
+  const coreumChain = useMemo(() => {
+    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+  }, [chains]);
 
   const handleAddDenomToWhitelist = useCallback(() => {
     dispatch(addDenomToWhitelistedDenoms());
@@ -40,7 +46,7 @@ export const DEXWhitelistedDenomsSettings = () => {
     return (
       <>
         {whitelistedDenoms.map((denom: string, index: number) => {
-          const isValidDenom = isValidTokenDenom(denom);
+          const isValidDenom = isValidTokenDenom(denom, coreumChain);
 
           if (index === 0) {
             return (

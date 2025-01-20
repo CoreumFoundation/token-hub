@@ -1,6 +1,23 @@
-export const isValidTokenDenom = (denom: string): boolean => {
-  const ibcRegex = /^ibc\/[a-fA-F0-9]{64}$/;
-  const ftRegex = /^[a-zA-Z0-9._/-]+-[a-zA-Z0-9]{39}$/;
+import { SUBUNITS_REGEX } from "@/constants";
+import { validateAddress } from "./validateAddress";
+import { ChainInfo } from "@/shared/types";
 
-  return ibcRegex.test(denom) || ftRegex.test(denom);
+const ibcRegex = /^ibc\/[a-fA-F0-9]{64}$/;
+
+export const isValidTokenDenom = (denom: string, chainInfo: ChainInfo | undefined): boolean => {
+  if (denom.startsWith('ibc/')) {
+    return ibcRegex.test(denom);
+  }
+
+  const parsedDenom = denom.split('-');
+  const [subunits, accountAddress] = parsedDenom;
+
+  const subunitsValid = SUBUNITS_REGEX.test(subunits);
+  const accountAddressValid = validateAddress(accountAddress);
+
+  if (!accountAddressValid.result || accountAddressValid.prefix !== chainInfo?.bech32_prefix) {
+    return false;
+  }
+
+  return subunitsValid;
 };

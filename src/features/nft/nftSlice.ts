@@ -110,7 +110,7 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
   async ({ account, classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
     try {
       const nftsRequestUrl = network === Network.Devnet
-        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}`
+        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/cosmos/nft/v1beta1/nfts?class_id=${classId}`
         : `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}`;
       let nftsToReturn = [];
       let ownNFTsToReturn = [];

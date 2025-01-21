@@ -23,6 +23,8 @@ export interface GeneralState {
   isConfirmWhitelistModalOpen: boolean;
   isConfirmClawbackModalOpen: boolean;
   isConfirmBurnModalOpen: boolean;
+  isConfirmUpdateDexUnifiedRefAmountOpen: boolean;
+  isConfirmUpdateDexWhitelistedDenomsOpen: boolean;
   isSelectNFTModalOpen: boolean;
   isNFTCollectionViewModalOpen: boolean;
   isNFTMintModalOpen: boolean;
@@ -60,6 +62,8 @@ export const initialGeneralState: GeneralState = {
   isConfirmWhitelistModalOpen: false,
   isConfirmClawbackModalOpen: false,
   isConfirmBurnModalOpen: false,
+  isConfirmUpdateDexUnifiedRefAmountOpen: false,
+  isConfirmUpdateDexWhitelistedDenomsOpen: false,
   isSelectNFTModalOpen: false,
   isNFTCollectionViewModalOpen: false,
   isNFTMintModalOpen: false,
@@ -138,6 +142,12 @@ const generalSlice = createSlice({
     },
     setIsConfirmBurnModalOpen(state, action: PayloadAction<boolean>) {
       state.isConfirmBurnModalOpen = action.payload;
+    },
+    setIsConfirmUpdateDexUnifiedRefAmountOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmUpdateDexUnifiedRefAmountOpen = action.payload;
+    },
+    setIsConfirmUpdateDexWhitelistedDenomsOpen(state, action: PayloadAction<boolean>) {
+      state.isConfirmUpdateDexWhitelistedDenomsOpen = action.payload;
     },
     setIsSelectNFTModalOpen(state, action: PayloadAction<boolean>) {
       state.isSelectNFTModalOpen = action.payload;
@@ -227,6 +237,8 @@ export const {
   setIsDeWhitelistNFTModalOpen,
   setIsConfirmNFTDeWhitelistModalOpen,
   setIsDisclaimerModalOpen,
+  setIsConfirmUpdateDexUnifiedRefAmountOpen,
+  setIsConfirmUpdateDexWhitelistedDenomsOpen,
 } = generalSlice.actions;
 export const generalReducer = generalSlice.reducer;
 export default generalSlice.reducer;

@@ -13,6 +13,7 @@ interface WhitelistTokensProps {
   setWalletAddress: (value: string) => void;
   handleWhitelistTokens: () => void;
   walletAddressValidationError: string;
+  handleBackClick: () => void;
 }
 
 export const WhitelistTokens: FC<WhitelistTokensProps> = ({
@@ -23,6 +24,7 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
   setWalletAddress,
   handleWhitelistTokens,
   walletAddressValidationError,
+  handleBackClick,
 }) => {
   return (
     <div className="flex flex-col w-full gap-8">
@@ -50,7 +52,15 @@ export const WhitelistTokens: FC<WhitelistTokensProps> = ({
         warning={`The target account will be able to hold up to this amount of ${selectedCurrency?.symbol.toUpperCase()}`}
         decimals={selectedCurrency?.precision || 0}
       />
-      <div className="flex w-full justify-end">
+      <div className="flex w-full justify-between gap-4">
+        <div className="flex items-center">
+          <Button
+            label="Back"
+            onClick={handleBackClick}
+            type={ButtonType.Secondary}
+            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent pl-0"
+          />
+        </div>
         <div className="flex items-center">
           <Button
             label="Continue"

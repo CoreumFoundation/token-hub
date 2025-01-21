@@ -16,8 +16,8 @@ export const coreumdevnet = defineChainInfo({
       coinGeckoId: "coreum"
     }
   ],
-  rest: "https://full-node-pluto.devnet-1.coreum.dev:1317",
-  rpc: "https://full-node-pluto.devnet-1.coreum.dev:26657",
+  rest: "https://full-node.devnet-1.coreum.dev:1317",
+  rpc: "https://full-node.devnet-1.coreum.dev:26657",
   bech32Config: {
     bech32PrefixAccAddr: "devcore",
     bech32PrefixAccPub: "devcorepub",

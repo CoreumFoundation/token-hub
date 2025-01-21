@@ -60,6 +60,7 @@ export const DEXWhitelistedDenomsSettings = () => {
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
                   value={denom}
                   onChange={(e) => handleUpdateDenomToWhitelist(e.target.value, index)}
+                  placeholder="Asset denom"
                 />
               </div>
             );
@@ -86,6 +87,7 @@ export const DEXWhitelistedDenomsSettings = () => {
                   className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
                   value={denom}
                   onChange={(e) => handleUpdateDenomToWhitelist(e.target.value, index)}
+                  placeholder="Asset denom"
                 />
               </div>
               <div className="flex-none flex items-center cursor-pointer" onClick={() => handleRemoveDenomFromList(denom)}>

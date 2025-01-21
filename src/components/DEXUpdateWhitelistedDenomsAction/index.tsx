@@ -3,39 +3,23 @@ import { GeneralIconType, ButtonType, Token } from "@/shared/types";
 import { FC } from "react";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { useAppSelector } from "@/store/hooks";
+import { DEXWhitelistedDenomsSettings } from "../DEXWhitelistedDenomsSettings";
 
-interface MintTokensProps {
-  selectedCurrency: Token | null;
-  mintAmount: string;
-  setMintAmount: (value: string) => void;
-  handleMintTokens: () => void;
+interface DEXUpdateWhitelistedDenomsActionProps {
+  handleUpdateDexWhitelistedDenoms: () => void;
   handleBackClick: () => void;
 }
 
-export const MintTokens: FC<MintTokensProps> = ({
-  selectedCurrency,
-  mintAmount,
-  setMintAmount,
-  handleMintTokens,
+export const DEXUpdateWhitelistedDenomsAction: FC<DEXUpdateWhitelistedDenomsActionProps> = ({
+  handleUpdateDexWhitelistedDenoms,
   handleBackClick,
 }) => {
+  const whitelistedDenoms = useAppSelector(state => state.dex.whitelistDenoms);
+
   return (
     <div className="flex flex-col w-full gap-8">
-      <Input
-        label="Mint Amount"
-        value={mintAmount}
-        onChange={setMintAmount}
-        placeholder="0"
-        type="number"
-        buttonLabel={(
-          <div className="flex items-center gap-1.5 text-[#EEE]">
-            <GeneralIcon type={GeneralIconType.DefaultToken} />
-            {selectedCurrency?.symbol.toUpperCase()}
-          </div>
-        )}
-        warning="The minted tokens will be transferred to the issuer address"
-        decimals={selectedCurrency?.precision || 0}
-      />
+      <DEXWhitelistedDenomsSettings />
       <div className="flex w-full justify-between gap-4">
         <div className="flex items-center">
           <Button
@@ -48,10 +32,10 @@ export const MintTokens: FC<MintTokensProps> = ({
         <div className="flex items-center">
           <Button
             label="Continue"
-            onClick={handleMintTokens}
+            onClick={handleUpdateDexWhitelistedDenoms}
             type={ButtonType.Primary}
             className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-            disabled={!mintAmount.length || +mintAmount === 0}
+            disabled={!whitelistedDenoms.length}
           />
         </div>
       </div>

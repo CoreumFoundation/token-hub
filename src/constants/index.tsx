@@ -288,7 +288,15 @@ export const MANAGE_FT_TOKENS_TABS = {
   'clawback': {
     id: TabItemType.Clawback,
     label: 'Clawback',
-  }
+  },
+  'dex_whitelisted_denoms': {
+    id: TabItemType.DEXWhitelistedDenoms,
+    label: 'DEX Update whitelisted denoms'
+  },
+  'dex_unified_ref_amount_change': {
+    id: TabItemType.DEXUnifiedRefAmountChange,
+    label: 'DEX Update Unified Ref Amount',
+  },
 };
 
 export const SUBUNITS_REGEX = new RegExp(`^[a-z][a-z0-9/:._]{0,50}$`);

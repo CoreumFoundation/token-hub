@@ -14,6 +14,7 @@ interface UnfreezeTokensProps {
   handleGloballyUnfreezeTokens: () => void;
   handleUnfreezeTokens: () => void;
   walletAddressValidationError: string;
+  handleBackClick: () => void;
 }
 
 export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
@@ -25,6 +26,7 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
   handleGloballyUnfreezeTokens,
   handleUnfreezeTokens,
   walletAddressValidationError,
+  handleBackClick,
 }) => {
   return (
     <div className="flex flex-col w-full gap-8">
@@ -53,19 +55,29 @@ export const UnfreezeTokens: FC<UnfreezeTokensProps> = ({
         decimals={selectedCurrency?.precision || 0}
       />
       <div className="flex w-full justify-between gap-4">
-        <Button
-          label="Globally Unfreeze"
-          onClick={handleGloballyUnfreezeTokens}
-          type={ButtonType.Secondary}
-          className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent pl-0"
-        />
-        <Button
-          label="Continue"
-          onClick={handleUnfreezeTokens}
-          type={ButtonType.Primary}
-          className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
-          disabled={!unfreezeAmount.length || +unfreezeAmount === 0 || !walletAddress.length || !!walletAddressValidationError.length}
-        />
+        <div className="flex items-center">
+          <Button
+            label="Back"
+            onClick={handleBackClick}
+            type={ButtonType.Secondary}
+            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent pl-0"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            label="Globally Unfreeze"
+            onClick={handleGloballyUnfreezeTokens}
+            type={ButtonType.Secondary}
+            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+          />
+          <Button
+            label="Continue"
+            onClick={handleUnfreezeTokens}
+            type={ButtonType.Primary}
+            className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px]"
+            disabled={!unfreezeAmount.length || +unfreezeAmount === 0 || !walletAddress.length || !!walletAddressValidationError.length}
+          />
+        </div>
       </div>
     </div>
   );

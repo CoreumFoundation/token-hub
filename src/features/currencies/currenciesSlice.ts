@@ -23,7 +23,7 @@ export const fetchCurrenciesByAccount = createAsyncThunk(
 
     try {
       const tokensRequestUrl = network === Network.Devnet
-        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`
+        ? `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`
         : `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens?issuer=${account}`;
       const {
         data: {
@@ -77,7 +77,7 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
     }
 
     const tokenInfoRequestUrl = network === Network.Devnet
-        ? `https://full-node-pluto.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`
+        ? `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`
         : `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/ft/v1/tokens`;
 
 

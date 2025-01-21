@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setSelectedCurrency } from "@/features/currencies/currenciesSlice";
-import { setIsConfirmClawbackModalOpen, setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmClawbackModalOpen, setIsConfirmFreezeModalOpen, setIsConfirmGlobalFreezeModalOpen, setIsConfirmGlobalUnfreezeModalOpen, setIsConfirmMintModalOpen, setIsConfirmUnfreezeModalOpen, setIsConfirmUpdateDexUnifiedRefAmountOpen, setIsConfirmUpdateDexWhitelistedDenomsOpen, setIsConfirmWhitelistModalOpen, setIsManageCurrencyModalOpen } from "@/features/general/generalSlice";
 import { ChainInfo, TabItem, TabItemType } from "@/shared/types";
 import { Tabs } from "../Tabs";
 import { MintTokens } from "../MintTokens";
@@ -19,24 +19,21 @@ import { getManageFTTabs } from "@/helpers/getManageFtTabs";
 import { validateAddress } from "@/helpers/validateAddress";
 import { ClawbackTokens } from "../ClawbackTokens";
 import { setClawbackAmount, setClawbackWalletAddress } from "@/features/clawback/clawbackSlice";
+import { AssetFTManageRow } from "../AssetFTManageRow";
+import { DEXUnifiedRefAmountChangeAction } from "../DEXUnifiedRefAmountChangeAction";
+import { setDexRefAmount, setDexWhitelistedDenoms } from "@/features/dex/dexSlice";
+import { DEXUpdateWhitelistedDenomsAction } from "../DEXUpdateWhitelistedDenomsAction";
 
 export const ManageTokensModal = () => {
   const selectedCurrency = useAppSelector(state => state.currencies.selectedCurrency);
   const manageFtTokensTabs = getManageFTTabs(selectedCurrency);
-
   const chains = useAppSelector(state => state.chains.list);
 
   const coreumChain = useMemo(() => {
     return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
   }, [chains]);
 
-  const [selectedTab, setSelectedTab] = useState<TabItem | null>(manageFtTokensTabs?.[0] || null);
-
-  useEffect(() => {
-    if (manageFtTokensTabs.length && !selectedTab) {
-      handleSetTab(manageFtTokensTabs[0]);
-    }
-  }, [manageFtTokensTabs, selectedTab]);
+  const [selectedTab, setSelectedTab] = useState<TabItem | null>(null);
 
   const isManageCurrencyModalOpen = useAppSelector(state => state.general.isManageCurrencyModalOpen);
 
@@ -114,17 +111,56 @@ export const ManageTokensModal = () => {
     handleClearState();
   }, [amount, walletAddress]);
 
+  const handleUpdateDexUnifiedRefAmount = useCallback(() => {
+    dispatch(setDexRefAmount(amount));
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmUpdateDexUnifiedRefAmountOpen(true));
+    handleClearState();
+  }, [amount]);
+
+  const handleUpdateDexWhitelistedDenoms = useCallback(() => {
+    dispatch(setIsManageCurrencyModalOpen(false));
+    dispatch(setIsConfirmUpdateDexWhitelistedDenomsOpen(true));
+    handleClearState();
+  }, []);
+
+  const handleBackClick = useCallback(() => {
+    setSelectedTab(null);
+    setAmount('');
+    setWalletAddress('');
+  }, []);
+
+  const renderAvailableActions = useMemo(() => {
+    return (
+      <div className="flex flex-col w-full gap-2">
+        {manageFtTokensTabs.map((item: TabItem) =>
+          <AssetFTManageRow key={item.id} id={item.id} label={item.label} onClick={() => handleSetTab(item)} />
+        )}
+      </div>
+    );
+  }, [handleSetTab, manageFtTokensTabs]);
+
   const renderTitle = useMemo(() => {
     if (!manageFtTokensTabs.length) {
       return null;
     }
 
+    if (selectedTab) {
+      return (
+        <div className="flex flex-col">
+          <p className="text-[#EEE] font-space-grotesk text-[18px] font-medium leading-[27px] tracking-[-0.27px]">
+            {selectedTab.label}
+          </p>
+        </div>
+      );
+    }
+
     return (
-      <Tabs
-        selectedTab={selectedTab}
-        items={manageFtTokensTabs}
-        handleSelectTab={handleSetTab}
-      />
+      <div className="flex flex-col">
+        <p className="text-[#EEE] font-space-grotesk text-[18px] font-medium leading-[27px] tracking-[-0.27px]">
+          Select an option
+        </p>
+      </div>
     );
   }, [selectedTab, manageFtTokensTabs]);
 
@@ -146,7 +182,7 @@ export const ManageTokensModal = () => {
     return '';
   }, [coreumChain?.bech32_prefix, walletAddress]);
 
-  const renderContent = useMemo(() => {
+  const renderCurrentAction = useMemo(() => {
     switch (selectedTab?.id) {
       case TabItemType.Mint:
         return (
@@ -155,6 +191,7 @@ export const ManageTokensModal = () => {
             mintAmount={amount}
             setMintAmount={setAmount}
             handleMintTokens={handleMintTokens}
+            handleBackClick={handleBackClick}
           />
         );
       case TabItemType.Freeze:
@@ -168,6 +205,7 @@ export const ManageTokensModal = () => {
             handleGloballyFreezeTokens={handleGloballyFreezeTokens}
             handleFreezeTokens={handleFreezeTokens}
             walletAddressValidationError={walletAddressValidationError}
+            handleBackClick={handleBackClick}
           />
         );
       case TabItemType.Unfreeze:
@@ -181,6 +219,7 @@ export const ManageTokensModal = () => {
             handleGloballyUnfreezeTokens={handleGloballyUnfreezeTokens}
             handleUnfreezeTokens={handleUnfreezeTokens}
             walletAddressValidationError={walletAddressValidationError}
+            handleBackClick={handleBackClick}
           />
         );
       case TabItemType.Whitelist:
@@ -193,6 +232,7 @@ export const ManageTokensModal = () => {
             setWalletAddress={setWalletAddress}
             handleWhitelistTokens={handleWhitelistTokens}
             walletAddressValidationError={walletAddressValidationError}
+            handleBackClick={handleBackClick}
           />
         );
       case TabItemType.Clawback:
@@ -205,6 +245,23 @@ export const ManageTokensModal = () => {
             setWalletAddress={setWalletAddress}
             handleClawbackTokens={handleClawbackTokens}
             walletAddressValidationError={walletAddressValidationError}
+            handleBackClick={handleBackClick}
+          />
+        );
+      case TabItemType.DEXUnifiedRefAmountChange:
+        return (
+          <DEXUnifiedRefAmountChangeAction
+            refAmount={amount}
+            setRefAmount={setAmount}
+            handleUpdateDexUnifiedRefAmount={handleUpdateDexUnifiedRefAmount}
+            handleBackClick={handleBackClick}
+          />
+        );
+      case TabItemType.DEXWhitelistedDenoms:
+        return (
+          <DEXUpdateWhitelistedDenomsAction
+            handleUpdateDexWhitelistedDenoms={handleUpdateDexWhitelistedDenoms}
+            handleBackClick={handleBackClick}
           />
         );
       default:
@@ -220,10 +277,10 @@ export const ManageTokensModal = () => {
       isOpen={isManageCurrencyModalOpen}
       title={renderTitle}
       onClose={handleCloseModal}
-      wrapperClassName="w-[480px] pt-4"
+      wrapperClassName="w-[480px]"
       headerClassName="!text-base"
     >
-      {renderContent}
+      {selectedTab ? renderCurrentAction : renderAvailableActions}
     </Modal>
   );
 };

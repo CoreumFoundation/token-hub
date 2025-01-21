@@ -59,10 +59,6 @@ export const useChains = () => {
       coreum_client_id: '',
     }
 
-    console.log({
-      coreumChainInfoData,
-    });
-
     supportedIBCChains.unshift(coreumChainInfoData);
 
     dispatch(setIBCChains(supportedIBCChains));

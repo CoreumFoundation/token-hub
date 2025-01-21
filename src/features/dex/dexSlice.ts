@@ -7,7 +7,7 @@ export interface DEXState {
 
 export const initialExtensionState: DEXState = {
   refAmount: '',
-  whitelistDenoms: [],
+  whitelistDenoms: [''],
 };
 
 const dexSlice = createSlice({
@@ -25,7 +25,7 @@ const dexSlice = createSlice({
     },
     clearDexState(state) {
       state.refAmount = '';
-      state.whitelistDenoms = [];
+      state.whitelistDenoms = [''];
     },
   },
 });

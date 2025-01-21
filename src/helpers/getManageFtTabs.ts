@@ -14,6 +14,8 @@ export const getManageFTTabs = (currency: Token | null) => {
       case 'minting':
       case 'whitelisting':
       case 'clawback':
+      case 'dex_whitelisted_denoms':
+      case 'dex_unified_ref_amount_change':
         resultTabs.push(MANAGE_FT_TOKENS_TABS[feature]);
         break;
       case 'freezing':

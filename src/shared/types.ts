@@ -1,3 +1,4 @@
+import { DEXUpdateWhitelistedDenomsAction } from './../components/DEXUpdateWhitelistedDenomsAction/index';
 import { Chain } from '@chain-registry/types';
 import { Any } from 'coreum-js/dist/main/google/protobuf/any';
 
@@ -72,6 +73,10 @@ export enum TabItemType {
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
   Clawback = 'clawback',
+  DEXBlock = 'dex_block',
+  DEXWhitelistedDenoms = 'dex_whitelisted_denoms',
+  DEXOrderCancellation = 'dex_order_cancellation',
+  DEXUnifiedRefAmountChange = 'dex_unified_ref_amount_change',
 };
 
 export enum TabSwitchItemType {
@@ -216,6 +221,8 @@ export enum ConfirmationModalImageType {
   Whitelist = 'whitelist',
   Burn = 'burn',
   Clawback = 'clawback',
+  DEXWhitelistedDenoms = 'dex_whitelisted_denoms',
+  DEXUnifiedRefAmountChange = 'dex_unified_ref_amount_change',
 }
 
 export enum AlertType {

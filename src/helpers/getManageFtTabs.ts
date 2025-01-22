@@ -51,6 +51,7 @@ export const getFTCurrencyOptions = (currency: Token) => {
       case 'dex_whitelisted_denoms':
       case 'dex_unified_ref_amount_change':
         isTokenManageable = true;
+        break;
       case 'burning':
         isBurnEnabled = true;
         break;

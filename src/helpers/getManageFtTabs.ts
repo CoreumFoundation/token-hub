@@ -48,6 +48,8 @@ export const getFTCurrencyOptions = (currency: Token) => {
       case 'freezing':
       case 'whitelisting':
       case 'clawback':
+      case 'dex_whitelisted_denoms':
+      case 'dex_unified_ref_amount_change':
         isTokenManageable = true;
       case 'burning':
         isBurnEnabled = true;

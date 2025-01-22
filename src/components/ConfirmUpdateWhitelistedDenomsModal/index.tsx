@@ -46,10 +46,8 @@ export const ConfirmUpdateDexWhitelistedDenomsModal = () => {
         denom: selectedCurrency?.denom || '',
         whitelistedDenoms,
       });
-      console.log({ updateDexWhitelistedDenomsMsg });
       const txFee = await getTxFee([updateDexWhitelistedDenomsMsg]);
       const resp = await signingClient?.signAndBroadcast(account, [updateDexWhitelistedDenomsMsg], txFee ? txFee.fee : 'auto');
-      console.log({ resp });
       setIsTxSuccessful(true);
       dispatch(shouldRefetchBalances(true));
       dispatch(shouldRefetchCurrencies(true));

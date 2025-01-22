@@ -1,3 +1,4 @@
+import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { fetchCurrenciesByAccount, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
@@ -16,6 +17,7 @@ export const useCurrencies = () => {
   useEffect(() => {
     if (!isFetched && account) {
       dispatch(fetchCurrenciesByAccount({ account, network }));
+      dispatch(shouldRefetchBalances(true));
     }
   }, [account, currencies.length, dispatch, isConnected, isFetched, network]);
 

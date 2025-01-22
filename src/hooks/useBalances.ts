@@ -11,15 +11,15 @@ export const useAccountBalances = () => {
 
   const dispatch = useAppDispatch();
 
-  const balances = useAppSelector(state => state.balances.restBalances);
   const isBalancesFetched = useAppSelector(state => state.balances.isFetched);
   const isLoading = useAppSelector(state => state.balances.isLoading);
+  const balances = useAppSelector(state => state.balances.list);
 
   useEffect(() => {
-    if (isConnected && account.length && !isLoading && currencies.length && !isBalancesFetched) {
+    if (isConnected && account.length && !isLoading && currencies.length && !isBalancesFetched && !balances.length) {
       dispatch(fetchBalancesByAccount({ account, network }));
     }
-  }, [account, currencies, isBalancesFetched, isConnected, isLoading, network]);
+  }, [account, balances.length, currencies, dispatch, isBalancesFetched, isConnected, isLoading, network]);
 
   useEffect(() => {
     if (shouldRefetch && !isLoading && account.length) {

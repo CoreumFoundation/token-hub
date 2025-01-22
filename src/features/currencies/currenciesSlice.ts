@@ -119,7 +119,7 @@ export const fetchSecondaryCurrenciesInfo = createAsyncThunk(
           ...(assetInRegistry && { iconSvg: assetInRegistry.logo_URIs.svg }),
         })
       } catch (error) {
-        console.log({ error });
+        console.log(error);
       }
     }
 

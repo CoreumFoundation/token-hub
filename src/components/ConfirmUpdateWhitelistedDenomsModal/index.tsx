@@ -4,18 +4,13 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
-import { setIsConfirmClawbackModalOpen, setIsConfirmUpdateDexUnifiedRefAmountOpen, setIsConfirmUpdateDexWhitelistedDenomsOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
+import { setIsConfirmUpdateDexWhitelistedDenomsOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { FT } from "coreum-js";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
-import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { shortenAddress } from "@/helpers/shortenAddress";
-import { Decimal } from "../Decimal";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
-import { setClawbackAmount, setClawbackWalletAddress } from "@/features/clawback/clawbackSlice";
-import { setDexRefAmount, setDexWhitelistedDenoms } from "@/features/dex/dexSlice";
+import { setDexWhitelistedDenoms } from "@/features/dex/dexSlice";
 
 export const ConfirmUpdateDexWhitelistedDenomsModal = () => {
   const isConfirmUpdateDexWhitelistedDenomsOpen = useAppSelector(state => state.general.isConfirmUpdateDexWhitelistedDenomsOpen);

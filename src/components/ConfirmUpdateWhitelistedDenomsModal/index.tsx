@@ -46,8 +46,10 @@ export const ConfirmUpdateDexWhitelistedDenomsModal = () => {
         denom: selectedCurrency?.denom || '',
         whitelistedDenoms,
       });
+      console.log({ updateDexWhitelistedDenomsMsg });
       const txFee = await getTxFee([updateDexWhitelistedDenomsMsg]);
-      await signingClient?.signAndBroadcast(account, [updateDexWhitelistedDenomsMsg], txFee ? txFee.fee : 'auto');
+      const resp = await signingClient?.signAndBroadcast(account, [updateDexWhitelistedDenomsMsg], txFee ? txFee.fee : 'auto');
+      console.log({ resp });
       setIsTxSuccessful(true);
       dispatch(shouldRefetchBalances(true));
       dispatch(shouldRefetchCurrencies(true));
@@ -60,7 +62,7 @@ export const ConfirmUpdateDexWhitelistedDenomsModal = () => {
     }
 
     dispatch(setIsTxExecuting(false));
-  }, [dispatch]);
+  }, [account, getTxFee, selectedCurrency?.denom, signingClient, whitelistedDenoms]);
 
   const renderDenoms = useMemo(() => {
     return (

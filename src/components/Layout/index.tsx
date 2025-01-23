@@ -50,6 +50,8 @@ import { isBrowser } from "@/helpers/isBrowser";
 import { ConfirmClawbackModal } from "../ConfirmClawbackModal";
 import { ConfirmUpdateDexUnifiedRefAmountModal } from "../ConfirmUpdateUnifiedRefAmountModal";
 import { ConfirmUpdateDexWhitelistedDenomsModal } from "../ConfirmUpdateWhitelistedDenomsModal";
+import { EditNFTModal } from "../EditNFTModal";
+import { ConfirmEditNFTDataModal } from "../ConfirmEditNFTDataModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -176,6 +178,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <DeWhitelistNFTModal />
                 <ConfirmNFTDeWhitelistModal />
                 <ViewNFTCollectionModal />
+                <EditNFTModal />
+                <ConfirmEditNFTDataModal />
               </>
             );
           default:

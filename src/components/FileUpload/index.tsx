@@ -64,7 +64,7 @@ export const FileUpload: FC<FileUploadProps> = ({
               label="Choose another file"
               type={ButtonType.Secondary}
               onClick={() => !disabled && inputFileRef?.current?.click()}
-              className="text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent group-hover:opacity-50"
+              className="text-sm !py-2 px-6 rounded-[10px] font-medium w-[160px] !bg-transparent group-hover:opacity-50"
             />
           </div>
           <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">

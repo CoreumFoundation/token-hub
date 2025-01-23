@@ -267,6 +267,7 @@ export interface NFTsState {
   shouldRefetchNFTItems: boolean;
   issuedNFTCollection: IssuedNFTCollectionType | null;
   deWhitelistAccount: string;
+  editNFTData: string;
 }
 
 export const initialNFTsState: NFTsState = {
@@ -289,6 +290,7 @@ export const initialNFTsState: NFTsState = {
   shouldRefetchNFTItems: false,
   issuedNFTCollection: null,
   deWhitelistAccount: '',
+  editNFTData: '',
 };
 
 const nftsSlice = createSlice({
@@ -351,6 +353,9 @@ const nftsSlice = createSlice({
     },
     setDeWhitelistAccount(state, action: PayloadAction<string>) {
       state.deWhitelistAccount = action.payload;
+    },
+    setEditNFTData(state, action: PayloadAction<string>) {
+      state.editNFTData = action.payload;
     },
     resetNFTsState(state) {
       // state.isLoading = false;
@@ -424,6 +429,7 @@ export const {
   setIssuedNFTCollection,
   setDeWhitelistAccount,
   resetNFTsState,
+  setEditNFTData,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

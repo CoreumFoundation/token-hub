@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIsBurnNFTModalOpen, setIsDeWhitelistNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsBurnNFTModalOpen, setIsDeWhitelistNFTModalOpen, setIsEditNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { NFTItem } from "../NFTItem";
 import { ActionItem, GeneralIconType, NFT } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
@@ -79,6 +79,12 @@ export const ViewNFTCollectionModal = () => {
     dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
+  const onEditClick = useCallback((nft: NFT) => {
+    dispatch(setSelectedNFTSend(nft));
+    dispatch(setIsEditNFTModalOpen(true));
+    dispatch(setIsNFTCollectionViewModalOpen(false));
+  }, []);
+
   const renderContent = useMemo(() => {
     if (isNFTItemsLoading) {
       return (
@@ -104,6 +110,12 @@ export const ViewNFTCollectionModal = () => {
                 label: 'Send',
                 icon: <GeneralIcon type={GeneralIconType.Send} />,
                 onClick: () => onSendClick(item),
+              });
+              items.push({
+                id: 'edit',
+                label: 'Edit',
+                icon: <GeneralIcon type={GeneralIconType.Edit} />,
+                onClick: () => onEditClick(item),
               });
             }
 
@@ -171,7 +183,22 @@ export const ViewNFTCollectionModal = () => {
         </div>
       </div>
     );
-  }, [isNFTItemsLoading, currentNFTItems, selectedNFT?.id, selectedNFTClass?.features, selectedNFTClass?.id, ownedNFTItems, onSendClick, onFreezeClick, onUnfreezeClick, onBurnClick, onWhitelistClick, onDeWhitelistClick, onNFTClick]);
+  }, [
+    isNFTItemsLoading,
+    currentNFTItems,
+    selectedNFT?.id,
+    selectedNFTClass?.features,
+    selectedNFTClass?.id,
+    ownedNFTItems,
+    onSendClick,
+    onFreezeClick,
+    onUnfreezeClick,
+    onBurnClick,
+    onWhitelistClick,
+    onDeWhitelistClick,
+    onNFTClick,
+    onEditClick,
+  ]);
 
   return (
     <Modal

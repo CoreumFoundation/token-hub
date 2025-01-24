@@ -67,17 +67,7 @@ export const ConfirmEditNFTDataModal = () => {
       return (
         <div className="flex flex-col w-full p-8 gap-8">
           <div className="flex flex-col text-center font-space-grotesk text-lg text-[#EEE] font-medium">
-            Successfully Updated Data for NFT
-          </div>
-          <div className="flex items-center justify-center w-full">
-            <div className="flex flex-col items-center">
-              <NFTItem
-                label={selectedNFTSend?.id || ''}
-                imgPath={selectedNFTSend?.image || ''}
-                description={selectedNFTClass?.name}
-                className="text-[#eee] text-base hover:bg-[#17191E] hover"
-              />
-            </div>
+            Successfully Updated NFT Data
           </div>
           <div className="flex items-center w-full">
             <Button
@@ -95,10 +85,10 @@ export const ConfirmEditNFTDataModal = () => {
       <div className="flex flex-col w-full p-8 gap-8">
         <div className="flex flex-col text-center gap-2">
           <div className="font-space-grotesk text-lg text-[#EEE] font-medium">
-            Update Data for NFT
+            Edit NFT Data
           </div>
           <div className="font-noto-sans text-sm text-[#868991]">
-            This action will be applied and affect this targeted holder. Would you like to proceed?
+            This action will immediately update the NFT data and might affect the current owner. Would you like to proceed?
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -119,22 +109,14 @@ export const ConfirmEditNFTDataModal = () => {
         </div>
       </div>
     );
-  }, [
-    handleBackClick,
-    handleClose,
-    handleConfirm,
-    isTxExecuting,
-    isTxSuccessful,
-    selectedNFTClass?.name,
-    selectedNFTSend,
-  ]);
+  }, [handleBackClick, handleClose, handleConfirm, isTxExecuting, isTxSuccessful]);
 
   return (
     <ConfirmationModal isOpen={isConfirmEditNFTModalOpen}>
       <ConfirmationModalImage
         type={isTxSuccessful
           ? ConfirmationModalImageType.Success
-          : ConfirmationModalImageType.Whitelist
+          : ConfirmationModalImageType.Edit
         }
       />
       {renderContent}

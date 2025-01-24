@@ -224,6 +224,7 @@ export enum ConfirmationModalImageType {
   Clawback = 'clawback',
   DEXWhitelistedDenoms = 'dex_whitelisted_denoms',
   DEXUnifiedRefAmountChange = 'dex_unified_ref_amount_change',
+  Edit = 'edit',
 }
 
 export enum AlertType {

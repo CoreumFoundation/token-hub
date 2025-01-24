@@ -28,6 +28,8 @@ export const ConfirmationModalImage: FC<ConfirmationModalProps> = ({
       return <Image priority={false} className="w-full max-w-full" src="/images/modal/unified-ref-amount-change-bg.svg" width="480" height="180" alt="DEXUnifiedRefAmountChange" />;
     case ConfirmationModalImageType.DEXWhitelistedDenoms:
       return <Image priority={false} className="w-full max-w-full" src="/images/modal/whitelisted-denoms-bg.svg" width="480" height="180" alt="DEXWhitelistedDenoms" />;
+    case ConfirmationModalImageType.Edit:
+      return <Image priority={false} className="w-full max-w-full" src="/images/modal/edit-bg.svg" width="480" height="180" alt="Edit" />;
     default:
       return null
   }

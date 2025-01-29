@@ -1,7 +1,7 @@
 import { Network, NFT, NFTClass } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { ClassFeature } from 'coreum-js';
+import { ClassFeature } from "coreum-js-nightly";
 
 interface FetchIssuedCollectionsArgs {
   account: string;

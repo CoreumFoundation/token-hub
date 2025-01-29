@@ -16,7 +16,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { AlertType, ButtonIconType, ButtonType, ExpandedListElem, GeneralIconType, TokenCapabilityItem, TokenCapabilityType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Big from "big.js";
-import { ClassFeature, NFT, parseFloatToRoyaltyRate } from "coreum-js";
+import { ClassFeature, NFT, parseFloatToRoyaltyRate } from "coreum-js-nightly";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 
@@ -257,6 +257,7 @@ export const NonFungibleTokenCreate = () => {
         uriHash,
         features: featuresToApply,
         royaltyRate: parseFloatToRoyaltyRate(royalties),
+        data: undefined,
       });
 
       const txFee = await getTxFee([issueNFTMsg]);

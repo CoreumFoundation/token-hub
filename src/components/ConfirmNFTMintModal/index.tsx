@@ -6,11 +6,14 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmNFTMintModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { NFT, convertStringToAny } from "coreum-js";
+import { NFT } from "coreum-js-nightly";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash, setSelectedNFTClass, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
+import { convertStringToAny, convertStringToDataDynamic, convertStringToUint8Array } from "@/helpers/convertStringToAny";
+import { DataDynamic, DataDynamicItem } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { Any } from "google-protobuf/google/protobuf/any_pb";
 
 export const ConfirmNFTMintModal = () => {
   const isConfirmNFTMintModalOpen = useAppSelector(state => state.general.isConfirmNFTMintModalOpen);
@@ -43,18 +46,29 @@ export const ConfirmNFTMintModal = () => {
   const handleConfirm = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
-      const nftDataValue = convertStringToAny(nftData);
-      const nftMintObj = {
+      const newData = convertStringToDataDynamic([{ editors: [0, 1], data: btoa(nftData) }]);
+      let mintNFTMsg = NFT.Mint({
         sender: account,
         classId: selectedCollection?.id || '',
         id: nftId,
         uri: nftURI,
         uriHash: nftURIHash,
         recipient: nftRecipient,
-        data: nftDataValue,
-      };
+        data: newData as any,
+      });
 
-      const mintNFTMsg = NFT.Mint(nftMintObj);
+      if (nftData.length && newData && (newData as any).array.length) {
+        mintNFTMsg = {
+          ...mintNFTMsg,
+          value: {
+            ...mintNFTMsg.value,
+            data: {
+              typeUrl: (newData as any)?.array[0],
+              value: (newData as any)?.array[1],
+            } as any,
+          }
+        };
+      }
 
       const txFee = await getTxFee([mintNFTMsg]);
       await signingClient?.signAndBroadcast(account, [mintNFTMsg], txFee ? txFee.fee : 'auto');
@@ -197,3 +211,8 @@ export const ConfirmNFTMintModal = () => {
     </ConfirmationModal>
   );
 };
+
+
+
+
+// Data for Mint NFT

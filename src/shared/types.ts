@@ -1,6 +1,6 @@
 import { DEXUpdateWhitelistedDenomsAction } from './../components/DEXUpdateWhitelistedDenomsAction/index';
 import { Chain } from '@chain-registry/types';
-import { Any } from 'coreum-js/dist/main/google/protobuf/any';
+import { Any } from 'coreum-js-nightly/dist/main/google/protobuf/any';
 
 export enum FooterIconType {
   X = 'twitter',

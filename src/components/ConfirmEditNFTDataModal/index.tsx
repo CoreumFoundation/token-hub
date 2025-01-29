@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmEditNFTModalOpen, setIsConfirmNFTDeWhitelistModalOpen, setIsEditNFTModalOpen, setIsTxExecuting, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { convertStringToAny, NFT } from "coreum-js";
+import { NFT } from "coreum-js-nightly";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { NFTItem } from "../NFTItem";
 import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import { DataDynamicIndexedItem, dataEditorFromJSON } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { convertStringToAny, convertStringToUint8Array } from "@/helpers/convertStringToAny";
 
 export const ConfirmEditNFTDataModal = () => {
   const isConfirmEditNFTModalOpen = useAppSelector(state => state.general.isConfirmEditNFTModalOpen);
@@ -40,27 +41,31 @@ export const ConfirmEditNFTDataModal = () => {
     dispatch(setIsTxExecuting(true));
 
     try {
-      // const nftDataValue = convertStringToAny(editNFTData);
-      // const editNFTDataMSg = NFT.UpdateData({
-      //   sender: account,
-      //   classId: selectedNFTClass?.id || '',
-      //   id: selectedNFTSend?.id || '',
-      //   data:nftDataValue,
-      // });
-      // const txFee = await getTxFee([editNFTDataMSg]);
-      // await signingClient?.signAndBroadcast(account, [editNFTDataMSg], txFee ? txFee.fee : 'auto');
+      const nftDataValue = convertStringToUint8Array(editNFTData);
+      const newData = DataDynamicIndexedItem.create({ data: nftDataValue });
+      const editNFTDataMsg = NFT.UpdateData({
+        sender: account,
+        classId: selectedNFTClass?.id || '',
+        id: selectedNFTSend?.id || '',
+        items: [newData],
+      });
+
+      const txFee = await getTxFee([editNFTDataMsg]);
+      await signingClient?.signAndBroadcast(account, [editNFTDataMsg], txFee ? txFee.fee : 'auto');
       setIsTxSuccessful(true);
       dispatch(setShouldRefetchNFTItems(true));
     } catch (error) {
+      console.log({ error });
+
       dispatch(dispatchAlert({
         type: AlertType.Error,
-        title: 'NFT Whitelist Failed',
+        title: 'Update NFT Data Failed',
         message: (error as { message: string}).message,
       }));
     }
 
     dispatch(setIsTxExecuting(false));
-  }, [account, getTxFee, selectedNFTSend, signingClient, selectedNFTClass]);
+  }, [account, getTxFee, selectedNFTSend, signingClient, selectedNFTClass, editNFTData]);
 
   const renderContent = useMemo(() => {
     if (isTxSuccessful) {

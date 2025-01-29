@@ -44,7 +44,7 @@ export const EditNFTModal = () => {
     dispatch(setIsEditNFTModalOpen(false));
     dispatch(setEditNFTData(fileContent.length ? fileContent : data));
     setData('');
-  }, [data]);
+  }, [data, fileContent]);
 
   const isFormValid = useMemo(() => {
     if (selectedNFTSend && (!!data.length || !!fileContent.length)) {

@@ -13,7 +13,7 @@ import { AlertType, ButtonIconType, ButtonType, ChainInfo, ExpandedListElem, Gen
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
-import { FT, Feature, parseFloatToRoyaltyRate } from 'coreum-js';
+import { FT, Feature, parseFloatToRoyaltyRate } from "coreum-js-nightly";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import Big from "big.js";

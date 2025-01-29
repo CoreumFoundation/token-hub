@@ -12,7 +12,7 @@ import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { Decimal } from "../Decimal";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";
 import { setDexRefAmount } from "@/features/dex/dexSlice";
-import { FT } from "coreum-js";
+import { FT } from "coreum-js-nightly";
 
 export const ConfirmUpdateDexUnifiedRefAmountModal = () => {
   const isConfirmUpdateDexUnifiedRefAmountOpen = useAppSelector(state => state.general.isConfirmUpdateDexUnifiedRefAmountOpen);

@@ -62,6 +62,7 @@ export enum GeneralIconType {
   Unfreeze = 'unfreeze',
   Whitelist = 'whitelist',
   File = 'file',
+  Edit = 'edit',
 };
 
 export enum TabItemType {
@@ -223,6 +224,7 @@ export enum ConfirmationModalImageType {
   Clawback = 'clawback',
   DEXWhitelistedDenoms = 'dex_whitelisted_denoms',
   DEXUnifiedRefAmountChange = 'dex_unified_ref_amount_change',
+  Edit = 'edit',
 }
 
 export enum AlertType {

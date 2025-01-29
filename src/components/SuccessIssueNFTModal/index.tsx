@@ -6,7 +6,7 @@ import { useCallback, useMemo } from "react";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { Button } from "../Button";
 import { setIsSuccessIssueNFTModalOpen } from "@/features/general/generalSlice";
-import { ClassFeature } from "coreum-js";
+import { ClassFeature } from "coreum-js-nightly";
 import { setIssuedNFTCollection } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { Input } from "../Input";

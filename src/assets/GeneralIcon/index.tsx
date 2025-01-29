@@ -538,6 +538,25 @@ export const GeneralIcon: FC<GeneralIconProps> = ({
           </defs>
         </svg>
       );
+    case GeneralIconType.Edit:
+      return (
+        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3.5 15.8883L12.1272 7.26167L13.7382 8.87264L5.11156 17.4998H3.5V15.8883Z"
+            fill="#5E6773"
+            stroke="#5E6773"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M17.1659 3.83369L17.166 3.8338C17.2721 3.93971 17.3562 4.06548 17.4135 4.20393C17.4709 4.34237 17.5004 4.49077 17.5004 4.64063C17.5003 4.79049 17.4707 4.93888 17.4133 5.07729C17.3559 5.2157 17.2717 5.34143 17.1656 5.44728L17.1652 5.44767L15.3313 7.28155L13.7201 5.67035L15.5542 3.83369C15.5542 3.83366 15.5542 3.83363 15.5543 3.8336C15.768 3.61999 16.0579 3.5 16.36 3.5C16.6623 3.5 16.9522 3.62003 17.1659 3.83369Z"
+            fill="#5E6773"
+            stroke="#5E6773"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     default:
       return null;
   }

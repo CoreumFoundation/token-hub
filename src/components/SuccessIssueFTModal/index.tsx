@@ -7,7 +7,7 @@ import { ModalInfoRow } from "../ModalInfoRow";
 import { Button } from "../Button";
 import { setIsSuccessIssueFTModalOpen } from "@/features/general/generalSlice";
 import { setIssuedToken } from "@/features/currencies/currenciesSlice";
-import { Feature } from "coreum-js";
+import { Feature } from "coreum-js-nightly";
 import { Decimal } from "../Decimal";
 import { convertSubunitToUnit } from "@/helpers/convertUnitToSubunit";
 import { shortenAddress } from "@/helpers/shortenAddress";

@@ -18,7 +18,7 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { AlertType, ButtonIconType, ButtonType, ChainInfo, DropdownItem, GeneralIconType, Network, Token } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Big from "big.js";
-import { Bank, FT } from "coreum-js";
+import { Bank, FT } from "coreum-js-nightly";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { setSelectedCurrency as setSelectedFTCurrency } from "@/features/currencies/currenciesSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";

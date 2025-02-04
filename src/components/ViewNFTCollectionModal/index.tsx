@@ -162,7 +162,7 @@ export const ViewNFTCollectionModal = () => {
               <NFTItem
                 key={item.id}
                 imgPath={item.image}
-                label={item.id}
+                label={item.name}
                 onClick={() => onNFTClick(item)}
                 isActive={isActive}
                 isActionRow={true}

@@ -16,15 +16,9 @@ import classNames from "classnames";
 export const EditNFTModal = () => {
   const isEditNFTModalOpen = useAppSelector(state => state.general.isEditNFTModalOpen);
   const selectedNFTSend = useAppSelector(state => state.nfts.selectedNFTSend);
-  const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
-  const chains = useAppSelector(state => state.chains.list);
 
   const [data, setData] = useState<string>('');
   const [fileContent, setFileContent] = useState<string>('');
-
-  const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
-  }, [chains]);
 
   const dispatch = useAppDispatch();
 

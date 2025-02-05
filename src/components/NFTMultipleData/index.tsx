@@ -1,10 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { addDataToMultipleData, setNFTMultipleData } from "@/features/nft/nftSlice";
 
-export const NFTMultipleData = () => {
-  const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
+interface NFTMultipleDataProps {
+  isDataEditable: boolean;
+}
 
+export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NFTMultipleDataProps) => {
+  const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
   const dispatch = useAppDispatch();
 
   const handleAddDataToMultipleData = useCallback(() => {
@@ -35,6 +38,22 @@ export const NFTMultipleData = () => {
   }, [nftMultipleData]);
 
   const renderContentData = useMemo(() => {
+    if (!isDataEditable) {
+      return (
+        <div
+          className="flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]"
+        >
+          <input
+            className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
+            value={nftMultipleData[0]}
+            onChange={(e) => handleUpdateDataInList(e.target.value, 0)}
+            placeholder="Type content here"
+          />
+        </div>
+      );
+    }
+
+
     return (
       <>
         {nftMultipleData.map((value: string, index: number) => {
@@ -91,7 +110,7 @@ export const NFTMultipleData = () => {
         })}
       </>
     );
-  }, [handleRemoveDataFromList, handleUpdateDataInList, nftMultipleData]);
+  }, [handleRemoveDataFromList, handleUpdateDataInList, nftMultipleData, isDataEditable]);
 
   return (
     <div className="flex flex-col w-full gap-2 items-center">
@@ -109,19 +128,21 @@ export const NFTMultipleData = () => {
           <div className="flex flex-col w-full gap-2">
             {renderContentData}
           </div>
-          <div className="flex items-center gap-1 cursor-pointer" onClick={handleAddDataToMultipleData}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M6.41248 2L6.41246 6.41252L2 6.41254L2 7.5878L6.41246 7.58779L6.41245 12L7.58772 12L7.58773 7.58779L12 7.58778L12 6.41251L7.58773 6.41252L7.58774 2L6.41248 2Z"
-                fill="#25D695"
-              />
-            </svg>
-            <p className="text-[#25D695] font-noto-sans text-xs font-medium leading-[18px] tracking-[-0.18px]">
-              Add Another Content
-            </p>
-          </div>
+          {isDataEditable && (
+            <div className="flex items-center gap-1 cursor-pointer" onClick={handleAddDataToMultipleData}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M6.41248 2L6.41246 6.41252L2 6.41254L2 7.5878L6.41246 7.58779L6.41245 12L7.58772 12L7.58773 7.58779L12 7.58778L12 6.41251L7.58773 6.41252L7.58774 2L6.41248 2Z"
+                  fill="#25D695"
+                />
+              </svg>
+              <p className="text-[#25D695] font-noto-sans text-xs font-medium leading-[18px] tracking-[-0.18px]">
+                Add Another Content
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

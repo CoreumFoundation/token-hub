@@ -36,6 +36,7 @@ export const MintNFTModal = () => {
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsNFTMintModalOpen(false));
+    dispatch(setNFTMultipleData(['']));
     setNFTId('');
     setUri('');
     setUriHash('');
@@ -218,7 +219,7 @@ export const MintNFTModal = () => {
             setFileContent={setFileContent}
             disabled={!!data.length}
           />
-          <NFTMultipleData />
+          <NFTMultipleData isDataEditable={editEnabled} />
         </div>
         {editEnabled && (
           <div className="grid grid-cols-3 w-full">

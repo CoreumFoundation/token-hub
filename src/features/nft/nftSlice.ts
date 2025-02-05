@@ -411,6 +411,7 @@ const nftsSlice = createSlice({
       state.deWhitelistAccount = '';
       state.isDataEditable = false;
       state.roles = [];
+      state.nftMultipleData = [''];
     },
   },
   extraReducers: (builder) => {

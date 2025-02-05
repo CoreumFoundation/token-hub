@@ -22,9 +22,7 @@ export const convertStringToUint8Array = (message: string) => {
 };
 
 export const convertStringToDataDynamic = (items: any[]): Any => {
-    const dataBytesMessage = DataDynamic.fromJSON({
-        items: items,
-    });
+    const dataBytesMessage = DataDynamic.fromJSON({ items });
     const dataDynamicBinary = DataDynamic.encode(dataBytesMessage).finish();
 
     const formattedAnyDataValue = new Any();

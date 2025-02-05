@@ -2,6 +2,7 @@ import { Network, NFT, NFTClass } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { ClassFeature } from "coreum-js-nightly";
+import { DataEditor } from 'coreum-js-nightly/dist/main/coreum/asset/nft/v1/types';
 
 interface FetchIssuedCollectionsArgs {
   account: string;
@@ -243,6 +244,11 @@ interface IssuedNFTCollectionType {
   txHash: string;
 }
 
+interface RolesEditableType {
+  admin: boolean;
+  owner: boolean;
+}
+
 export interface NFTsState {
   isLoading: boolean;
   collections: NFTClass[];
@@ -268,6 +274,9 @@ export interface NFTsState {
   issuedNFTCollection: IssuedNFTCollectionType | null;
   deWhitelistAccount: string;
   editNFTData: string;
+  isDataEditable: boolean;
+  roles: DataEditor[];
+  nftMultipleData: string[];
 }
 
 export const initialNFTsState: NFTsState = {
@@ -291,6 +300,9 @@ export const initialNFTsState: NFTsState = {
   issuedNFTCollection: null,
   deWhitelistAccount: '',
   editNFTData: '',
+  isDataEditable: false,
+  roles: [],
+  nftMultipleData: [''],
 };
 
 const nftsSlice = createSlice({
@@ -357,6 +369,26 @@ const nftsSlice = createSlice({
     setEditNFTData(state, action: PayloadAction<string>) {
       state.editNFTData = action.payload;
     },
+    setDataEditable(state, action: PayloadAction<boolean>) {
+      state.isDataEditable = action.payload;
+    },
+    setRolesEditable(state, action: PayloadAction<RolesEditableType>) {
+      let roles: DataEditor[] = [];
+      if (action.payload.admin) {
+        roles.push(DataEditor.admin);
+      }
+      if (action.payload.owner) {
+        roles.push(DataEditor.owner);
+      }
+      console.log(roles);
+      state.roles = roles;
+    },
+    addDataToMultipleData(state) {
+      state.nftMultipleData.push('');
+    },
+    setNFTMultipleData(state, action: PayloadAction<string[]>) {
+      state.nftMultipleData = action.payload;
+    },
     resetNFTsState(state) {
       // state.isLoading = false;
       state.collections = [];
@@ -377,6 +409,8 @@ const nftsSlice = createSlice({
       // state.shouldRefetchNFTItems = false;
       state.issuedNFTCollection = null;
       state.deWhitelistAccount = '';
+      state.isDataEditable = false;
+      state.roles = [];
     },
   },
   extraReducers: (builder) => {
@@ -430,6 +464,10 @@ export const {
   setDeWhitelistAccount,
   resetNFTsState,
   setEditNFTData,
+  setDataEditable,
+  setRolesEditable,
+  addDataToMultipleData,
+  setNFTMultipleData,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

@@ -9,11 +9,9 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js-nightly";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash, setSelectedNFTClass, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import { setDataEditable, setNFTData, setNFTID, setNFTMultipleData, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable, setSelectedNFTClass, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { convertStringToAny, convertStringToDataDynamic, convertStringToUint8Array } from "@/helpers/convertStringToAny";
-import { DataDynamic, DataDynamicItem } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
-import { Any } from "google-protobuf/google/protobuf/any_pb";
 
 export const ConfirmNFTMintModal = () => {
   const isConfirmNFTMintModalOpen = useAppSelector(state => state.general.isConfirmNFTMintModalOpen);
@@ -26,6 +24,9 @@ export const ConfirmNFTMintModal = () => {
   const nftURIHash = useAppSelector(state => state.nfts.nftURIHash);
   const nftRecipient = useAppSelector(state => state.nfts.nftRecipient);
   const nftData = useAppSelector(state => state.nfts.nftData);
+  const isDataEditable = useAppSelector(state => state.nfts.isDataEditable);
+  const roles = useAppSelector(state => state.nfts.roles);
+  const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
 
   const [isTxSuccessful, setIsTxSuccessful] = useState<boolean>(false);
 
@@ -38,33 +39,49 @@ export const ConfirmNFTMintModal = () => {
     dispatch(setNFTURIHash(''));
     dispatch(setNFTRecipient(''));
     dispatch(setNFTData(''));
+    dispatch(setDataEditable(false));
+    dispatch(setRolesEditable({ admin: false, owner: false }));
     dispatch(setIsConfirmNFTMintModalOpen(false));
     dispatch(setSelectedNFTClass(null));
+    dispatch(setNFTMultipleData(['']));
     setIsTxSuccessful(false);
   }, []);
 
   const handleConfirm = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
-      const newData = convertStringToDataDynamic([{ editors: [0, 1], data: btoa(nftData) }]);
-      let mintNFTMsg = NFT.Mint({
+      let nftDataPayload: any;
+      if (isDataEditable && roles.length) {
+        let payload = [];
+        for (const tempData of nftMultipleData) {
+          payload.push({ editors: roles, data: btoa(tempData) });
+        }
+
+        nftDataPayload = convertStringToDataDynamic(payload);
+      } else {
+        nftDataPayload = convertStringToAny(nftMultipleData[0]);
+      }
+
+      const nftMintObj = {
         sender: account,
         classId: selectedCollection?.id || '',
         id: nftId,
         uri: nftURI,
         uriHash: nftURIHash,
         recipient: nftRecipient,
-        data: newData as any,
-      });
+        data: nftDataPayload as any,
+      };
 
-      if (nftData.length && newData && (newData as any).array.length) {
+      let mintNFTMsg = NFT.Mint(nftMintObj);
+
+      if (nftDataPayload && (nftDataPayload as any).array.length) {
         mintNFTMsg = {
           ...mintNFTMsg,
           value: {
             ...mintNFTMsg.value,
             data: {
-              typeUrl: (newData as any)?.array[0],
-              value: (newData as any)?.array[1],
+              typeUrl: (nftDataPayload as any)?.array[0],
+              value: (nftDataPayload as any)?.array[1],
             } as any,
           }
         };
@@ -83,7 +100,20 @@ export const ConfirmNFTMintModal = () => {
     }
 
     dispatch(setIsTxExecuting(false));
-  }, [account, dispatch, getTxFee, nftData, nftId, nftRecipient, nftURI, nftURIHash, selectedCollection?.id, signingClient]);
+  }, [
+    account,
+    dispatch,
+    getTxFee,
+    isDataEditable,
+    nftId,
+    nftRecipient,
+    nftURI,
+    nftURIHash,
+    roles,
+    selectedCollection?.id,
+    signingClient,
+    nftMultipleData,
+  ]);
 
   const formatData = useCallback((dataToFormat: string) => {
     try {
@@ -202,7 +232,7 @@ export const ConfirmNFTMintModal = () => {
         </div>
       </div>
     );
-  }, [handleClose, handleConfirm, isTxExecuting, isTxSuccessful, nftId, nftRecipient, nftURI, nftURIHash]);
+  }, [formatData, handleClose, handleConfirm, isTxExecuting, isTxSuccessful, nftData, nftId, nftRecipient, nftURI, nftURIHash]);
 
   return (
     <ConfirmationModal isOpen={isConfirmNFTMintModalOpen}>

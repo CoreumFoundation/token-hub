@@ -26,11 +26,13 @@ export const FileUpload: FC<FileUploadProps> = ({
     const { files } = event.target;
 
     if (files && files.length > 0) {
-      if (Big(files[0].size).div(1000).gt(5)) {
+      // const totalFileSize = files((file) => )
+
+      if (Big(files[0].size).div(1000).gt(25)) {
         dispatch(dispatchAlert({
           type: AlertType.Error,
           title: 'Too large file size',
-          message: 'The max file size is 5KB'
+          message: 'The max file size is 25KB'
         }))
         return;
       }

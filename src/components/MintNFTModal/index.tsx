@@ -10,9 +10,12 @@ import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { ButtonType, ChainInfo } from "@/shared/types";
 import { validateAddress } from "@/helpers/validateAddress";
-import { setNFTData, setNFTID, setNFTRecipient, setNFTURI, setNFTURIHash } from "@/features/nft/nftSlice";
+import { setDataEditable, setNFTData, setNFTID, setNFTMultipleData, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable } from "@/features/nft/nftSlice";
 import { FileUpload } from "../FileUpload";
 import classNames from "classnames";
+import { Switch } from "../Switch";
+import { Checkbox } from "../Checkbox";
+import { NFTMultipleData } from "../NFTMultipleData";
 
 export const MintNFTModal = () => {
   const [nftId, setNFTId] = useState<string>('');
@@ -20,8 +23,10 @@ export const MintNFTModal = () => {
   const [uriHash, setUriHash] = useState<string>('');
   const [data, setData] = useState<string>('');
   const [recipient, setRecipient] = useState<string>('');
-
   const [fileContent, setFileContent] = useState<string>('');
+  const [editEnabled, setEditEnabled] = useState<boolean>(false);
+  const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(false);
+  const [isOwnerEnabled, setIsOwnerEnabled] = useState<boolean>(false);
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
@@ -37,6 +42,9 @@ export const MintNFTModal = () => {
     setData('');
     setRecipient('');
     setFileContent('');
+    setEditEnabled(false);
+    setIsAdminEnabled(false);
+    setIsOwnerEnabled(false);
   }, []);
 
   const coreumChain = useMemo(() => {
@@ -112,12 +120,23 @@ export const MintNFTModal = () => {
   }, [coreumChain?.bech32_prefix, recipient]);
 
   const isFormValid = useMemo(() => {
-    if (!isNFTIDValid.length && !isURIValid.length && !isURIHashValid.length && !isRecipientAddressValid.length && nftId.length) {
+    if (!isNFTIDValid.length
+      && !isURIValid.length
+      && !isURIHashValid.length
+      && !isRecipientAddressValid.length
+      && nftId.length
+    ) {
       return true;
     }
 
     return false;
-  }, [isNFTIDValid.length, isRecipientAddressValid.length, isURIHashValid.length, isURIValid.length, nftId.length]);
+  }, [
+    isNFTIDValid.length,
+    isRecipientAddressValid.length,
+    isURIHashValid.length,
+    isURIValid.length,
+    nftId.length,
+  ]);
 
   const handleMintNFT = useCallback(() => {
     dispatch(setNFTID(nftId));
@@ -125,15 +144,21 @@ export const MintNFTModal = () => {
     dispatch(setNFTURIHash(uriHash));
     dispatch(setNFTRecipient(recipient));
     dispatch(setNFTData(fileContent.length ? fileContent : data));
+    dispatch(setDataEditable(editEnabled));
+    dispatch(setRolesEditable({ admin: isAdminEnabled, owner: isOwnerEnabled }));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
+    dispatch(setNFTMultipleData(['']));
     setNFTId('');
     setUri('');
     setUriHash('');
     setData('');
     setRecipient('');
     setFileContent('');
-  }, [data, nftId, recipient, uri, uriHash, fileContent]);
+    setEditEnabled(false);
+    setIsAdminEnabled(false);
+    setIsOwnerEnabled(false);
+  }, [nftId, uri, uriHash, recipient, fileContent, data, editEnabled, isAdminEnabled, isOwnerEnabled]);
 
   return (
     <Modal
@@ -171,34 +196,49 @@ export const MintNFTModal = () => {
           error={isRecipientAddressValid}
         />
         <div className="flex flex-col w-full gap-2 items-center">
-          <div className="flex items-center justify-start w-full">
-            <label
-              className="block text-sm text-[#868991] font-noto-sans"
-            >
-              Data
-            </label>
+          <div className="flex w-full items-center gap-2 justify-between">
+            <div className="flex items-center justify-start">
+              <label
+                className="block text-sm text-[#868991] font-noto-sans"
+              >
+                Data
+              </label>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <p className="text-[#9FA2AC] font-noto-sans text-sm">
+                Allow Edit
+              </p>
+              <Switch
+                enabled={editEnabled}
+                setEnabled={setEditEnabled}
+              />
+            </div>
           </div>
           <FileUpload
             setFileContent={setFileContent}
             disabled={!!data.length}
           />
-          <div className="flex w-full items-center my-2 justify-center border-t border-dashed border-[#1B1D23] relative h-1">
-            <div className="flex items-center px-2 -mt-1 text-[#868991] text-sm font-noto-sans bg-[#101216]">
-              Or
+          <NFTMultipleData />
+        </div>
+        {editEnabled && (
+          <div className="grid grid-cols-3 w-full">
+            <p className="font-noto-sans text-[#868991] text-sm leading-[21px]">
+              Editability Authorized:
+            </p>
+            <div className="flex items-center gap-2">
+              <Checkbox isChecked={isAdminEnabled} setIsChecked={setIsAdminEnabled} />
+              <p className="font-noto-sans text-[#eee] text-base tracking-[-0.24px]">
+                Admin
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox isChecked={isOwnerEnabled} setIsChecked={setIsOwnerEnabled} />
+              <p className="font-noto-sans text-[#eee] text-base tracking-[-0.24px]">
+                Owner
+              </p>
             </div>
           </div>
-          <TextArea
-            id="data"
-            value={data}
-            onChange={setData}
-            placeholder="Type content here"
-            rows={4}
-            className={classNames({
-              '!bg-[#080908] !border-transparent': !!fileContent.length,
-            })}
-            disabled={!!fileContent.length}
-          />
-        </div>
+        )}
         <div className="flex w-full justify-end">
           <div className="flex items-center">
             <Button

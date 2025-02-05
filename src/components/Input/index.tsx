@@ -90,18 +90,20 @@ export const Input: FC<InputProps> = ({
 
   return (
     <div className={classNames('flex flex-col w-full gap-2 relative', className)}>
-      <label
-        className="flex items-center gap-1 text-sm text-[#868991] font-noto-sans"
-      >
-        {label}
-        {tooltipContent && (
-          <Tooltip
-            content={tooltipContent}
-          >
-            <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
-          </Tooltip>
-        )}
-      </label>
+      {!!label.length && (
+        <label
+          className="flex items-center gap-1 text-sm text-[#868991] font-noto-sans"
+        >
+          {label}
+          {tooltipContent && (
+            <Tooltip
+              content={tooltipContent}
+            >
+              <GeneralIcon type={GeneralIconType.Info} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" />
+            </Tooltip>
+          )}
+        </label>
+      )}
       <div className={inputCx}>
         <input
           type="text"

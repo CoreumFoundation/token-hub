@@ -1,18 +1,15 @@
 'use client';
 
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConfirmNFTMintModalOpen, setIsNFTMintModalOpen } from "@/features/general/generalSlice";
 import { Input } from "../Input";
 import { IPFS_REGEX, URL_REGEX, CID_REGEX, NFT_ID_REGEX } from "@/constants";
-import { TextArea } from "../TextArea";
 import { Button } from "../Button";
 import { ButtonType, ChainInfo } from "@/shared/types";
 import { validateAddress } from "@/helpers/validateAddress";
-import { setDataEditable, setNFTData, setNFTID, setNFTMultipleData, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable } from "@/features/nft/nftSlice";
-import { FileUpload } from "../FileUpload";
-import classNames from "classnames";
+import { setDataEditable, setNFTID, setNFTMultipleData, setNFTMultipleDataFiles, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable } from "@/features/nft/nftSlice";
 import { Switch } from "../Switch";
 import { Checkbox } from "../Checkbox";
 import { NFTMultipleData } from "../NFTMultipleData";
@@ -21,9 +18,8 @@ export const MintNFTModal = () => {
   const [nftId, setNFTId] = useState<string>('');
   const [uri, setUri] = useState<string>('');
   const [uriHash, setUriHash] = useState<string>('');
-  const [data, setData] = useState<string>('');
   const [recipient, setRecipient] = useState<string>('');
-  const [fileContent, setFileContent] = useState<string>('');
+  const [fileContent, setFileContent] = useState<string[]>([]);
   const [editEnabled, setEditEnabled] = useState<boolean>(false);
   const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(false);
   const [isOwnerEnabled, setIsOwnerEnabled] = useState<boolean>(false);
@@ -37,12 +33,12 @@ export const MintNFTModal = () => {
   const handleCloseModal = useCallback(() => {
     dispatch(setIsNFTMintModalOpen(false));
     dispatch(setNFTMultipleData(['']));
+    dispatch(setNFTMultipleDataFiles([]));
     setNFTId('');
     setUri('');
     setUriHash('');
-    setData('');
     setRecipient('');
-    setFileContent('');
+    setFileContent([]);
     setEditEnabled(false);
     setIsAdminEnabled(false);
     setIsOwnerEnabled(false);
@@ -144,22 +140,21 @@ export const MintNFTModal = () => {
     dispatch(setNFTURI(uri));
     dispatch(setNFTURIHash(uriHash));
     dispatch(setNFTRecipient(recipient));
-    dispatch(setNFTData(fileContent.length ? fileContent : data));
     dispatch(setDataEditable(editEnabled));
     dispatch(setRolesEditable({ admin: isAdminEnabled, owner: isOwnerEnabled }));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
-    dispatch(setNFTMultipleData(['']));
+    // dispatch(setNFTMultipleData(['']));
+    // dispatch(setNFTMultipleDataFiles([]));
     setNFTId('');
     setUri('');
     setUriHash('');
-    setData('');
     setRecipient('');
-    setFileContent('');
+    setFileContent([]);
     setEditEnabled(false);
     setIsAdminEnabled(false);
     setIsOwnerEnabled(false);
-  }, [nftId, uri, uriHash, recipient, fileContent, data, editEnabled, isAdminEnabled, isOwnerEnabled]);
+  }, [nftId, uri, uriHash, recipient, fileContent, editEnabled, isAdminEnabled, isOwnerEnabled]);
 
   return (
     <Modal
@@ -215,10 +210,6 @@ export const MintNFTModal = () => {
               />
             </div>
           </div>
-          <FileUpload
-            setFileContent={setFileContent}
-            disabled={!!data.length}
-          />
           <NFTMultipleData isDataEditable={editEnabled} />
         </div>
         {editEnabled && (

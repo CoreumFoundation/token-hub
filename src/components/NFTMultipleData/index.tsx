@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { FC, useCallback, useMemo } from "react";
+import { FC, Fragment, useCallback, useMemo } from "react";
 import { addDataToMultipleData, setNFTMultipleData } from "@/features/nft/nftSlice";
+import { FileUpload } from "../FileUpload";
+import { Input } from "../Input";
+import classNames from "classnames";
 
 interface NFTMultipleDataProps {
   isDataEditable: boolean;
@@ -8,15 +11,16 @@ interface NFTMultipleDataProps {
 
 export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NFTMultipleDataProps) => {
   const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
+  const nftMultipleDataFiles = useAppSelector(state => state.nfts.nftMultipleDataFiles);
   const dispatch = useAppDispatch();
 
   const handleAddDataToMultipleData = useCallback(() => {
     dispatch(addDataToMultipleData());
   }, [nftMultipleData]);
 
-  const handleUpdateDataInList = useCallback((newDenom: string, denomIndex: number) => {
+  const handleUpdateDataInList = useCallback((newDenom: string, dataIndex: number) => {
     const newData = nftMultipleData.map((denom: string, index: number) => {
-      if (index === denomIndex) {
+      if (index === dataIndex) {
         return newDenom;
       }
 
@@ -40,36 +44,30 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
   const renderContentData = useMemo(() => {
     if (!isDataEditable) {
       return (
-        <div
-          className="flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]"
-        >
-          <input
-            className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
-            value={nftMultipleData[0]}
-            onChange={(e) => handleUpdateDataInList(e.target.value, 0)}
-            placeholder="Type content here"
-          />
-        </div>
+        <Input
+          value={nftMultipleData[0]}
+          onChange={(value: string) => handleUpdateDataInList(value, 0)}
+          label=""
+          placeholder="Type content here"
+          disabled={!!nftMultipleDataFiles.length}
+        />
       );
     }
-
 
     return (
       <>
         {nftMultipleData.map((value: string, index: number) => {
           if (index === 0) {
             return (
-              <div
-                key={`data-${index}`}
-                className="flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]"
-              >
-                <input
-                  className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
+              <Fragment key={`data-${index}`}>
+                <Input
                   value={value}
-                  onChange={(e) => handleUpdateDataInList(e.target.value, index)}
+                  onChange={(e: string) => handleUpdateDataInList(e, index)}
+                  label=""
                   placeholder="Type content here"
+                  disabled={!!nftMultipleDataFiles.length}
                 />
-              </div>
+              </Fragment>
             );
           }
 
@@ -85,16 +83,13 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
                   />
                 </svg>
               </div>
-              <div
-                className="flex-1 flex items-center py-3 px-5 rounded-[10px] border border-[#1B1D23]"
-              >
-                <input
-                  className="flex-1 w-full bg-transparent text-[#EEE] placeholder:text-[#5E6773] outline-none shadow-sm"
+              <Input
                   value={value}
-                  onChange={(e) => handleUpdateDataInList(e.target.value, index)}
+                  onChange={(e: string) => handleUpdateDataInList(e, index)}
+                  label=""
                   placeholder="Type content here"
+                  disabled={!!nftMultipleDataFiles.length}
                 />
-              </div>
               <div className="flex-none flex items-center cursor-pointer" onClick={() => handleRemoveDataFromList(value)}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -110,20 +105,28 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
         })}
       </>
     );
-  }, [handleRemoveDataFromList, handleUpdateDataInList, nftMultipleData, isDataEditable]);
+  }, [isDataEditable, nftMultipleData, handleUpdateDataInList, nftMultipleDataFiles.length, handleRemoveDataFromList]);
+
+  const filledInData = useMemo(() => {
+    return nftMultipleData.filter((item) => item.length > 0);
+  }, [nftMultipleData]);
 
   return (
     <div className="flex flex-col w-full gap-2 items-center">
-      {/* <FileUpload
-        setFileContent={setFileContent}
-        disabled={!!data.length}
-      /> */}
+      <FileUpload
+        disabled={!!filledInData.length}
+        isDataEditable={isDataEditable}
+      />
       <div className="flex w-full items-center my-2 justify-center border-t border-dashed border-[#1B1D23] relative h-1">
         <div className="flex items-center px-2 -mt-1 text-[#868991] text-sm font-noto-sans bg-[#101216]">
           Or
         </div>
       </div>
-      <div className="flex flex-col w-full items-center justify-center gap-2">
+      <div className={
+        classNames('flex flex-col w-full items-center justify-center gap-2', {
+          'opacity-40': !!nftMultipleDataFiles.length,
+        })
+      }>
         <div className="flex flex-col w-full gap-2">
           <div className="flex flex-col w-full gap-2">
             {renderContentData}

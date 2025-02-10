@@ -277,6 +277,7 @@ export interface NFTsState {
   isDataEditable: boolean;
   roles: DataEditor[];
   nftMultipleData: string[];
+  nftMultipleDataFiles: string[];
 }
 
 export const initialNFTsState: NFTsState = {
@@ -303,6 +304,7 @@ export const initialNFTsState: NFTsState = {
   isDataEditable: false,
   roles: [],
   nftMultipleData: [''],
+  nftMultipleDataFiles: [],
 };
 
 const nftsSlice = createSlice({
@@ -389,6 +391,9 @@ const nftsSlice = createSlice({
     setNFTMultipleData(state, action: PayloadAction<string[]>) {
       state.nftMultipleData = action.payload;
     },
+    setNFTMultipleDataFiles(state, action: PayloadAction<string[]>) {
+      state.nftMultipleDataFiles = action.payload;
+    },
     resetNFTsState(state) {
       // state.isLoading = false;
       state.collections = [];
@@ -412,6 +417,7 @@ const nftsSlice = createSlice({
       state.isDataEditable = false;
       state.roles = [];
       state.nftMultipleData = [''];
+      state.nftMultipleDataFiles = [];
     },
   },
   extraReducers: (builder) => {
@@ -469,6 +475,7 @@ export const {
   setRolesEditable,
   addDataToMultipleData,
   setNFTMultipleData,
+  setNFTMultipleDataFiles,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

@@ -9,7 +9,19 @@ import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js-nightly";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { setDataEditable, setNFTData, setNFTID, setNFTMultipleData, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable, setSelectedNFTClass, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import {
+  setDataEditable,
+  setNFTData,
+  setNFTID,
+  setNFTMultipleData,
+  setNFTMultipleDataFiles,
+  setNFTRecipient,
+  setNFTURI,
+  setNFTURIHash,
+  setRolesEditable,
+  setSelectedNFTClass,
+  setShouldRefetchNFTItems,
+} from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { convertStringToAny, convertStringToDataDynamic, convertStringToUint8Array } from "@/helpers/convertStringToAny";
 
@@ -23,10 +35,10 @@ export const ConfirmNFTMintModal = () => {
   const nftURI = useAppSelector(state => state.nfts.nftURI);
   const nftURIHash = useAppSelector(state => state.nfts.nftURIHash);
   const nftRecipient = useAppSelector(state => state.nfts.nftRecipient);
-  const nftData = useAppSelector(state => state.nfts.nftData);
   const isDataEditable = useAppSelector(state => state.nfts.isDataEditable);
   const roles = useAppSelector(state => state.nfts.roles);
   const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
+  const nftMultipleDataFiles = useAppSelector(state => state.nfts.nftMultipleDataFiles);
 
   const [isTxSuccessful, setIsTxSuccessful] = useState<boolean>(false);
 
@@ -44,22 +56,29 @@ export const ConfirmNFTMintModal = () => {
     dispatch(setIsConfirmNFTMintModalOpen(false));
     dispatch(setSelectedNFTClass(null));
     dispatch(setNFTMultipleData(['']));
+    dispatch(setNFTMultipleDataFiles([]));
     setIsTxSuccessful(false);
   }, []);
+
+  const dataList = useMemo(() => {
+    return nftMultipleDataFiles.length ? nftMultipleDataFiles : nftMultipleData;
+  }, [nftMultipleData, nftMultipleDataFiles]);
 
   const handleConfirm = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
     try {
       let nftDataPayload: any;
+
       if (isDataEditable && roles.length) {
         let payload = [];
-        for (const tempData of nftMultipleData) {
+
+        for (const tempData of dataList) {
           payload.push({ editors: roles, data: btoa(tempData) });
         }
 
         nftDataPayload = convertStringToDataDynamic(payload);
       } else {
-        nftDataPayload = convertStringToAny(nftMultipleData[0]);
+        nftDataPayload = convertStringToAny(dataList[0]);
       }
 
       const nftMintObj = {
@@ -112,7 +131,7 @@ export const ConfirmNFTMintModal = () => {
     roles,
     selectedCollection?.id,
     signingClient,
-    nftMultipleData,
+    dataList,
   ]);
 
   const formatData = useCallback((dataToFormat: string) => {
@@ -157,10 +176,18 @@ export const ConfirmNFTMintModal = () => {
                   value={shortenAddress(nftRecipient)}
                 />
               )}
-              {formatData(nftData).length ? (
+              {isDataEditable
+                ? (
+                  <ModalInfoRow
+                    label="Data"
+                    value={"Multiple"}
+                    className="flex-col !items-start !gap-1"
+                    valueClassName="!text-left"
+                  />
+                ) : formatData(dataList[0]).length ? (
                 <ModalInfoRow
                   label="Data"
-                  value={formatData(nftData)}
+                  value={formatData(dataList[0])}
                   className="flex-col !items-start !gap-1"
                   valueClassName="!text-left"
                 />
@@ -204,10 +231,18 @@ export const ConfirmNFTMintModal = () => {
                 value={shortenAddress(nftRecipient)}
               />
             )}
-            {formatData(nftData).length ? (
+            {isDataEditable
+              ? (
+                <ModalInfoRow
+                  label="Data"
+                  value={"Multiple"}
+                  className="flex-col !items-start !gap-1"
+                  valueClassName="!text-left"
+                />
+              ) : formatData(dataList[0]).length ? (
               <ModalInfoRow
                 label="Data"
-                value={formatData(nftData)}
+                value={formatData(dataList[0])}
                 className="flex-col !items-start !gap-1"
                 valueClassName="!text-left"
               />
@@ -232,7 +267,19 @@ export const ConfirmNFTMintModal = () => {
         </div>
       </div>
     );
-  }, [formatData, handleClose, handleConfirm, isTxExecuting, isTxSuccessful, nftData, nftId, nftRecipient, nftURI, nftURIHash]);
+  }, [
+    formatData,
+    handleClose,
+    handleConfirm,
+    isTxExecuting,
+    isTxSuccessful,
+    nftId,
+    nftRecipient,
+    nftURI,
+    nftURIHash,
+    dataList,
+    isDataEditable,
+  ]);
 
   return (
     <ConfirmationModal isOpen={isConfirmNFTMintModalOpen}>
@@ -241,8 +288,3 @@ export const ConfirmNFTMintModal = () => {
     </ConfirmationModal>
   );
 };
-
-
-
-
-// Data for Mint NFT

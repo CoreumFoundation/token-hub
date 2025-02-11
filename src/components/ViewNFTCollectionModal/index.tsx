@@ -193,6 +193,7 @@ export const ViewNFTCollectionModal = () => {
                 isActive={isActive}
                 isActionRow={true}
                 actionItems={items}
+                description={`ID: ${item.id}`}
               />
             );
           })}

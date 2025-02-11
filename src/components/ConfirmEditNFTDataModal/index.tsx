@@ -4,13 +4,13 @@ import { ConfirmationModalImage } from "@/assets/ConfirmationModalImage";
 import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
-import { setIsConfirmEditNFTModalOpen, setIsConfirmNFTDeWhitelistModalOpen, setIsEditNFTModalOpen, setIsTxExecuting, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import { setIsConfirmEditNFTModalOpen, setIsEditNFTModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js-nightly";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
-import { DataDynamicIndexedItem, dataEditorFromJSON } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
-import { convertStringToAny, convertStringToUint8Array } from "@/helpers/convertStringToAny";
+import { DataDynamicIndexedItem } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { convertStringToUint8Array } from "@/helpers/convertStringToAny";
 
 export const ConfirmEditNFTDataModal = () => {
   const isConfirmEditNFTModalOpen = useAppSelector(state => state.general.isConfirmEditNFTModalOpen);

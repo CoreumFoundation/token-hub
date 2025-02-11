@@ -3,7 +3,15 @@
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setIsBurnNFTModalOpen, setIsDeWhitelistNFTModalOpen, setIsEditNFTModalOpen, setIsFreezeNFTModalOpen, setIsNFTCollectionViewModalOpen, setIsUnfreezeNFTModalOpen, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
+import {
+  setIsBurnNFTModalOpen,
+  setIsDeWhitelistNFTModalOpen,
+  setIsEditNFTModalOpen,
+  setIsFreezeNFTModalOpen,
+  setIsNFTCollectionViewModalOpen,
+  setIsUnfreezeNFTModalOpen,
+  setIsWhitelistNFTModalOpen,
+} from "@/features/general/generalSlice";
 import { NFTItem } from "../NFTItem";
 import { ActionItem, GeneralIconType, NFT } from "@/shared/types";
 import { GeneralIcon } from "@/assets/GeneralIcon";
@@ -11,7 +19,6 @@ import { setSelectedNFTSend } from "@/features/nft/nftSlice";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import { Spinner } from "../Spinner";
-import { Any } from "coreum-js-nightly/dist/main/google/protobuf/any";
 
 export const ViewNFTCollectionModal = () => {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
@@ -217,6 +224,7 @@ export const ViewNFTCollectionModal = () => {
     onDeWhitelistClick,
     onNFTClick,
     onEditClick,
+    isEditableNFT,
   ]);
 
   return (

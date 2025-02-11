@@ -55,6 +55,16 @@ export const EditNFTModal = () => {
         <div className="flex flex-col w-full">
           <div className="flex flex-col w-full gap-2">
             <p className="text-[#868991] font-noto-sans text-sm leading-[21px]">
+              ID
+            </p>
+            <div className="flex flex-col w-full bg-[#080908] rounded-[10px] py-3 px-4">
+              <p className="text-[#EEE] font-noto-sans text-base tracking-[-0.24px]">
+                {selectedNFTSend?.id || ''}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col w-full gap-2">
+            <p className="text-[#868991] font-noto-sans text-sm leading-[21px]">
               Name
             </p>
             <div className="flex flex-col w-full bg-[#080908] rounded-[10px] py-3 px-4">

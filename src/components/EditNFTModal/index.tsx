@@ -5,9 +5,9 @@ import { Modal } from "../Modal";
 import { Button } from "../Button";
 import { ButtonType, ChainInfo } from "@/shared/types";
 import { setDeWhitelistAccount, setEditNFTData } from "@/features/nft/nftSlice";
-import { FileUpload } from "../FileUpload";
 import { TextArea } from "../TextArea";
 import classNames from "classnames";
+import { FileUploadSingle } from "../FileUploadSingle";
 
 export const EditNFTModal = () => {
   const isEditNFTModalOpen = useAppSelector(state => state.general.isEditNFTModalOpen);
@@ -81,15 +81,15 @@ export const EditNFTModal = () => {
                 Data
               </label>
             </div>
-            {/* <FileUpload
-
+            <FileUploadSingle
+              setFileContent={setFileContent}
               disabled={!!data.length}
-            /> */}
-            {/* <div className="flex w-full items-center my-2 justify-center border-t border-dashed border-[#1B1D23] relative h-1">
+            />
+            <div className="flex w-full items-center my-2 justify-center border-t border-dashed border-[#1B1D23] relative h-1">
               <div className="flex items-center px-2 -mt-1 text-[#868991] text-sm font-noto-sans bg-[#101216]">
                 Or
               </div>
-            </div> */}
+            </div>
             <TextArea
               id="data"
               value={data}

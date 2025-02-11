@@ -11,6 +11,7 @@ import { setSelectedNFTSend } from "@/features/nft/nftSlice";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import { Spinner } from "../Spinner";
+import { Any } from "coreum-js-nightly/dist/main/google/protobuf/any";
 
 export const ViewNFTCollectionModal = () => {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
@@ -85,6 +86,20 @@ export const ViewNFTCollectionModal = () => {
     dispatch(setIsNFTCollectionViewModalOpen(false));
   }, []);
 
+  const isEditableNFT = useCallback((nft: NFT) => {
+    if (nft.data) {
+      const typeURL = (nft.data as any)['@type'];
+
+      if (typeURL === '/coreum.asset.nft.v1.DataDynamic') {
+        return true;
+      }
+
+      return false;
+    }
+
+    return false;
+  }, []);
+
   const renderContent = useMemo(() => {
     if (isNFTItemsLoading) {
       return (
@@ -103,6 +118,7 @@ export const ViewNFTCollectionModal = () => {
             const isWhitelistingEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'whitelisting');
 
             const isNFTOwnedByUser = ownedNFTItems[selectedNFTClass?.id || ''].find((nft: NFT) => nft.id === item.id);
+            const isEditable = isEditableNFT(item);
 
             if (isNFTOwnedByUser) {
               items.push({
@@ -111,6 +127,9 @@ export const ViewNFTCollectionModal = () => {
                 icon: <GeneralIcon type={GeneralIconType.Send} />,
                 onClick: () => onSendClick(item),
               });
+            }
+
+            if (isNFTOwnedByUser && isEditable) {
               items.push({
                 id: 'edit',
                 label: 'Edit',

@@ -160,7 +160,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         ref={inputFileRef}
         className="hidden h-0 w-0"
         type="file"
-        multiple={true}
+        multiple={isDataEditable ? true : false}
         onChange={onUploadFile}
       />
     </div>

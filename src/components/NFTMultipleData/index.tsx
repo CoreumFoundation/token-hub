@@ -77,7 +77,7 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
                   label=""
                   placeholder="Type content here"
                   disabled={!!nftMultipleDataFiles.length}
-                  error={handleValidateEnteredData(nftMultipleData[0])}
+                  error={handleValidateEnteredData(value)}
                 />
               </Fragment>
             );
@@ -101,7 +101,7 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
                 label=""
                 placeholder="Type content here"
                 disabled={!!nftMultipleDataFiles.length}
-                error={handleValidateEnteredData(nftMultipleData[0])}
+                error={handleValidateEnteredData(value)}
               />
               <div className="flex-none flex items-center cursor-pointer" onClick={() => handleRemoveDataFromList(value)}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -141,11 +141,11 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
         })
       }>
         <div className="flex flex-col w-full gap-2">
-          <div className="flex flex-col w-full gap-2">
+          <div className="flex flex-col w-full gap-8">
             {renderContentData}
           </div>
           {isDataEditable && (
-            <div className="flex items-center gap-1 cursor-pointer" onClick={handleAddDataToMultipleData}>
+            <div className="flex items-center gap-1 cursor-pointer mt-8" onClick={handleAddDataToMultipleData}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"

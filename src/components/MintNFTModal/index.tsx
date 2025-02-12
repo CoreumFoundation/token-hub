@@ -21,7 +21,7 @@ export const MintNFTModal = () => {
   const [recipient, setRecipient] = useState<string>('');
   const [fileContent, setFileContent] = useState<string[]>([]);
   const [editEnabled, setEditEnabled] = useState<boolean>(false);
-  const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(false);
+  const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(true);
   const [isOwnerEnabled, setIsOwnerEnabled] = useState<boolean>(false);
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
@@ -40,7 +40,7 @@ export const MintNFTModal = () => {
     setRecipient('');
     setFileContent([]);
     setEditEnabled(false);
-    setIsAdminEnabled(false);
+    setIsAdminEnabled(true);
     setIsOwnerEnabled(false);
   }, []);
 
@@ -144,15 +144,13 @@ export const MintNFTModal = () => {
     dispatch(setRolesEditable({ admin: isAdminEnabled, owner: isOwnerEnabled }));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
-    // dispatch(setNFTMultipleData(['']));
-    // dispatch(setNFTMultipleDataFiles([]));
     setNFTId('');
     setUri('');
     setUriHash('');
     setRecipient('');
     setFileContent([]);
     setEditEnabled(false);
-    setIsAdminEnabled(false);
+    setIsAdminEnabled(true);
     setIsOwnerEnabled(false);
   }, [nftId, uri, uriHash, recipient, fileContent, editEnabled, isAdminEnabled, isOwnerEnabled]);
 

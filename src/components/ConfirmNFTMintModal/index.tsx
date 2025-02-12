@@ -140,11 +140,6 @@ export const ConfirmNFTMintModal = () => {
 
       return data;
     } catch (error) {
-      dispatch(dispatchAlert({
-        type: AlertType.Error,
-        title: "Failed to parse data",
-        message: (error as { message: string}).message,
-      }))
       return '';
     }
   }, []);

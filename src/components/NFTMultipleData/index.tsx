@@ -41,6 +41,16 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
     );
   }, [nftMultipleData]);
 
+  const handleValidateEnteredData = useCallback((value: string) => {
+    try {
+      const data = btoa(value);
+
+      return undefined;
+    } catch (error) {
+      return 'Failed to parse data';
+    }
+  }, []);
+
   const renderContentData = useMemo(() => {
     if (!isDataEditable) {
       return (
@@ -50,6 +60,7 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
           label=""
           placeholder="Type content here"
           disabled={!!nftMultipleDataFiles.length}
+          error={handleValidateEnteredData(nftMultipleData[0])}
         />
       );
     }
@@ -66,6 +77,7 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
                   label=""
                   placeholder="Type content here"
                   disabled={!!nftMultipleDataFiles.length}
+                  error={handleValidateEnteredData(nftMultipleData[0])}
                 />
               </Fragment>
             );
@@ -84,12 +96,13 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
                 </svg>
               </div>
               <Input
-                  value={value}
-                  onChange={(e: string) => handleUpdateDataInList(e, index)}
-                  label=""
-                  placeholder="Type content here"
-                  disabled={!!nftMultipleDataFiles.length}
-                />
+                value={value}
+                onChange={(e: string) => handleUpdateDataInList(e, index)}
+                label=""
+                placeholder="Type content here"
+                disabled={!!nftMultipleDataFiles.length}
+                error={handleValidateEnteredData(nftMultipleData[0])}
+              />
               <div className="flex-none flex items-center cursor-pointer" onClick={() => handleRemoveDataFromList(value)}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

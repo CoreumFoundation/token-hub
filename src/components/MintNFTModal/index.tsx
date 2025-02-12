@@ -23,6 +23,7 @@ export const MintNFTModal = () => {
   const [editEnabled, setEditEnabled] = useState<boolean>(false);
   const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(true);
   const [isOwnerEnabled, setIsOwnerEnabled] = useState<boolean>(false);
+  const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
@@ -116,12 +117,35 @@ export const MintNFTModal = () => {
     return '';
   }, [coreumChain?.bech32_prefix, recipient]);
 
+  const handleValidateEnteredData = useCallback((value: string) => {
+      try {
+        btoa(value);
+
+        return '';
+      } catch (error) {
+        return 'Failed to parse data';
+      }
+    }, []);
+
+  const isEnteredDataValid = useMemo(() => {
+    let isValid = true;
+    for (const item of nftMultipleData) {
+      if (handleValidateEnteredData(item).length) {
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
+  }, [handleValidateEnteredData, nftMultipleData]);
+
   const isFormValid = useMemo(() => {
     if (!isNFTIDValid.length
       && !isURIValid.length
       && !isURIHashValid.length
       && !isRecipientAddressValid.length
       && nftId.length
+      && isEnteredDataValid
     ) {
       return true;
     }
@@ -133,6 +157,7 @@ export const MintNFTModal = () => {
     isURIHashValid.length,
     isURIValid.length,
     nftId.length,
+    isEnteredDataValid,
   ]);
 
   const handleMintNFT = useCallback(() => {

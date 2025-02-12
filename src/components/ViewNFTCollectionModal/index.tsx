@@ -94,17 +94,41 @@ export const ViewNFTCollectionModal = () => {
   }, []);
 
   const isEditableNFT = useCallback((nft: NFT) => {
+    let result = {
+      isEditable: false,
+      admin: false,
+      owner: false,
+    };
+
     if (nft.data) {
       const typeURL = (nft.data as any)['@type'];
 
       if (typeURL === '/coreum.asset.nft.v1.DataDynamic') {
-        return true;
-      }
+        result.isEditable = true;
 
-      return false;
+        for (let item of (nft.data as any).items) {
+          for (let editor of item.editors) {
+            if (editor === 'admin') {
+              result.admin = true;
+            }
+
+            if (editor === 'owner') {
+              result.owner = true;
+            }
+
+            if (result.admin && result.owner) {
+              break;
+            }
+          }
+
+          if (result.admin && result.owner) {
+            break;
+          }
+        }
+      }
     }
 
-    return false;
+    return result;
   }, []);
 
   const renderContent = useMemo(() => {
@@ -125,7 +149,7 @@ export const ViewNFTCollectionModal = () => {
             const isWhitelistingEnabled = selectedNFTClass?.features.find((feature: string) => feature === 'whitelisting');
 
             const isNFTOwnedByUser = ownedNFTItems[selectedNFTClass?.id || ''].find((nft: NFT) => nft.id === item.id);
-            const isEditable = isEditableNFT(item);
+            const { isEditable, admin, owner } = isEditableNFT(item);
 
             if (isNFTOwnedByUser) {
               items.push({
@@ -136,7 +160,7 @@ export const ViewNFTCollectionModal = () => {
               });
             }
 
-            if (isNFTOwnedByUser && isEditable) {
+            if (isEditable && (owner && isNFTOwnedByUser || admin)) {
               items.push({
                 id: 'edit',
                 label: 'Edit',

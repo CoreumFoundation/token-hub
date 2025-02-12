@@ -24,7 +24,7 @@
     "big.js": "^6.2.1",
     "chain-registry": "1.33.6",
     "classnames": "^2.5.1",
-    "coreum-js-nightly": "^2.18.2",
+    "coreum-js-nightly": "^2.19.0",
     "google-protobuf": "^3.21.2",
     "graz": "^0.1.11",
     "next": "14.2.2",

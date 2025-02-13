@@ -382,7 +382,6 @@ const nftsSlice = createSlice({
       if (action.payload.owner) {
         roles.push(DataEditor.owner);
       }
-      console.log(roles);
       state.roles = roles;
     },
     addDataToMultipleData(state) {

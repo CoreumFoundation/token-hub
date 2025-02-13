@@ -23,7 +23,7 @@ import {
   setShouldRefetchNFTItems,
 } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
-import { convertStringToAny, convertStringToDataDynamic, convertStringToUint8Array } from "@/helpers/convertStringToAny";
+import { convertStringToAny, convertStringToDataDynamic } from "@/helpers/convertStringToAny";
 
 export const ConfirmNFTMintModal = () => {
   const isConfirmNFTMintModalOpen = useAppSelector(state => state.general.isConfirmNFTMintModalOpen);

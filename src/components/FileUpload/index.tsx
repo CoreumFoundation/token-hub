@@ -1,7 +1,7 @@
 import { GeneralIcon } from "@/assets/GeneralIcon";
 import { AlertType, ButtonType, GeneralIconType } from "@/shared/types";
 import { Button } from "../Button";
-import { ChangeEvent, FC, useCallback, useMemo, useRef, useState } from "react";
+import { ChangeEvent, FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Big from "big.js";
 import classNames from "classnames";
 import { useAppDispatch } from "@/store/hooks";
@@ -20,6 +20,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   const [files, setFiles] = useState<{ name: string; content: string }[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+  const refFilesLength = useRef<number>(0);
 
   const onUploadFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     let { files: selectedFiles } = event.target;
@@ -90,16 +91,23 @@ export const FileUpload: FC<FileUploadProps> = ({
       }
 
       const newFiles = await Promise.all(filesToHandle.map(readFile));
+
       setFiles((prev) => isDataEditable ? [...prev, ...newFiles] : [...newFiles]);
-      dispatch(setNFTMultipleDataFiles(newFiles.map((file) => file.content)));
     } catch (error) {
       console.error("Error reading files", error);
     }
   }, [files, isDataEditable]);
 
+  useEffect(() => {
+    if (files.length !== refFilesLength.current) {
+      dispatch(setNFTMultipleDataFiles(files.map(item => item.content)));
+
+      refFilesLength.current = files.length;
+    }
+  }, [files]);
+
   const removeFile = useCallback((name: string) => {
     setFiles((prev) => prev.filter((file) => file.name !== name));
-    dispatch(setNFTMultipleDataFiles(files.filter((file) => file.name !== name).map((file) => file.content)));
   }, [files]);
 
   const renderContent = useMemo(() => {
@@ -114,14 +122,14 @@ export const FileUpload: FC<FileUploadProps> = ({
               </div>
             ))}
             <Button
-              label="Choose more files"
+              label={isDataEditable ? "Choose more files" : "Choose another file"}
               type={ButtonType.Secondary}
               onClick={() => !disabled && inputFileRef?.current?.click()}
               className="text-sm !py-2 px-6 rounded-[10px] font-medium w-[160px] !bg-transparent group-hover:opacity-50"
             />
           </div>
           <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
-            <GeneralIcon type={GeneralIconType.Warning} /> The max file size is 5KB per file
+            <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB
           </div>
         </>
       );
@@ -141,11 +149,11 @@ export const FileUpload: FC<FileUploadProps> = ({
           />
         </div>
         <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
-          <GeneralIcon type={GeneralIconType.Warning} /> The max file size is 5KB per file
+          <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB
         </div>
       </>
     );
-  }, [files, disabled, removeFile]);
+  }, [files, disabled, removeFile, isDataEditable]);
 
   return (
     <div

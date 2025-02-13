@@ -43,7 +43,7 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
 
   const handleValidateEnteredData = useCallback((value: string) => {
     try {
-      const data = btoa(value);
+      btoa(value);
 
       return undefined;
     } catch (error) {
@@ -118,7 +118,14 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
         })}
       </>
     );
-  }, [isDataEditable, nftMultipleData, handleUpdateDataInList, nftMultipleDataFiles.length, handleRemoveDataFromList]);
+  }, [
+    isDataEditable,
+    nftMultipleData,
+    handleUpdateDataInList,
+    nftMultipleDataFiles.length,
+    handleRemoveDataFromList,
+    handleValidateEnteredData,
+  ]);
 
   const filledInData = useMemo(() => {
     return nftMultipleData.filter((item) => item.length > 0);

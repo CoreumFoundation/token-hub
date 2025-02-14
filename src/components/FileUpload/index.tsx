@@ -161,7 +161,7 @@ export const FileUpload: FC<FileUploadProps> = ({
             />
           </div>
           <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
-            <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB
+            <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB. Allowed file types: .txt, .svg.
           </div>
         </>
       );
@@ -181,7 +181,7 @@ export const FileUpload: FC<FileUploadProps> = ({
           />
         </div>
         <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
-          <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB
+          <GeneralIcon type={GeneralIconType.Warning} /> The max size of files is 250KB. Allowed file types: .txt, .svg.
         </div>
       </>
     );

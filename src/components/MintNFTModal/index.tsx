@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsConfirmNFTMintModalOpen, setIsNFTMintModalOpen } from "@/features/general/generalSlice";
@@ -179,6 +179,21 @@ export const MintNFTModal = () => {
     setIsOwnerEnabled(false);
   }, [nftId, uri, uriHash, recipient, fileContent, editEnabled, isAdminEnabled, isOwnerEnabled]);
 
+  const handleSetEditEnabled = useCallback((value: boolean) => {
+    if (value) {
+      setEditEnabled(true);
+      setIsAdminEnabled(true);
+    } else {
+      setEditEnabled(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isAdminEnabled && !isOwnerEnabled && editEnabled) {
+      handleSetEditEnabled(false);
+    }
+  }, [editEnabled, handleSetEditEnabled, isAdminEnabled, isOwnerEnabled]);
+
   return (
     <Modal
       isOpen={isMintNFTModalOpen}
@@ -229,7 +244,7 @@ export const MintNFTModal = () => {
               </p>
               <Switch
                 enabled={editEnabled}
-                setEnabled={setEditEnabled}
+                setEnabled={handleSetEditEnabled}
               />
             </div>
           </div>

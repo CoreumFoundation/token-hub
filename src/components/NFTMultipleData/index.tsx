@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { FC, Fragment, useCallback, useMemo } from "react";
+import { FC, Fragment, useCallback, useEffect, useMemo } from "react";
 import { addDataToMultipleData, setNFTMultipleData } from "@/features/nft/nftSlice";
 import { FileUpload } from "../FileUpload";
 import { Input } from "../Input";
@@ -50,6 +50,12 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
       return 'Failed to parse data';
     }
   }, []);
+
+  useEffect(() => {
+    if (!isDataEditable && nftMultipleData.length > 1) {
+      dispatch(setNFTMultipleData([...nftMultipleData.slice(0, 1)]));
+    }
+  }, [isDataEditable, nftMultipleData]);
 
   const renderContentData = useMemo(() => {
     if (!isDataEditable) {

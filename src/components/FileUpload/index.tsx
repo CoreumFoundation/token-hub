@@ -132,6 +132,12 @@ export const FileUpload: FC<FileUploadProps> = ({
     }
   }, [files]);
 
+  useEffect(() => {
+    if (!isDataEditable && files.length > 1) {
+      setFiles([files[0]]);
+    }
+  }, [files, isDataEditable]);
+
   const removeFile = useCallback((name: string) => {
     setFiles((prev) => prev.filter((file) => file.name !== name));
   }, [files]);

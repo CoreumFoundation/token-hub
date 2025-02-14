@@ -22,6 +22,16 @@ export const FileUpload: FC<FileUploadProps> = ({
   const dispatch = useAppDispatch();
   const refFilesLength = useRef<number>(0);
 
+  const handleValidateEnteredData = useCallback((value: string) => {
+    try {
+      btoa(value);
+
+      return '';
+    } catch (error) {
+      return 'Failed to parse data';
+    }
+  }, []);
+
   const onUploadFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     let { files: selectedFiles } = event.target;
 
@@ -68,8 +78,24 @@ export const FileUpload: FC<FileUploadProps> = ({
 
         fileReader.onload = (e) => {
           if (e.target && typeof e.target.result === "string") {
-            resolve({ content: e.target.result, name: file.name });
+            const validationResult = handleValidateEnteredData(e.target.result);
+
+            if (!validationResult.length) {
+              resolve({ content: e.target.result, name: file.name });
+            } else {
+              dispatch(dispatchAlert({
+                type: AlertType.Error,
+                title: "Error reading file",
+                message: "Failed to parse data",
+              }));
+              reject(new Error("Failed to parse data"));
+            }
           } else {
+            dispatch(dispatchAlert({
+              type: AlertType.Error,
+              title: "Error reading file",
+              message: "Failed to read file",
+            }));
             reject(new Error("Failed to read file"));
           }
         };
@@ -96,7 +122,7 @@ export const FileUpload: FC<FileUploadProps> = ({
     } catch (error) {
       console.error("Error reading files", error);
     }
-  }, [files, isDataEditable]);
+  }, [dispatch, files, handleValidateEnteredData, isDataEditable]);
 
   useEffect(() => {
     if (files.length !== refFilesLength.current) {

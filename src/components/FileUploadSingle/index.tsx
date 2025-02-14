@@ -21,6 +21,16 @@ export const FileUploadSingle: FC<FileUploadSingleProps> = ({
 
   const dispatch = useAppDispatch();
 
+  const handleValidateEnteredData = useCallback((value: string) => {
+    try {
+      btoa(value);
+
+      return '';
+    } catch (error) {
+      return 'Failed to parse data';
+    }
+  }, []);
+
   const onUploadFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
     const { files } = event.target;
@@ -38,13 +48,23 @@ export const FileUploadSingle: FC<FileUploadSingleProps> = ({
       fileReader.readAsText(files[0], "UTF-8");
       fileReader.onload = e => {
         if (e.target && typeof e.target.result === "string") {
-          const content = e.target.result;
-          setFileContent(content);
-          setFileName(files[0].name);
+          const validationResult = handleValidateEnteredData(e.target.result);
+
+          if (!validationResult.length) {
+            const content = e.target.result;
+            setFileContent(content);
+            setFileName(files[0].name);
+          } else {
+            dispatch(dispatchAlert({
+              type: AlertType.Error,
+              title: "Error reading file",
+              message: "Failed to read file",
+            }));
+          }
         }
       };
     }
-  }, []);
+  }, [dispatch, handleValidateEnteredData, setFileContent]);
 
   const clearFiles = useCallback(() => {
     setFileContent('');

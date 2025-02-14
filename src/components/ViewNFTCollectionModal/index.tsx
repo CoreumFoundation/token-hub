@@ -217,7 +217,7 @@ export const ViewNFTCollectionModal = () => {
                 isActive={isActive}
                 isActionRow={true}
                 actionItems={items}
-                description={`Name: ${item.name}`}
+                description={`Name: ${item.name || '-'}`}
               />
             );
           })}

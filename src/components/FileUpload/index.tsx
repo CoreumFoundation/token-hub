@@ -118,14 +118,20 @@ export const FileUpload: FC<FileUploadProps> = ({
             {files.map((file) => (
               <div key={file.name} className="flex items-center justify-between gap-2 w-full bg-[#1B1D23] rounded-[10px] text-base text-[#EEE] py-3 px-4">
                 {file.name}
-                <GeneralIcon type={GeneralIconType.Close} className="group cursor-pointer" pathClassName="group-hover:fill-[#eee]" onClick={() => removeFile(file.name)} />
+                <GeneralIcon
+                  type={GeneralIconType.Close}
+                  className="group cursor-pointer"
+                  pathClassName="group-hover:fill-[#eee]"
+                  onClick={() => removeFile(file.name)}
+                />
               </div>
             ))}
             <Button
-              label={isDataEditable ? "Choose more files" : "Choose another file"}
+              label="Choose more files"
               type={ButtonType.Secondary}
               onClick={() => !disabled && inputFileRef?.current?.click()}
               className="text-sm !py-2 px-6 rounded-[10px] font-medium w-[160px] !bg-transparent group-hover:opacity-50"
+              disabled={!isDataEditable}
             />
           </div>
           <div className="flex items-center gap-2 text-xs mt-1 text-[#5E6773]">
@@ -140,7 +146,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         <div className="flex flex-col gap-2 items-center w-full">
           <GeneralIcon type={GeneralIconType.File} />
           <Button
-            label="Upload files"
+            label={isDataEditable ? 'Upload files' : 'Upload file'}
             type={ButtonType.Secondary}
             onClick={() => !disabled && inputFileRef?.current?.click()}
             className={classNames('text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent', {

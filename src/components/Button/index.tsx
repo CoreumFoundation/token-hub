@@ -30,6 +30,7 @@ export const Button: FC<ButtonProps> = ({
   const buttonCx = classNames('flex items-center justify-center gap-1 rounded-xl text-base py-3 px-12 w-full text-nowrap whitespace-nowrap font-noto-sans enabled:hover:opacity-50', {
     'bg-green-gradient text-[#21262E]': type === 'primary' && !disabled,
     'bg-green-opacity-10 text-[#25D695] backdrop-blur-sm': type === 'secondary' && !disabled,
+    'text-[#25D695]': type === 'default' && !disabled,
     'bg-[#17191E] text-[#2B3138] gap-2 cursor-not-allowed': disabled,
   }, className);
 

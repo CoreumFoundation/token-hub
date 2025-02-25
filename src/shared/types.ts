@@ -14,6 +14,7 @@ export enum FooterIconType {
 export enum ButtonType {
   Primary = 'primary',
   Secondary = 'secondary',
+  Default = 'default',
 };
 
 export enum ButtonIconType {

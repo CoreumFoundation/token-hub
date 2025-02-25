@@ -20,6 +20,7 @@ const config: Config = {
       },
       backgroundColor: {
         "gradient-green": "rgba(37, 214, 149, 0.15)",
+        "custom-grey": "rgba(23, 25, 30, 0.50)",
       },
     },
   },

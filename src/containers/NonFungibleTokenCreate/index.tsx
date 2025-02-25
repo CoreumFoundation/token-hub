@@ -261,6 +261,9 @@ export const NonFungibleTokenCreate = () => {
       });
 
       const txFee = await getTxFee([issueNFTMsg]);
+
+      console.log({ txFee });
+
       const response = await signingClient?.signAndBroadcast(account, [issueNFTMsg], txFee ? txFee.fee : 'auto');
 
       if (response?.transactionHash) {

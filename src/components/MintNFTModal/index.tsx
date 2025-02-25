@@ -9,9 +9,8 @@ import { IPFS_REGEX, URL_REGEX, CID_REGEX, NFT_ID_REGEX } from "@/constants";
 import { Button } from "../Button";
 import { ButtonType, ChainInfo } from "@/shared/types";
 import { validateAddress } from "@/helpers/validateAddress";
-import { setDataEditable, setNFTID, setNFTMultipleData, setNFTMultipleDataFiles, setNFTRecipient, setNFTURI, setNFTURIHash, setRolesEditable } from "@/features/nft/nftSlice";
+import { defaultNFTDataItem, setDataEditable, setNFTID, setNFTMultipleDataValues, setNFTRecipient, setNFTURI, setNFTURIHash } from "@/features/nft/nftSlice";
 import { Switch } from "../Switch";
-import { Checkbox } from "../Checkbox";
 import { NFTMultipleData } from "../NFTMultipleData";
 
 export const MintNFTModal = () => {
@@ -23,7 +22,7 @@ export const MintNFTModal = () => {
   const [editEnabled, setEditEnabled] = useState<boolean>(false);
   const [isAdminEnabled, setIsAdminEnabled] = useState<boolean>(true);
   const [isOwnerEnabled, setIsOwnerEnabled] = useState<boolean>(false);
-  const nftMultipleData = useAppSelector(state => state.nfts.nftMultipleData);
+  const nftMultipleDataValues = useAppSelector(state => state.nfts.nftMultipleDataValues);
 
   const isMintNFTModalOpen = useAppSelector(state => state.general.isNFTMintModalOpen);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
@@ -33,8 +32,7 @@ export const MintNFTModal = () => {
 
   const handleCloseModal = useCallback(() => {
     dispatch(setIsNFTMintModalOpen(false));
-    dispatch(setNFTMultipleData(['']));
-    dispatch(setNFTMultipleDataFiles([]));
+    dispatch(setNFTMultipleDataValues([defaultNFTDataItem]));
     setNFTId('');
     setUri('');
     setUriHash('');
@@ -129,15 +127,15 @@ export const MintNFTModal = () => {
 
   const isEnteredDataValid = useMemo(() => {
     let isValid = true;
-    for (const item of nftMultipleData) {
-      if (handleValidateEnteredData(item).length) {
+    for (const item of nftMultipleDataValues) {
+      if (handleValidateEnteredData(item.contentValue).length || handleValidateEnteredData(item.fileValue).length) {
         isValid = false;
         break;
       }
     }
 
     return isValid;
-  }, [handleValidateEnteredData, nftMultipleData]);
+  }, [handleValidateEnteredData, nftMultipleDataValues]);
 
   const isFormValid = useMemo(() => {
     if (!isNFTIDValid.length
@@ -166,7 +164,6 @@ export const MintNFTModal = () => {
     dispatch(setNFTURIHash(uriHash));
     dispatch(setNFTRecipient(recipient));
     dispatch(setDataEditable(editEnabled));
-    dispatch(setRolesEditable({ admin: isAdminEnabled, owner: isOwnerEnabled }));
     dispatch(setIsConfirmNFTMintModalOpen(true));
     dispatch(setIsNFTMintModalOpen(false));
     setNFTId('');
@@ -230,14 +227,7 @@ export const MintNFTModal = () => {
           error={isRecipientAddressValid}
         />
         <div className="flex flex-col w-full gap-2 items-center">
-          <div className="flex w-full items-center gap-2 justify-between">
-            <div className="flex items-center justify-start">
-              <label
-                className="block text-sm text-[#868991] font-noto-sans"
-              >
-                Data
-              </label>
-            </div>
+          <div className="flex w-full items-center gap-2 justify-end">
             <div className="flex items-center gap-1.5">
               <p className="text-[#9FA2AC] font-noto-sans text-sm">
                 Allow Edit
@@ -250,25 +240,6 @@ export const MintNFTModal = () => {
           </div>
           <NFTMultipleData isDataEditable={editEnabled} />
         </div>
-        {editEnabled && (
-          <div className="grid grid-cols-3 w-full">
-            <p className="font-noto-sans text-[#868991] text-sm leading-[21px]">
-              Editability Authorized:
-            </p>
-            <div className="flex items-center gap-2">
-              <Checkbox isChecked={isAdminEnabled} setIsChecked={setIsAdminEnabled} />
-              <p className="font-noto-sans text-[#eee] text-base tracking-[-0.24px]">
-                Admin
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox isChecked={isOwnerEnabled} setIsChecked={setIsOwnerEnabled} />
-              <p className="font-noto-sans text-[#eee] text-base tracking-[-0.24px]">
-                Owner
-              </p>
-            </div>
-          </div>
-        )}
         <div className="flex w-full justify-end">
           <div className="flex items-center">
             <Button

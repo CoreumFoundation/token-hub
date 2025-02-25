@@ -82,7 +82,7 @@ export const FileUploadSingle: FC<FileUploadSingleProps> = ({
             </div>
             <Button
               label="Choose another file"
-              type={ButtonType.Secondary}
+              type={ButtonType.Default}
               onClick={() => !disabled && inputFileRef?.current?.click()}
               className="text-sm !py-2 px-6 rounded-[10px] font-medium w-[160px] !bg-transparent group-hover:opacity-50"
             />
@@ -100,7 +100,7 @@ export const FileUploadSingle: FC<FileUploadSingleProps> = ({
           <GeneralIcon type={GeneralIconType.File} />
           <Button
             label="Upload file"
-            type={ButtonType.Secondary}
+            type={ButtonType.Default}
             onClick={() => !disabled && inputFileRef?.current?.click()}
             className={classNames('text-sm !py-2 px-6 rounded-[10px] font-semibold w-[160px] !bg-transparent', {
               'cursor-not-allowed !enabled:hover:opacity-100': disabled,

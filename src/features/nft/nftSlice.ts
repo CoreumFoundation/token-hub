@@ -244,11 +244,6 @@ interface IssuedNFTCollectionType {
   txHash: string;
 }
 
-interface RolesEditableType {
-  admin: boolean;
-  owner: boolean;
-}
-
 export interface NFTsState {
   isLoading: boolean;
   collections: NFTClass[];
@@ -275,10 +270,20 @@ export interface NFTsState {
   deWhitelistAccount: string;
   editNFTData: string;
   isDataEditable: boolean;
-  roles: DataEditor[];
-  nftMultipleData: string[];
-  nftMultipleDataFiles: string[];
+  nftMultipleDataValues: NFTDataItem[];
 }
+
+export interface NFTDataItem {
+  contentValue: string;
+  fileValue: string;
+  roles: DataEditor[];
+}
+
+export const defaultNFTDataItem: NFTDataItem = {
+  contentValue: '',
+  fileValue: '',
+  roles: [DataEditor.admin],
+};
 
 export const initialNFTsState: NFTsState = {
   isLoading: false,
@@ -302,9 +307,7 @@ export const initialNFTsState: NFTsState = {
   deWhitelistAccount: '',
   editNFTData: '',
   isDataEditable: false,
-  roles: [],
-  nftMultipleData: [''],
-  nftMultipleDataFiles: [],
+  nftMultipleDataValues: [defaultNFTDataItem],
 };
 
 const nftsSlice = createSlice({
@@ -374,30 +377,14 @@ const nftsSlice = createSlice({
     setDataEditable(state, action: PayloadAction<boolean>) {
       state.isDataEditable = action.payload;
     },
-    setRolesEditable(state, action: PayloadAction<RolesEditableType>) {
-      let roles: DataEditor[] = [];
-      if (action.payload.admin) {
-        roles.push(DataEditor.admin);
-      }
-      if (action.payload.owner) {
-        roles.push(DataEditor.owner);
-      }
-      state.roles = roles;
+    addNFTDataItem(state) {
+      state.nftMultipleDataValues.push(defaultNFTDataItem);
     },
-    addDataToMultipleData(state) {
-      state.nftMultipleData.push('');
-    },
-    setNFTMultipleData(state, action: PayloadAction<string[]>) {
-      state.nftMultipleData = action.payload;
-    },
-    setNFTMultipleDataFiles(state, action: PayloadAction<string[]>) {
-      state.nftMultipleDataFiles = action.payload;
+    setNFTMultipleDataValues(state, action: PayloadAction<NFTDataItem[]>) {
+      state.nftMultipleDataValues = action.payload;
     },
     resetNFTsState(state) {
-      // state.isLoading = false;
       state.collections = [];
-      // state.isFetched = false;
-      // state.selectedNFTClass = null;
       state.nftID = '';
       state.nftURI = '';
       state.nftURIHash = '';
@@ -405,18 +392,12 @@ const nftsSlice = createSlice({
       state.nftData = '';
       state.nftItems = {};
       state.ownedNftItems = {};
-      // state.isNFTItemsFetched = false;
-      // state.isNFTItemsLoading = false;
       state.selectedNFTSend = null;
       state.whitelistAccount = '';
-      // state.shouldRefetchCollections = false;
-      // state.shouldRefetchNFTItems = false;
       state.issuedNFTCollection = null;
       state.deWhitelistAccount = '';
       state.isDataEditable = false;
-      state.roles = [];
-      state.nftMultipleData = [''];
-      state.nftMultipleDataFiles = [];
+      state.nftMultipleDataValues = [defaultNFTDataItem];
     },
   },
   extraReducers: (builder) => {
@@ -432,16 +413,16 @@ const nftsSlice = createSlice({
       state.collections = action.payload;
       state.isLoading = false;
       state.isFetched = true;
-    }),
+    })
     builder.addCase(fetchNFTsByOwnerAndClass.pending, (state) => {
       state.isNFTItemsLoading = true;
-    }),
+    })
     builder.addCase(fetchNFTsByOwnerAndClass.rejected, (state) => {
       state.nftItems = {};
       state.ownedNftItems = {};
       state.isNFTItemsLoading = false;
       state.isNFTItemsFetched = true;
-    }),
+    })
     builder.addCase(fetchNFTsByOwnerAndClass.fulfilled, (state, action) => {
       state.nftItems[action.payload.class] = action.payload.items;
       state.ownedNftItems[action.payload.class] = action.payload.ownedItems;
@@ -471,10 +452,8 @@ export const {
   resetNFTsState,
   setEditNFTData,
   setDataEditable,
-  setRolesEditable,
-  addDataToMultipleData,
-  setNFTMultipleData,
-  setNFTMultipleDataFiles,
+  addNFTDataItem,
+  setNFTMultipleDataValues,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

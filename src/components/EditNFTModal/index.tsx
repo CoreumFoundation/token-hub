@@ -59,27 +59,10 @@ export const EditNFTModal = () => {
     return isEditable;
   }, [isCurrentUserOwner]);
 
-  const updatableNFTDataValues: NFTDataItem[] = useMemo(() => {
-    return selectedNFTDataValues.map((item: NFTDataItem, index: number) => {
-      const isEditable = isCurrentNFTDataEditableByCurrentUser(item);
-
-      if (!isEditable) {
-        return undefined;
-      }
-
-      return {
-        ...item,
-        index,
-      };
-    }).filter((item: NFTDataItem | undefined) => item !== undefined) as NFTDataItem[];
-  }, [isCurrentNFTDataEditableByCurrentUser, selectedNFTDataValues]);
-
   const handleConfirmEditNFTToken = useCallback(() => {
     dispatch(setIsConfirmEditNFTModalOpen(true));
     dispatch(setIsEditNFTModalOpen(false));
-
-    dispatch(setSelectedNFTDataValues(updatableNFTDataValues));
-  }, [updatableNFTDataValues]);
+  }, []);
 
   const isFormValid = useMemo(() => {
     if (selectedNFTEdit && isAllDataFilledIn) {

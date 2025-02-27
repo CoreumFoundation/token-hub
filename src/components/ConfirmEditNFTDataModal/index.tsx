@@ -69,7 +69,7 @@ export const ConfirmEditNFTDataModal = () => {
         }
 
         const dataValue = DataDynamicIndexedItem.create({
-          index: selectedNFTDataValues[dataIndex].index,
+          index: +dataIndex,
           data: convertStringToUint8Array(selectedNFTDataValues[dataIndex].currentValue),
         });
 

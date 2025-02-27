@@ -4,6 +4,7 @@ import { Input } from "../Input";
 import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 import { Switch } from "../Switch";
 import { TextArea } from "../TextArea";
+import classNames from "classnames";
 
 interface NFTUpdateDataContentProps {
   index: number;
@@ -13,6 +14,7 @@ interface NFTUpdateDataContentProps {
   handleUpdateContent: (value: string, index: number, contentType: 'input' | 'file' | 'current') => void;
   roles: DataEditor[];
   handleClearData: (index: number) => void;
+  isDataEditable: boolean;
 }
 
 export const NFTUpdateDataContent: FC<NFTUpdateDataContentProps> = ({
@@ -23,6 +25,7 @@ export const NFTUpdateDataContent: FC<NFTUpdateDataContentProps> = ({
   handleUpdateContent,
   roles,
   handleClearData,
+  isDataEditable,
 }) => {
   const [isEditClicked, setEditClicked] = useState<boolean>(false);
   const [isNewDataOpened, setIsNewDataOpened] = useState<boolean>(false);
@@ -50,6 +53,10 @@ export const NFTUpdateDataContent: FC<NFTUpdateDataContentProps> = ({
   }, [roles]);
 
   const handleEditClick = useCallback(() => {
+    if (!isDataEditable) {
+      return;
+    }
+
     if (isEditClicked) {
       setEditClicked(false);
       setIsNewDataOpened(false);
@@ -60,19 +67,21 @@ export const NFTUpdateDataContent: FC<NFTUpdateDataContentProps> = ({
           ? fileValue
           : contentValue;
 
-      console.log(newValue);
-
       handleUpdateContent(newValue, index, 'current');
     } else {
       setEditClicked(true);
     }
-  }, [contentValue, currentValue, fileValue, index, isEditClicked]);
+  }, [contentValue, currentValue, fileValue, index, isEditClicked, isDataEditable]);
 
   const handleClearNFTData = useCallback(() => {
+    if (!isDataEditable) {
+      return;
+    }
+
     setIsNewDataOpened(true);
     setEditClicked(true);
     handleClearData(index);
-  }, [handleUpdateContent]);
+  }, [handleUpdateContent, isDataEditable, index]);
 
   const handleUpdateTextAreaContent = useCallback((value: string) => {
     if (isEditClicked) {
@@ -118,14 +127,24 @@ export const NFTUpdateDataContent: FC<NFTUpdateDataContentProps> = ({
             </div>
           </div>
           <div className="flex items-center gap-5">
-            <p className="text-[#FFF] font-noto-sans text-sm font-medium leading-[21px] tracking-[-0.21px] cursor-pointer" onClick={handleEditClick}>
+            <p
+              className={classNames('text-[#FFF] font-noto-sans text-sm font-medium leading-[21px] tracking-[-0.21px]', {
+                'cursor-disabled opacity-50': !isDataEditable,
+                'cursor-pointer': isDataEditable,
+              })}
+              onClick={handleEditClick}
+            >
               {isEditClicked ? 'Save' : 'Edit Data'}
             </p>
-            <div className="">
-              <p className="text-[#D81D3C] font-noto-sans text-sm font-medium leading-[21px] tracking-[-0.21px] cursor-pointer" onClick={handleClearNFTData}>
-                Clear Data
-              </p>
-            </div>
+            <p
+              className={classNames('text-[#D81D3C] font-noto-sans text-sm font-medium leading-[21px] tracking-[-0.21px]', {
+                'cursor-disabled opacity-50': !isDataEditable,
+                'cursor-pointer': isDataEditable,
+              })}
+              onClick={handleClearNFTData}
+            >
+              Clear Data
+            </p>
           </div>
         </div>
       </div>

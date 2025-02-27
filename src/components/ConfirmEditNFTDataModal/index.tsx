@@ -8,9 +8,10 @@ import { setIsConfirmEditNFTModalOpen, setIsEditNFTModalOpen, setIsTxExecuting }
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { NFT } from "coreum-js-nightly";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
-import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
-import { DataDynamicIndexedItem } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { NFTDataItem, setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";
+import { DataDynamicIndexedItem, DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 import { convertStringToUint8Array } from "@/helpers/convertStringToAny";
+import { NFT as NFTType } from '@/shared/types';
 
 export const ConfirmEditNFTDataModal = () => {
   const isConfirmEditNFTModalOpen = useAppSelector(state => state.general.isConfirmEditNFTModalOpen);
@@ -20,6 +21,7 @@ export const ConfirmEditNFTDataModal = () => {
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
 
   const selectedNFTDataValues = useAppSelector(state => state.nfts.selectedNFTDataValues);
+  const ownedNFTItems = useAppSelector(state => state.nfts.ownedNftItems);
 
   const [isTxSuccessful, setIsTxSuccessful] = useState<boolean>(false);
 
@@ -38,16 +40,37 @@ export const ConfirmEditNFTDataModal = () => {
     dispatch(setIsEditNFTModalOpen(true));
   }, []);
 
+  const isCurrentUserOwner = useMemo(() => {
+    return ownedNFTItems[selectedNFTClass?.id || '']?.find((nft: NFTType) => nft.id === selectedNFTSend?.id);
+  }, [ownedNFTItems, selectedNFTClass?.id, selectedNFTSend?.id]);
+
+  const isCurrentNFTDataEditableByCurrentUser = useCallback((data: NFTDataItem) => {
+    let isEditable = false;
+
+    for (const role of data.roles) {
+      if (role === DataEditor.admin || role === DataEditor.owner && isCurrentUserOwner) {
+        isEditable = true;
+        break;
+      }
+    }
+
+    return isEditable;
+  }, [isCurrentUserOwner]);
+
   const handleConfirm = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
 
     try {
       let updatedNFTDataPayload = [];
 
-      for (const index in selectedNFTDataValues) {
+      for (const dataIndex in selectedNFTDataValues) {
+        if (!isCurrentNFTDataEditableByCurrentUser(selectedNFTDataValues[dataIndex])) {
+          continue;
+        }
+
         const dataValue = DataDynamicIndexedItem.create({
-          index: +index,
-          data: convertStringToUint8Array(selectedNFTDataValues[index].currentValue),
+          index: selectedNFTDataValues[dataIndex].index,
+          data: convertStringToUint8Array(selectedNFTDataValues[dataIndex].currentValue),
         });
 
         updatedNFTDataPayload.push(dataValue);

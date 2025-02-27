@@ -77,7 +77,6 @@ export const useEstimateTxGasFee = () => {
       msgs,
       ""
     );
-    console.log({ gasWanted: Big(gasWanted).toFixed(0) });
     const totalGasWanted = new Big(gasWanted).mul(1.2).toFixed(0);
 
     return {

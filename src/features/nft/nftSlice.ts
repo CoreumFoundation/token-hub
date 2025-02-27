@@ -280,6 +280,7 @@ export interface NFTDataItem {
   contentValue: string;
   fileValue: string;
   roles: DataEditor[];
+  index?: number;
 }
 
 export const defaultNFTDataItem: NFTDataItem = {

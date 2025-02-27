@@ -3,15 +3,18 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { Modal } from "../Modal";
 import { Button } from "../Button";
-import { ButtonType } from "@/shared/types";
+import { ButtonType, NFT } from "@/shared/types";
 import { NFTDataItem, setEditNFTData, setSelectedNFTDataValues } from "@/features/nft/nftSlice";
 import { NFTUpdateDataContent } from "../NFTUpdateDataContent";
+import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 
 export const EditNFTModal = () => {
   const isEditNFTModalOpen = useAppSelector(state => state.general.isEditNFTModalOpen);
   const selectedNFTEdit = useAppSelector(state => state.nfts.selectedNFTSend);
+  const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
 
   const selectedNFTDataValues = useAppSelector(state => state.nfts.selectedNFTDataValues);
+  const ownedNFTItems = useAppSelector(state => state.nfts.ownedNftItems);
 
   const dispatch = useAppDispatch();
 
@@ -39,10 +42,44 @@ export const EditNFTModal = () => {
     return isValid;
   }, [selectedNFTDataValues]);
 
+  const isCurrentUserOwner = useMemo(() => {
+    return ownedNFTItems[selectedNFTClass?.id || '']?.find((nft: NFT) => nft.id === selectedNFTEdit?.id);
+  }, [ownedNFTItems, selectedNFTClass?.id, selectedNFTEdit?.id]);
+
+  const isCurrentNFTDataEditableByCurrentUser = useCallback((data: NFTDataItem) => {
+    let isEditable = false;
+
+    for (const role of data.roles) {
+      if (role === DataEditor.admin || role === DataEditor.owner && isCurrentUserOwner) {
+        isEditable = true;
+        break;
+      }
+    }
+
+    return isEditable;
+  }, [isCurrentUserOwner]);
+
+  const updatableNFTDataValues: NFTDataItem[] = useMemo(() => {
+    return selectedNFTDataValues.map((item: NFTDataItem, index: number) => {
+      const isEditable = isCurrentNFTDataEditableByCurrentUser(item);
+
+      if (!isEditable) {
+        return undefined;
+      }
+
+      return {
+        ...item,
+        index,
+      };
+    }).filter((item: NFTDataItem | undefined) => item !== undefined) as NFTDataItem[];
+  }, [isCurrentNFTDataEditableByCurrentUser, selectedNFTDataValues]);
+
   const handleConfirmEditNFTToken = useCallback(() => {
     dispatch(setIsConfirmEditNFTModalOpen(true));
     dispatch(setIsEditNFTModalOpen(false));
-  }, [dispatch]);
+
+    dispatch(setSelectedNFTDataValues(updatableNFTDataValues));
+  }, [updatableNFTDataValues]);
 
   const isFormValid = useMemo(() => {
     if (selectedNFTEdit && isAllDataFilledIn) {
@@ -107,6 +144,8 @@ export const EditNFTModal = () => {
     return (
       <>
         {selectedNFTDataValues.map((item: NFTDataItem, index: number) => {
+          const isEditable = isCurrentNFTDataEditableByCurrentUser(item);
+
           return (
             <NFTUpdateDataContent
               key={`data-${index}`}
@@ -117,12 +156,13 @@ export const EditNFTModal = () => {
               handleUpdateContent={handleUpdateDataInList}
               roles={item.roles}
               handleClearData={handleClearDataInList}
+              isDataEditable={isEditable}
             />
           );
         })}
       </>
     );
-  }, [selectedNFTDataValues]);
+  }, [handleClearDataInList, handleUpdateDataInList, isCurrentNFTDataEditableByCurrentUser, selectedNFTDataValues]);
 
   return (
     <Modal

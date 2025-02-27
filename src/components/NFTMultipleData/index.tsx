@@ -73,8 +73,6 @@ export const NFTMultipleData: FC<NFTMultipleDataProps> = ({ isDataEditable }: NF
           roles.push(DataEditor.owner);
         }
 
-        console.log({ roles });
-
         return {
           ...data,
           roles,

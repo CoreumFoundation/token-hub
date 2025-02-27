@@ -40,7 +40,7 @@ export const TextArea: FC<TextAreaProps> = ({
 
   const handleChangeInput = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
-  }, []);
+  }, [onChange]);
 
   return (
     <div className="flex flex-col w-full gap-2 relative">

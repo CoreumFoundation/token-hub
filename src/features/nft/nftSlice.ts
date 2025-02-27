@@ -1,3 +1,4 @@
+import { convertEditorsToDataEditors } from '@/helpers/convertEditorsToDataEditors';
 import { Network, NFT, NFTClass } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
@@ -271,15 +272,18 @@ export interface NFTsState {
   editNFTData: string;
   isDataEditable: boolean;
   nftMultipleDataValues: NFTDataItem[];
+  selectedNFTDataValues: NFTDataItem[];
 }
 
 export interface NFTDataItem {
+  currentValue: string;
   contentValue: string;
   fileValue: string;
   roles: DataEditor[];
 }
 
 export const defaultNFTDataItem: NFTDataItem = {
+  currentValue: '',
   contentValue: '',
   fileValue: '',
   roles: [DataEditor.admin],
@@ -308,6 +312,7 @@ export const initialNFTsState: NFTsState = {
   editNFTData: '',
   isDataEditable: false,
   nftMultipleDataValues: [defaultNFTDataItem],
+  selectedNFTDataValues: [],
 };
 
 const nftsSlice = createSlice({
@@ -323,6 +328,21 @@ const nftsSlice = createSlice({
     },
     setSelectedNFTSend(state, action: PayloadAction<NFT | null>) {
       state.selectedNFTSend = action.payload;
+
+      if (action.payload) {
+        const nftData = action.payload.data;
+
+        if (!!nftData) {
+          state.selectedNFTDataValues = (nftData as any).items.map((item: {editors: string[]; data: string}) => {
+            return {
+              roles: convertEditorsToDataEditors(item.editors),
+              fileValue: '',
+              contentValue: '',
+              currentValue: atob(item.data),
+            };
+          });
+        }
+      }
     },
     setIsFetched(state, action: PayloadAction<boolean>) {
       state.isFetched = action.payload;
@@ -382,6 +402,9 @@ const nftsSlice = createSlice({
     },
     setNFTMultipleDataValues(state, action: PayloadAction<NFTDataItem[]>) {
       state.nftMultipleDataValues = action.payload;
+    },
+    setSelectedNFTDataValues(state, action: PayloadAction<NFTDataItem[]>) {
+      state.selectedNFTDataValues = action.payload;
     },
     resetNFTsState(state) {
       state.collections = [];
@@ -454,6 +477,7 @@ export const {
   setDataEditable,
   addNFTDataItem,
   setNFTMultipleDataValues,
+  setSelectedNFTDataValues,
 } = nftsSlice.actions;
 export const nftsReducer = nftsSlice.reducer;
 export default nftsSlice.reducer;

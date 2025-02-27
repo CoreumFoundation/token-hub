@@ -17,8 +17,9 @@ export const ConfirmEditNFTDataModal = () => {
   const selectedNFTSend = useAppSelector(state => state.nfts.selectedNFTSend);
   const selectedNFTClass = useAppSelector(state => state.nfts.selectedNFTClass);
   const account = useAppSelector(state => state.general.account);
-  const editNFTData = useAppSelector(state => state.nfts.editNFTData);
   const isTxExecuting = useAppSelector(state => state.general.isTxExecuting);
+
+  const selectedNFTDataValues = useAppSelector(state => state.nfts.selectedNFTDataValues);
 
   const [isTxSuccessful, setIsTxSuccessful] = useState<boolean>(false);
 
@@ -41,13 +42,22 @@ export const ConfirmEditNFTDataModal = () => {
     dispatch(setIsTxExecuting(true));
 
     try {
-      const nftDataValue = convertStringToUint8Array(editNFTData);
-      const newData = DataDynamicIndexedItem.create({ data: nftDataValue });
+      let updatedNFTDataPayload = [];
+
+      for (const index in selectedNFTDataValues) {
+        const dataValue = DataDynamicIndexedItem.create({
+          index: +index,
+          data: convertStringToUint8Array(selectedNFTDataValues[index].currentValue),
+        });
+
+        updatedNFTDataPayload.push(dataValue);
+      }
+
       const editNFTDataMsg = NFT.UpdateData({
         sender: account,
         classId: selectedNFTClass?.id || '',
         id: selectedNFTSend?.id || '',
-        items: [newData],
+        items: updatedNFTDataPayload,
       });
 
       const txFee = await getTxFee([editNFTDataMsg]);
@@ -65,7 +75,7 @@ export const ConfirmEditNFTDataModal = () => {
     }
 
     dispatch(setIsTxExecuting(false));
-  }, [account, getTxFee, selectedNFTSend, signingClient, selectedNFTClass, editNFTData]);
+  }, [account, getTxFee, selectedNFTSend, signingClient, selectedNFTClass, selectedNFTDataValues]);
 
   const renderContent = useMemo(() => {
     if (isTxSuccessful) {

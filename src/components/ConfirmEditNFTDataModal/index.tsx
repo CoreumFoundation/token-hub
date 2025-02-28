@@ -12,6 +12,7 @@ import { NFTDataItem, setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchN
 import { DataDynamicIndexedItem, DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 import { convertStringToUint8Array } from "@/helpers/convertStringToAny";
 import { NFT as NFTType } from '@/shared/types';
+import { convertEditorsToDataEditors } from "@/helpers/convertEditorsToDataEditors";
 
 export const ConfirmEditNFTDataModal = () => {
   const isConfirmEditNFTModalOpen = useAppSelector(state => state.general.isConfirmEditNFTModalOpen);
@@ -57,6 +58,24 @@ export const ConfirmEditNFTDataModal = () => {
     return isEditable;
   }, [isCurrentUserOwner]);
 
+  const isDataChanged = useCallback((currentData: string, currentNFT: NFTType | null, dataIndex: number) => {
+    if (!currentNFT) {
+      return false;
+    }
+
+    const previousData = currentNFT?.data;
+    const previousNFTDataItems = (previousData as any).items.map((item: {editors: string[]; data: string}) => {
+      return {
+        roles: convertEditorsToDataEditors(item.editors),
+        fileValue: '',
+        contentValue: '',
+        currentValue: atob(item.data),
+      };
+    });
+
+    return currentData.trim() !== previousNFTDataItems[dataIndex].currentValue.trim();
+  }, []);
+
   const handleConfirm = useCallback(async () => {
     dispatch(setIsTxExecuting(true));
 
@@ -64,13 +83,16 @@ export const ConfirmEditNFTDataModal = () => {
       let updatedNFTDataPayload = [];
 
       for (const dataIndex in selectedNFTDataValues) {
-        if (!isCurrentNFTDataEditableByCurrentUser(selectedNFTDataValues[dataIndex])) {
+        if (
+          !isCurrentNFTDataEditableByCurrentUser(selectedNFTDataValues[dataIndex])
+          || !isDataChanged(selectedNFTDataValues[dataIndex].currentValue, selectedNFTSend, +dataIndex)
+        ) {
           continue;
         }
 
         const dataValue = DataDynamicIndexedItem.create({
           index: +dataIndex,
-          data: convertStringToUint8Array(selectedNFTDataValues[dataIndex].currentValue),
+          data: convertStringToUint8Array(selectedNFTDataValues[dataIndex].currentValue.trim()),
         });
 
         updatedNFTDataPayload.push(dataValue);

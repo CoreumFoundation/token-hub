@@ -33,6 +33,8 @@ export const ModalsHandler = () => {
   const isDeWhitelistNFTModalOpen = useAppSelector(state => state.general.isDeWhitelistNFTModalOpen);
   const isConfirmNFTDeWhitelistModalOpen = useAppSelector(state => state.general.isConfirmNFTDeWhitelistModalOpen);
   const isDisclaimerModalOpen = useAppSelector(state => state.general.isDisclaimerModalOpen);
+  const isEditNFTModalOpen = useAppSelector(state => state.general.isEditNFTModalOpen);
+  const isConfirmEditNFTModalOpen = useAppSelector(state => state.general.isConfirmEditNFTModalOpen);
 
   const disclaimerConfirmed = isBrowser() && window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
   const dispatch = useAppDispatch();
@@ -72,6 +74,8 @@ export const ModalsHandler = () => {
       || isConfirmNFTDeWhitelistModalOpen
       || isFreezeNFTModalOpen
       || isDisclaimerModalOpen
+      || isEditNFTModalOpen
+      || isConfirmEditNFTModalOpen
   }, [
     isBurnCurrencyModalOpen,
     isBurnNFTModalOpen,
@@ -100,7 +104,9 @@ export const ModalsHandler = () => {
     isUnfreezeNFTModalOpen,
     isWhitelistNFTModalOpen,
     isFreezeNFTModalOpen,
-    isDisclaimerModalOpen
+    isDisclaimerModalOpen,
+    isEditNFTModalOpen,
+    isConfirmEditNFTModalOpen
   ]);
 
   useEffect(() => {

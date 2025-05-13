@@ -17,9 +17,7 @@ export const fetchBalancesByAccount = createAsyncThunk(
 
     let balancesToSet = [];
     try {
-      const balancesRequestUrl = network === Network.Devnet
-        ? `https://full-node.${network}-1.coreum.dev:1317/cosmos/bank/v1beta1/balances/${account}`
-        : `https://full-node.${network}-1.coreum.dev:1317/cosmos/bank/v1beta1/balances/${account}`;
+      const balancesRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/cosmos/bank/v1beta1/balances/${account}`;
       const {
         data: {
           pagination: { total: balancesTotal },

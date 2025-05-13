@@ -43,9 +43,7 @@ export const fetchIssuedNFTCollectionsByAccount = createAsyncThunk(
   'nfts/fetchCollectionsByAccount',
   async ({ account, network }: FetchIssuedCollectionsArgs) => {
     try {
-      const classesRequestUrl = network === Network.Devnet
-        ? `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/nft/v1/classes?issuer=${account}`
-        : `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/nft/v1/classes?issuer=${account}`;
+      const classesRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/coreum/asset/nft/v1/classes?issuer=${account}`;
       let classesToReturn = [];
 
       if (!account) {
@@ -111,9 +109,7 @@ export const fetchNFTsByOwnerAndClass = createAsyncThunk(
   'nfts/fetchNFTsByOwnerAndClass',
   async ({ account, classId, network }: FetchNFTSbyOwnerAndClassArgs) => {
     try {
-      const nftsRequestUrl = network === Network.Devnet
-        ? `https://full-node.${network}-1.coreum.dev:1317/cosmos/nft/v1beta1/nfts?class_id=${classId}`
-        : `https://full-node.${network}-1.coreum.dev:1317/coreum/nft/v1beta1/nfts?class_id=${classId}`;
+      const nftsRequestUrl = `https://full-node.${network}-1.coreum.dev:1317/cosmos/nft/v1beta1/nfts?class_id=${classId}`;
       let nftsToReturn = [];
       let ownNFTsToReturn = [];
 

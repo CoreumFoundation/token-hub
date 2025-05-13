@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo } from "react";
 import { FileUploadSingle } from "../FileUploadSingle";
 import { Input } from "../Input";
 import { Checkbox } from "../Checkbox";
-import { DataEditor } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
+import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 import classNames from "classnames";
 
 interface NFTUploadContentProps {

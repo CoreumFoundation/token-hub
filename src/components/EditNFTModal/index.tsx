@@ -6,7 +6,7 @@ import { Button } from "../Button";
 import { ButtonType, NFT } from "@/shared/types";
 import { NFTDataItem, setEditNFTData, setSelectedNFTDataValues } from "@/features/nft/nftSlice";
 import { NFTUpdateDataContent } from "../NFTUpdateDataContent";
-import { DataEditor } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
+import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 
 export const EditNFTModal = () => {
   const isEditNFTModalOpen = useAppSelector(state => state.general.isEditNFTModalOpen);

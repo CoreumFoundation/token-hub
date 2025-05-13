@@ -1,4 +1,4 @@
-import { DataBytes, DataDynamic } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
+import { DataBytes, DataDynamic } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
 import { Any } from 'google-protobuf/google/protobuf/any_pb';
 
 export const convertStringToAny = (message: string): Any => {

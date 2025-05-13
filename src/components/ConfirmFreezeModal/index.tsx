@@ -8,7 +8,7 @@ import { setIsConfirmFreezeModalOpen, setIsTxExecuting } from "@/features/genera
 import { setFreezeAmount, setFreezeWalletAddress } from "@/features/freeze/freezeSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { FT } from "coreum-js";
+import { FT } from "coreum-js-nightly";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";

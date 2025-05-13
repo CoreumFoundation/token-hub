@@ -12,7 +12,7 @@ import {
 } from "@cosmjs/stargate";
 import { QueryClientImpl as FeeModelClient } from "@/lib/query";
 import Big from "big.js";
-import { coreumRegistry, cosmwasmRegistry } from "coreum-js";
+import { coreumRegistry, cosmwasmRegistry } from "coreum-js-nightly";
 
 const registryTypes = [
   ...defaultRegistryTypes,

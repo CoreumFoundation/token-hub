@@ -2,8 +2,8 @@ import { convertEditorsToDataEditors } from '@/helpers/convertEditorsToDataEdito
 import { Network, NFT, NFTClass } from '@/shared/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { ClassFeature } from "coreum-js";
-import { DataEditor } from 'coreum-js/dist/main/coreum/asset/nft/v1/types';
+import { ClassFeature } from "coreum-js-nightly";
+import { DataEditor } from 'coreum-js-nightly/dist/main/coreum/asset/nft/v1/types';
 
 interface FetchIssuedCollectionsArgs {
   account: string;

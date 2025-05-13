@@ -32,7 +32,7 @@ export const useEstimateTxGasFee = () => {
   const { data: signingClient } = useCosmWasmSigningClient({
     chainId: networkInfo.chainId,
     opts: {
-      registry: registry,
+      registry: registry as any,
     },
   });
 

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmGlobalFreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { FT } from "coreum-js-nightly";
+import { FT } from "coreum-js";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { shouldRefetchBalances } from "@/features/balances/balancesSlice";

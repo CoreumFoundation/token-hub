@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmNFTWhitelistModalOpen, setIsTxExecuting, setIsWhitelistNFTModalOpen } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { NFT } from "coreum-js-nightly";
+import { NFT } from "coreum-js";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import { NFTItem } from "../NFTItem";
 import { setSelectedNFTClass, setSelectedNFTSend, setShouldRefetchNFTItems } from "@/features/nft/nftSlice";

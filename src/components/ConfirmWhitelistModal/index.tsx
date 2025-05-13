@@ -8,7 +8,7 @@ import { setIsConfirmWhitelistModalOpen, setIsTxExecuting } from "@/features/gen
 import { setWhitelistAmount, setWhitelistWalletAddress } from "@/features/whitelist/whitelistSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { FT } from "coreum-js-nightly";
+import { FT } from "coreum-js";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";

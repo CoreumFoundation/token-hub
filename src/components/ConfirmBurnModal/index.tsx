@@ -8,7 +8,7 @@ import { setIsConfirmBurnModalOpen, setIsTxExecuting } from "@/features/general/
 import { setBurnAmount } from "@/features/burn/burnSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { FT } from "coreum-js-nightly";
+import { FT } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";

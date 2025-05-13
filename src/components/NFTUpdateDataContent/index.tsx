@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo, useState } from "react";
 import { FileUploadSingle } from "../FileUploadSingle";
 import { Input } from "../Input";
-import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { DataEditor } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
 import { Switch } from "../Switch";
 import { TextArea } from "../TextArea";
 import classNames from "classnames";

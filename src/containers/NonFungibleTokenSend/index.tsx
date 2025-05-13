@@ -16,7 +16,7 @@ import { validateAddress } from "@/helpers/validateAddress";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { ButtonType, ButtonIconType, ChainInfo, GeneralIconType, AlertType, NFT as NFTType } from "@/shared/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { NFT } from "coreum-js-nightly";
+import { NFT } from "coreum-js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const NonFungibleTokenSend = () => {

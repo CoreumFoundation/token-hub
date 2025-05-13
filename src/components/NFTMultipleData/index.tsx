@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { FC, Fragment, useCallback, useEffect, useMemo } from "react";
 import { addNFTDataItem, NFTDataItem, setNFTMultipleDataValues } from "@/features/nft/nftSlice";
 import { NFTUploadContent } from "../NFTUploadContent";
-import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { DataEditor } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
 
 interface NFTMultipleDataProps {
   isDataEditable: boolean;

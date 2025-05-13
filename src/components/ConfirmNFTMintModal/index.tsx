@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmNFTMintModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { NFT } from "coreum-js-nightly";
+import { NFT } from "coreum-js";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";
 import {
@@ -24,7 +24,7 @@ import {
 } from "@/features/nft/nftSlice";
 import { shortenAddress } from "@/helpers/shortenAddress";
 import { convertStringToAny, convertStringToDataDynamic } from "@/helpers/convertStringToAny";
-import { DataEditor } from "coreum-js-nightly/dist/main/coreum/asset/nft/v1/types";
+import { DataEditor } from "coreum-js/dist/main/coreum/asset/nft/v1/types";
 
 export const ConfirmNFTMintModal = () => {
   const isConfirmNFTMintModalOpen = useAppSelector(state => state.general.isConfirmNFTMintModalOpen);

@@ -3,7 +3,7 @@ import { AssetRegistry, Network, Token } from '@/shared/types';
 import { Coin } from '@cosmjs/proto-signing';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { Feature } from "coreum-js-nightly";
+import { Feature } from "coreum-js";
 
 interface FetchCurrenciesByAccountArgs {
   account: string;

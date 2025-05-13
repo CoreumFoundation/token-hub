@@ -7,7 +7,7 @@ import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmClawbackModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
 import { convertUnitToSubunit } from "@/helpers/convertUnitToSubunit";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
-import { FT } from "coreum-js-nightly";
+import { FT } from "coreum-js";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { ModalInfoRow } from "../ModalInfoRow";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";

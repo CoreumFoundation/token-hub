@@ -5,7 +5,7 @@ import { Button } from "../Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useCallback, useMemo, useState } from "react";
 import { setIsConfirmGlobalUnfreezeModalOpen, setIsTxExecuting } from "@/features/general/generalSlice";
-import { FT } from "coreum-js-nightly";
+import { FT } from "coreum-js";
 import { useEstimateTxGasFee } from "@/hooks/useEstimateTxGasFee";
 import { setSelectedCurrency, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
 import { dispatchAlert } from "@/features/alerts/alertsSlice";

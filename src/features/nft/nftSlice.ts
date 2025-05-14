@@ -329,7 +329,7 @@ const nftsSlice = createSlice({
       if (action.payload) {
         const nftData = action.payload.data;
 
-        if (!!nftData) {
+        if (!!nftData && (nftData as any).items?.length) {
           state.selectedNFTDataValues = (nftData as any).items.map((item: {editors: string[]; data: string}) => {
             return {
               roles: convertEditorsToDataEditors(item.editors),

@@ -176,12 +176,20 @@ export const SuccessIssueFTModal = () => {
             className="!items-start"
           />
         </div>
-        <div className="flex items-center w-full">
+        <div className="flex flex-col md:flex-row items-center gap-2 w-full">
           <Button
             label="Done"
             onClick={handleClose}
+            type={ButtonType.Secondary}
+            className="text-sm !py-2 px-6 !rounded-[10px] font-semibold"
+          />
+          <Button
+            label="Register Your Token"
             type={ButtonType.Primary}
-            className="text-sm !py-2 px-6 rounded-[10px] font-semibold"
+            className="text-sm !py-2 px-6 !rounded-[10px] font-semibold hover:opacity-80"
+            disabled={false}
+            link={true}
+            href="https://github.com/CoreumFoundation/token-registry"
           />
         </div>
       </div>

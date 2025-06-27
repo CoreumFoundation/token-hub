@@ -3,6 +3,7 @@ import { ButtonIconColorScheme, ButtonIconType, ButtonType } from "@/shared/type
 import classNames from "classnames";
 import { FC, useMemo } from "react";
 import { Spinner } from "../Spinner";
+import Link from "next/link";
 
 interface ButtonProps {
   label: string;
@@ -14,6 +15,8 @@ interface ButtonProps {
   className?: string;
   iconClassName?: string;
   loading?: boolean;
+  link?: boolean;
+  href?: string;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -26,6 +29,8 @@ export const Button: FC<ButtonProps> = ({
   className,
   iconClassName,
   loading,
+  link = false,
+  href = '',
 }) => {
   const buttonCx = classNames('flex items-center justify-center gap-1 rounded-xl text-base py-3 px-12 w-full text-nowrap whitespace-nowrap font-noto-sans enabled:hover:opacity-50', {
     'bg-green-gradient text-[#21262E]': type === 'primary' && !disabled,
@@ -64,6 +69,15 @@ export const Button: FC<ButtonProps> = ({
       >
         <Spinner />
       </button>
+    );
+  }
+
+  if (link) {
+    return (
+      <Link href={href} target="_blank" rel="noopener noreferrer" className={buttonCx}>
+        {renderIcon}
+        {label}
+      </Link>
     );
   }
 

@@ -1,21 +1,19 @@
-import { NonFungibleTokenSend } from "@/containers/NonFungibleTokenSend";
-import type { Metadata } from "next";
+'use client';
 
-export const metadata: Metadata = {
-  title: "Send & Receive NFTs | Coreum",
-  description: "Send created NFTs from one wallet to another. ",
-  keywords: ['token hub', 'developer', 'developer resources', 'blockchain', 'smart tokens', 'iso20022', 'defi', 'cosmos crypto', 'dapps', 'smart contracts', 'ledger', 'blockchain', 'trading', 'enterprise grade blockchain'],
-  icons: "/favicon.ico",
-  openGraph: {
-    type: 'website',
-    url: '',
-    description: 'Send created NFTs from one wallet to another. ',
-    siteName: 'Send & Receive NFTs | Coreum',
-    images: [{
-      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
-    }],
-  },
-};
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/Spinner";
+
+const NonFungibleTokenSend = dynamic(
+  () => import("@/containers/NonFungibleTokenSend").then(mod => mod.NonFungibleTokenSend),
+  {
+    loading: () => (
+      <div className="flex flex-col items-center justify-center w-full py-20">
+        <Spinner className="w-12 h-12" />
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 export default function NFTSend() {
   return <NonFungibleTokenSend />;

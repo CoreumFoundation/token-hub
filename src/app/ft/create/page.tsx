@@ -1,21 +1,19 @@
-import { FungibleTokenCreate } from "@/containers/FungibleTokenCreate";
-import type { Metadata } from "next";
+'use client';
 
-export const metadata: Metadata = {
-  title: "TokenHub Send | Coreum",
-  description: "Create Smart Tokens on Coreum. Add features like whitelisting, minting, burning, freezing and more.",
-  keywords: ['token hub', 'developer', 'developer resources', 'blockchain', 'smart tokens', 'iso20022', 'defi', 'cosmos crypto', 'dapps', 'smart contracts', 'ledger', 'blockchain', 'trading', 'enterprise grade blockchain'],
-  icons: "/favicon.ico",
-  openGraph: {
-    type: 'website',
-    url: '',
-    description: 'Create Smart Tokens on Coreum. Add features like whitelisting, minting, burning, freezing and more.',
-    siteName: 'TokenHub Send | Coreum',
-    images: [{
-      url: 'https://tokenhub.test.coreum.dev/images/og.jpg',
-    }],
-  },
-};
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/Spinner";
+
+const FungibleTokenCreate = dynamic(
+  () => import("@/containers/FungibleTokenCreate").then(mod => mod.FungibleTokenCreate),
+  {
+    loading: () => (
+      <div className="flex flex-col items-center justify-center w-full py-20">
+        <Spinner className="w-12 h-12" />
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 export default function FTCreate() {
   return <FungibleTokenCreate />;

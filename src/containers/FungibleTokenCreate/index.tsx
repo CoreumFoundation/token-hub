@@ -72,7 +72,7 @@ export const FungibleTokenCreate = () => {
   const { signingClient, getTxFee } = useEstimateTxGasFee();
 
   const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+    return chains.find((chain: ChainInfo) => chain.prettyName?.toLowerCase() === 'coreum');
   }, [chains]);
 
   const handleClearState = useCallback(() => {

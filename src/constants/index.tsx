@@ -17,7 +17,7 @@ import {
   WalletOption,
   WalletType,
 } from "@/shared/types";
-import { Chain, IBCInfo } from '@chain-registry/types';
+import { Chain, IBCData } from '@chain-registry/types';
 
 export const FOOTER_NAVIGATION = {
   products: [
@@ -309,27 +309,27 @@ export const CID_REGEX = new RegExp(`^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$`);
 export const SYMBOL_NFT_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._]{0,30}$`);
 export const NFT_ID_REGEX = new RegExp(`^[a-zA-Z][a-zA-Z0-9/:._-]{2,100}$`);
 
-export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCInfo[] = [
+export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCData[] = [
   {
-    chain_1: {
-      chain_name: "coreumtestnet",
-      client_id: "07-tendermint-183",
-      connection_id: "connection-90",
+    chain1: {
+      chainName: "coreumtestnet",
+      clientId: "07-tendermint-183",
+      connectionId: "connection-90",
     },
-    chain_2: {
-      chain_name: "osmosistestnet",
-      client_id: "07-tendermint-4092",
-      connection_id: "connection-3539",
+    chain2: {
+      chainName: "osmosistestnet",
+      clientId: "07-tendermint-4092",
+      connectionId: "connection-3539",
     },
     channels: [
       {
-        chain_1: {
-          channel_id: "channel-65",
-          port_id: "transfer",
+        chain1: {
+          channelId: "channel-65",
+          portId: "transfer",
         },
-        chain_2: {
-          channel_id: "channel-9151",
-          port_id: "transfer",
+        chain2: {
+          channelId: "channel-9151",
+          portId: "transfer",
         },
         ordering: "unordered",
         version: "ics20-1",
@@ -351,21 +351,21 @@ export const COREUM_DEVNET_CHAIN_DATA: Chain = {
     rest: [],
     rpc: [],
   },
-  bech32_prefix: 'devcore',
-  chain_id: 'coreum-devnet-1',
-  chain_name: 'coreumdevnet',
+  bech32Prefix: 'devcore',
+  chainId: 'coreum-devnet-1',
+  chainName: 'coreumdevnet',
   fees: {
-    fee_tokens: [{
-      average_gas_price: 0.0625,
+    feeTokens: [{
+      averageGasPrice: 0.0625,
       denom: 'udevcore',
-      fixed_min_gas_price: 0.03125,
-      high_gas_price: 62.5,
-      low_gas_price: 0.0625,
+      fixedMinGasPrice: 0.03125,
+      highGasPrice: 62.5,
+      lowGasPrice: 0.0625,
     }],
   },
-  key_algos: ['secp256k1'],
-  network_type: 'devnet',
-  pretty_name: 'Coreum',
+  keyAlgos: ['secp256k1'],
+  networkType: 'devnet',
+  prettyName: 'Coreum',
   slip44: 990,
   status: 'live',
 };

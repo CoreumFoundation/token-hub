@@ -23,24 +23,24 @@ export const ChainSelector = () => {
     }
 
     return {
-      id: destinationChain.chain_id,
-      label: destinationChain.pretty_name,
-      icon: <ChainIcon type={destinationChain.chain_name as ChainType} className="!w-7 !h-7" />,
+      id: destinationChain.chainId,
+      label: destinationChain.prettyName,
+      icon: <ChainIcon type={destinationChain.chainName as ChainType} className="!w-7 !h-7" />,
     }
   }, [destinationChain]);
 
   const dropdownChains: DropdownItem[] = useMemo(() => {
     return chains.map((chainInfoItem: ChainInfo) => {
       return {
-        id: chainInfoItem.chain_id,
-        label: chainInfoItem.pretty_name,
-        icon: <ChainIcon type={chainInfoItem.chain_name as ChainType} className="!w-7 !h-7" />
+        id: chainInfoItem.chainId,
+        label: chainInfoItem.prettyName,
+        icon: <ChainIcon type={chainInfoItem.chainName as ChainType} className="!w-7 !h-7" />
       };
     });
   }, [chains]);
 
   const onSelect = useCallback((value: DropdownItem) => {
-    const chain = chains.find((chainInfoItem: ChainInfo) => chainInfoItem.chain_id === value.id);
+    const chain = chains.find((chainInfoItem: ChainInfo) => chainInfoItem.chainId === value.id);
 
     if (chain) {
       dispatch(setDestinationChain(chain));

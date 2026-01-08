@@ -115,8 +115,8 @@ export const FungibleTokenSend = () => {
       return 'Destination address is invalid. Please double check entered value!';
     }
 
-    if (validatedDestinationAddress.prefix !== destinationChain?.bech32_prefix) {
-      return `Prefix of destination address is not matched with ${destinationChain?.bech32_prefix}!`;
+    if (validatedDestinationAddress.prefix !== destinationChain?.bech32Prefix) {
+      return `Prefix of destination address is not matched with ${destinationChain?.bech32Prefix}!`;
     }
 
     if (destinationAddress.toLowerCase() === account.toLowerCase()) {
@@ -174,7 +174,7 @@ export const FungibleTokenSend = () => {
   const txFeeValue = useCallback(async () => {
     try {
       if (account && destinationAddress && currentCurrency) {
-        const sendMsg = destinationChain?.chain_name === coreumNetworkName ? sendFTMsg : sendFTIBCMsg;
+        const sendMsg = destinationChain?.chainName === coreumNetworkName ? sendFTMsg : sendFTIBCMsg;
 
         const newTxFee = await getTxFee([sendMsg]);
         const feeAmount = newTxFee?.fee.amount[0].amount;
@@ -184,7 +184,7 @@ export const FungibleTokenSend = () => {
     } catch (error) {
       setTxFee('');
     }
-  }, [account, coreumNetworkName, currentCurrency, destinationAddress, destinationChain?.chain_name, getTxFee, sendFTIBCMsg, sendFTMsg]);
+  }, [account, coreumNetworkName, currentCurrency, destinationAddress, destinationChain?.chainName, getTxFee, sendFTIBCMsg, sendFTMsg]);
 
   useEffect(() => {
     txFeeValue();
@@ -255,12 +255,12 @@ export const FungibleTokenSend = () => {
   ]);
 
   const handleSend = useCallback(() => {
-    if (destinationChain?.chain_name === coreumNetworkName) {
+    if (destinationChain?.chainName === coreumNetworkName) {
       handleSendTokens();
     } else {
       handleSendTokensIBC();
     }
-  }, [coreumNetworkName, destinationChain?.chain_name, handleSendTokens, handleSendTokensIBC]);
+  }, [coreumNetworkName, destinationChain?.chainName, handleSendTokens, handleSendTokensIBC]);
 
   const handleMaxButtonClick = useCallback(() => {
     setAmount(availableBalance);

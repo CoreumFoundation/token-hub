@@ -48,7 +48,7 @@ export const NonFungibleTokenSend = () => {
   }, [isConnected, selectedNFT]);
 
   const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+    return chains.find((chain: ChainInfo) => chain.prettyName?.toLowerCase() === 'coreum');
   }, [chains]);
 
   const dispatch = useAppDispatch();
@@ -126,8 +126,8 @@ export const NonFungibleTokenSend = () => {
       return 'Destination address is invalid. Please double check entered value!';
     }
 
-    if (validatedDestinationAddress.prefix !== coreumChain?.bech32_prefix) {
-      return `Prefix of destination address is not matched with ${coreumChain?.bech32_prefix}!`;
+    if (validatedDestinationAddress.prefix !== coreumChain?.bech32Prefix) {
+      return `Prefix of destination address is not matched with ${coreumChain?.bech32Prefix}!`;
     }
 
     if (destinationAddress.toLowerCase() === account.toLowerCase()) {
@@ -135,7 +135,7 @@ export const NonFungibleTokenSend = () => {
     }
 
     return '';
-  }, [account, coreumChain?.bech32_prefix, destinationAddress]);
+  }, [account, coreumChain?.bech32Prefix, destinationAddress]);
 
   const isFormValid = useMemo(() => {
     if (selectedNFTClass && selectedNFT && !isDestinationAddressInvalid.length && destinationAddress.length) {
@@ -215,7 +215,7 @@ export const NonFungibleTokenSend = () => {
           </label>
           <div className="flex items-center w-full py-3 px-4 bg-[#080908] rounded-[10px] gap-2 text-base font-medium text-[#eee] cursor-pointer">
             <GeneralIcon type={GeneralIconType.Coreum} />
-            {coreumChain?.pretty_name}
+            {coreumChain?.prettyName}
           </div>
         </div>
         <div className="col-span-2">

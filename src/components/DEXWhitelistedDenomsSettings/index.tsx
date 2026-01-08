@@ -12,7 +12,7 @@ export const DEXWhitelistedDenomsSettings = () => {
   const dispatch = useAppDispatch();
 
   const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+    return chains.find((chain: ChainInfo) => chain.prettyName?.toLowerCase() === 'coreum');
   }, [chains]);
 
   const handleAddDenomToWhitelist = useCallback(() => {

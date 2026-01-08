@@ -19,7 +19,7 @@ export const WhitelistNFTModal = () => {
   const [whitelistAccountAddress, setWhitelistAccountAddress] = useState<string>('');
 
   const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+    return chains.find((chain: ChainInfo) => chain.prettyName?.toLowerCase() === 'coreum');
   }, [chains]);
 
   const dispatch = useAppDispatch();
@@ -53,12 +53,12 @@ export const WhitelistNFTModal = () => {
       return 'Wallet address is invalid. Please double check entered value!';
     }
 
-    if (validatedWalletAddress.prefix !== coreumChain?.bech32_prefix) {
-      return `Prefix of wallet address is not matched with ${coreumChain?.bech32_prefix}!`;
+    if (validatedWalletAddress.prefix !== coreumChain?.bech32Prefix) {
+      return `Prefix of wallet address is not matched with ${coreumChain?.bech32Prefix}!`;
     }
 
     return '';
-  }, [coreumChain?.bech32_prefix, whitelistAccountAddress]);
+  }, [coreumChain?.bech32Prefix, whitelistAccountAddress]);
 
   const isFormValid = useMemo(() => {
     if (selectedNFTSend && !whitelistAddressValidationError.length && whitelistAccountAddress.length) {

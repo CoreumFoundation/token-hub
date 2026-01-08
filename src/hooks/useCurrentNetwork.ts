@@ -1,5 +1,5 @@
-import { setBalances, shouldRefetchBalances } from "@/features/balances/balancesSlice";
-import { setCurrencies, setIsFetched, shouldRefetchCurrencies } from "@/features/currencies/currenciesSlice";
+import { setBalances } from "@/features/balances/balancesSlice";
+import { setCurrencies, setIsFetched } from "@/features/currencies/currenciesSlice";
 import { setAccount, setIsConnected, setIsTxExecuting } from "@/features/general/generalSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";

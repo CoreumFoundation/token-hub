@@ -15,7 +15,7 @@ export const isValidTokenDenom = (denom: string, chainInfo: ChainInfo | undefine
   const subunitsValid = SUBUNITS_REGEX.test(subunits);
   const accountAddressValid = validateAddress(accountAddress);
 
-  if (!accountAddressValid.result || accountAddressValid.prefix !== chainInfo?.bech32_prefix) {
+  if (!accountAddressValid.result || accountAddressValid.prefix !== chainInfo?.bech32Prefix) {
     return false;
   }
 

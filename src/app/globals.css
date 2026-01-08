@@ -1,5 +1,14 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss";
+
+@source "../components/**/*.tsx";
+@source "../containers/**/*.tsx";
+@source "../app/**/*.tsx";
+@source "../assets/**/*.tsx";
+
+@theme {
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-noto-sans: var(--font-noto-sans);
+}
 
 .tooltip {
   @apply invisible absolute;
@@ -8,8 +17,6 @@
 .has-tooltip:hover .tooltip {
   @apply visible z-50;
 }
-
-@tailwind utilities;
 
 :root {
   --foreground-rgb: 0, 0, 0;

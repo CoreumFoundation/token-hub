@@ -24,13 +24,14 @@ const registry = new Registry(registryTypes);
 export const useEstimateTxGasFee = () => {
   const networkInfo = useAppSelector(state => state.general.currentNetworkInfo);
   const account = useAppSelector(state => state.general.account);
+  const chainId = networkInfo.chainId;
 
   const { data: tendermintClient } = useTendermintClient({
-    chainId: networkInfo.chainId,
+    chainId: chainId,
     type: "tm34",
   });
   const { data: signingClient } = useCosmWasmSigningClient({
-    chainId: networkInfo.chainId,
+    chainId: chainId,
     opts: {
       registry: registry as any,
     },
@@ -43,7 +44,6 @@ export const useEstimateTxGasFee = () => {
 
     const queryClient = new QueryClient(tendermintClient);
     const rpcClient = createProtobufRpcClient(queryClient);
-
     return new FeeModelClient(rpcClient);
   }, [tendermintClient]);
 

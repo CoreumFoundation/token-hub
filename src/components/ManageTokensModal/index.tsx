@@ -30,7 +30,7 @@ export const ManageTokensModal = () => {
   const chains = useAppSelector(state => state.chains.list);
 
   const coreumChain = useMemo(() => {
-    return chains.find((chain: ChainInfo) => chain.pretty_name.toLowerCase() === 'coreum');
+    return chains.find((chain: ChainInfo) => chain.prettyName?.toLowerCase() === 'coreum');
   }, [chains]);
 
   const [selectedTab, setSelectedTab] = useState<TabItem | null>(null);
@@ -175,12 +175,12 @@ export const ManageTokensModal = () => {
       return 'Wallet address is invalid. Please double check entered value!';
     }
 
-    if (validatedWalletAddress.prefix !== coreumChain?.bech32_prefix) {
-      return `Prefix of wallet address is not matched with ${coreumChain?.bech32_prefix}!`;
+    if (validatedWalletAddress.prefix !== coreumChain?.bech32Prefix) {
+      return `Prefix of wallet address is not matched with ${coreumChain?.bech32Prefix}!`;
     }
 
     return '';
-  }, [coreumChain?.bech32_prefix, walletAddress]);
+  }, [coreumChain?.bech32Prefix, walletAddress]);
 
   const renderCurrentAction = useMemo(() => {
     switch (selectedTab?.id) {

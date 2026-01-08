@@ -52,6 +52,7 @@ import { ConfirmUpdateDexUnifiedRefAmountModal } from "../ConfirmUpdateUnifiedRe
 import { ConfirmUpdateDexWhitelistedDenomsModal } from "../ConfirmUpdateWhitelistedDenomsModal";
 import { EditNFTModal } from "../EditNFTModal";
 import { ConfirmEditNFTDataModal } from "../ConfirmEditNFTDataModal";
+import { InfoBanner } from "../InfoBanner";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -72,6 +73,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const localDisclaimerConfirmed = isBrowser() && !!window.localStorage.getItem(STORAGE_DISCLAIMER_CONFIRMED);
 
   const [disclaimerModalConfirmed, setDisclaimerModalConfirmed] = useState<boolean>(localDisclaimerConfirmed);
+
+  useEffect(() => {
+    if (isBrowser()) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   useEffect(() => {
     const [, switchTab, tab] = pathname.split('/');
@@ -214,6 +221,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <AppProvider>
           <div className="flex flex-col min-h-screen w-full items-center bg-main-image z-10">
             <Alerts />
+            <InfoBanner />
             <Navbar />
             <div className={classNames('flex flex-1 flex-col h-full min-h-full w-full pb-28 relative items-center overflow-hidden', {
               'min-h-[700px]': !isMounted,

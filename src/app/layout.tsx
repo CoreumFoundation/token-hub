@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans, Space_Grotesk } from "next/font/google";
+import { Manrope, Noto_Sans, Space_Grotesk } from "next/font/google";
 import { Layout } from "@/components/Layout";
 
 import "./globals.css";
@@ -13,6 +13,11 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
+});
+const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-manrope',
 });
 
 export const metadata: Metadata = {
@@ -37,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${notoSans.variable} ${spaceGrotesk.variable} font-sans`}>
+    <html lang="en" className={`${notoSans.variable} ${spaceGrotesk.variable} ${manrope.variable} font-sans`}>
       <body className="relative h-full m-0 bg-[#080908]">
         <Layout>
           {children}

@@ -50,7 +50,7 @@ export const useChains = () => {
 
     const coreumChainData: Chain | undefined = chains.find((chain: Chain) => chain.chainName === compareNetworkChainName);
     const coreumChainInfoData: ChainInfo = {
-      ...(network === Network.Devnet ? COREUM_DEVNET_CHAIN_DATA! : coreumChainData!),
+      ...(network === Network.Devnet ? COREUM_DEVNET_CHAIN_DATA! as any as Chain : coreumChainData!),
       connection_id: '',
       client_id: '',
       channel_id: '',

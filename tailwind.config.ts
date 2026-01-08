@@ -12,6 +12,7 @@ const config: Config = {
       fontFamily: {
         'space-grotesk': ["var(--font-space-grotesk)"],
         'noto-sans': ["var(--font-noto-sans)"],
+        'manrope': ["var(--font-manrope)"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

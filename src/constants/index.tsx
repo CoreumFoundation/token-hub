@@ -3,6 +3,7 @@ import { GeneralIcon } from "@/assets/GeneralIcon";
 import { ExplorerLink } from "@/components/ExplorerLink";
 import {
   AccountActionType,
+  ChainType,
   DropdownItem,
   FooterIconType,
   GeneralIconType,
@@ -345,7 +346,7 @@ export const COREUM_TESTNET_SUPPORTED_CHAINS: IBCData[] = [
 export const STORAGE_SELECTED_NETWORK = 'local_selected_network';
 export const STORAGE_DISCLAIMER_CONFIRMED = 'local_disclaimer_confirmed';
 
-export const COREUM_DEVNET_CHAIN_DATA: Chain = {
+export const COREUM_DEVNET_CHAIN_DATA = {
   apis: {
     grpc: [],
     rest: [],

@@ -8,6 +8,7 @@
 @theme {
   --font-space-grotesk: var(--font-space-grotesk);
   --font-noto-sans: var(--font-noto-sans);
+  --font-manrope: var(--font-manrope);
 }
 
 .tooltip {
@@ -91,4 +92,12 @@ body {
 * {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.border-banner-border-color {
+  border-color: rgba(177, 252, 3, 0.50);
+}
+
+.bg-radial-green-gradient {
+  background: radial-gradient(58.52% 100% at 0% 0%, rgba(177, 252, 3, 0.47) 0%, rgba(177, 252, 3, 0.14) 100%);
 }

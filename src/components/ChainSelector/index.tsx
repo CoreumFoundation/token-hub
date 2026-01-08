@@ -23,7 +23,7 @@ export const ChainSelector = () => {
     }
 
     return {
-      id: destinationChain.chainId,
+      id: destinationChain.chainId as string,
       label: destinationChain.prettyName,
       icon: <ChainIcon type={destinationChain.chainName as ChainType} className="!w-7 !h-7" />,
     }
@@ -32,7 +32,7 @@ export const ChainSelector = () => {
   const dropdownChains: DropdownItem[] = useMemo(() => {
     return chains.map((chainInfoItem: ChainInfo) => {
       return {
-        id: chainInfoItem.chainId,
+        id: chainInfoItem.chainId as string,
         label: chainInfoItem.prettyName,
         icon: <ChainIcon type={chainInfoItem.chainName as ChainType} className="!w-7 !h-7" />
       };

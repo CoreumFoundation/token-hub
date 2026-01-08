@@ -6,7 +6,7 @@ import { GeneralIcon } from '@/assets/GeneralIcon';
 import { Spinner } from '../Spinner';
 
 interface DropdownProps {
-  selected: DropdownItem | null;
+  selected: DropdownItem | null | undefined;
   onSelect: (item: DropdownItem) => void;
   items: DropdownItem[];
   icon?: React.ReactNode;
@@ -39,7 +39,7 @@ export const Dropdown: FC<DropdownProps> = ({
   }, listClassName);
 
   return (
-    <Listbox value={selected} onChange={onSelect}>
+    <Listbox value={selected as DropdownItem | undefined} onChange={onSelect}>
       {({ open }) => (
         <div className={classNames('block relative w-full', className)}>
           <Listbox.Button className={classNames(selectedDropdownItemCx, { '!border-[#25D695]': open })}>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Noto_Sans, Space_Grotesk } from "next/font/google";
+import { Figtree, Manrope, Noto_Sans, Space_Grotesk } from "next/font/google";
 import { Layout } from "@/components/Layout";
 
 import "./globals.css";
@@ -18,6 +18,11 @@ const manrope = Manrope({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-manrope',
+});
+const figtree = Figtree({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-figtree',
 });
 
 export const metadata: Metadata = {
@@ -42,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${notoSans.variable} ${spaceGrotesk.variable} ${manrope.variable} font-sans`}>
+    <html lang="en" className={`${notoSans.variable} ${spaceGrotesk.variable} ${manrope.variable} ${figtree.variable} font-sans`}>
       <body className="relative h-full m-0 bg-[#080908]">
         <Layout>
           {children}

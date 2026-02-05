@@ -9,6 +9,7 @@
   --font-space-grotesk: var(--font-space-grotesk);
   --font-noto-sans: var(--font-noto-sans);
   --font-manrope: var(--font-manrope);
+  --font-figtree: var(--font-figtree);
 }
 
 .tooltip {

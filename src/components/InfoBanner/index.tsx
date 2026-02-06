@@ -57,6 +57,8 @@ export const InfoBanner = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const bannerType = (process.env.NEXT_PUBLIC_BANNER_TYPE as BannerType) || 'announce';
+
+  console.log('NEXT_PUBLIC_BANNER_TYPE: ',process.env.NEXT_PUBLIC_BANNER_TYPE)
   const content = getBannerContent(bannerType);
 
   if (!isOpen || !content) {

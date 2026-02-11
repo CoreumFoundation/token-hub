@@ -29,7 +29,7 @@ const getBannerContent = (type: BannerType): BannerContent | null => {
         description: (
           <>
             The network migration will take effect at <span style={{ color: '#FFF', fontFamily: 'var(--font-figtree)', fontSize: '14px', fontStyle: 'normal', fontWeight: 500, lineHeight: '20px', letterSpacing: '-0.14px' }}>00:00:00 EST on March 6th</span>. Learn more about the details{' '}
-            <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: '#B1FC03', fontFamily: 'var(--font-figtree)', fontSize: '14px', fontStyle: 'normal', fontWeight: 500, lineHeight: '20px', letterSpacing: '-0.14px', textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationSkipInk: 'auto', textDecorationThickness: 'auto', textUnderlineOffset: 'auto', textUnderlinePosition: 'from-font' }}>
+            <a href="https://coreum.medium.com/coreum-proposal-29-official-results-interpretation-and-outcome-report-fcd780295217" target="_blank" rel="noopener noreferrer" style={{ color: '#B1FC03', fontFamily: 'var(--font-figtree)', fontSize: '14px', fontStyle: 'normal', fontWeight: 500, lineHeight: '20px', letterSpacing: '-0.14px', textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationSkipInk: 'auto', textDecorationThickness: 'auto', textUnderlineOffset: 'auto', textUnderlinePosition: 'from-font' }}>
               here
             </a>.
           </>
